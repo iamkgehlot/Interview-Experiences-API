@@ -14,6 +14,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//enums
+enum interviewOutcome{ 
+  OFFER
+  REJECTED  
+  NO_RESPONSE  
+  WITHDRAWN
+  }
 model User{
   id Int @id @default(autoincrement())
   name String
@@ -34,7 +41,7 @@ model Experience{
   role String
   roundsCount Int
   difficulty Int
-  outcome String
+  outcome interviewOutcome
   content String
   interviewDate DateTime
   comments Comment[]
@@ -53,7 +60,7 @@ model Comment{
 
 model Tag{
   id Int @id @default(autoincrement())
-  tagName String
+  tagName String @unique
   createdByUserid Int
   addedOn DateTime @default(now())
   experience ExperienceTag[]
