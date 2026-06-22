@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  age Int 
+  yearsOfExperience Int 
+  current_role String
+  industry String
+  tags Tag[]
+  experience Experience[]
+  comments Comment[]
+}
+
+model Experience{
+  id Int @id @default(autoincrement())
+  userId Int
+  company String
+  role String
+  roundsCount Int
+  difficulty Int
+  outcome String
+  content String
+  interviewDate DateTime
+  comments Comment[]
+  tags ExperienceTag[]
+  user User @relation(fields:[userId],references:[id])
+}
+
+model Comment{
+  id Int @id @default(autoincrement())
+  userId Int 
+  experienceId Int
+  comment String
+  user User @relation(fields:[userId],references:[id])
+  experience Experience @relation(fields:[experienceId],references:[id])
+}
+
+model Tag{
+  id Int @id @default(autoincrement())
+  tagName String
+  createdByUserid Int
+  addedOn DateTime @default(now())
+  experience ExperienceTag[]
+  user User @relation(fields:[createdByUserid],references:[id])
+}
+
+model ExperienceTag{
+  experienceId Int
+  tagId Int
+  experience Experience @relation(fields:[experienceId],references:[id])                  
+  tag Tag @relation(fields:[tagId],references:[id])
+  @@id([experienceId,tagId])
+}
