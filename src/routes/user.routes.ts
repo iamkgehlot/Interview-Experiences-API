@@ -1,10 +1,21 @@
 import { Router } from "express";
-import { postedUserController } from "../controllers/user.controller.js";
+import {
+  getAllUsersController,
+  getUserByIdController,
+  postedUserController,
+  updatedUserController,
+} from "../controllers/user.controller.js";
 import { zodMiddleware } from "../middlewares/zod.js";
-import { userValidation } from "../validations/user.validations.js";
+import { updateUserValidation, userBodyValidation, userIdValidation } from "../validations/user.validations.js";
 
 const userRouter = Router();
 
-userRouter.post("/users", zodMiddleware(userValidation), postedUserController);
+userRouter.post("/users",zodMiddleware(userBodyValidation), postedUserController);
+
+userRouter.get("/users/:id",zodMiddleware(userIdValidation), getUserByIdController);
+
+userRouter.get("/users", getAllUsersController);
+
+userRouter.patch("/users/:id",zodMiddleware(updateUserValidation), updatedUserController);
 
 export { userRouter };
