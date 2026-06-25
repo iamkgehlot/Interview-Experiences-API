@@ -1,21 +1,40 @@
 import { Router } from "express";
-import {
-  getAllUsersController,
-  getUserByIdController,
-  postedUserController,
-  updatedUserController,
-} from "../controllers/user.controller.js";
+import UserController from "../controllers/user.controller.js";
 import { zodMiddleware } from "../middlewares/zod.js";
-import { updateUserValidation, userBodyValidation, userIdValidation } from "../validations/user.validations.js";
+import {
+  updateUserValidation,
+  userBodyValidation,
+  userIdValidation,
+} from "../validations/user.validations.js";
+import type { RouterInterface } from "../interface/user.router.interface.js";
 
-const userRouter = Router();
+export default class UserRouter implements RouterInterface {
+  router = Router();
 
-userRouter.post("/users",zodMiddleware(userBodyValidation), postedUserController);
+  constructor(private userController: UserController) {
+    this.userRoutes();
+  }
 
-userRouter.get("/users/:id",zodMiddleware(userIdValidation), getUserByIdController);
+  private userRoutes() {
+    this.router.post(
+      "/users",
+      zodMiddleware(userBodyValidation),
+      this.userController.postedUserController,
+    );
 
-userRouter.get("/users", getAllUsersController);
 
-userRouter.patch("/users/:id",zodMiddleware(updateUserValidation), updatedUserController);
+    this.router.get(
+      "/users/:id",
+      zodMiddleware(userIdValidation),
+      this.userController.getUserByIdController,
+    );
 
-export { userRouter };
+    this.router.get("/users", this.userController.getAllUsersController);
+
+    this.router.patch(
+      "/users/:id",
+      zodMiddleware(updateUserValidation),
+      this.userController.updatedUserController,
+    );
+  }
+}

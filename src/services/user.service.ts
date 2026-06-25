@@ -1,57 +1,30 @@
-import { ERROR_MESSAGE, HTTP_STATUS } from "../constants/constants.js";
-import { prisma } from "../repositories/prisma.js";
-import AppError from "../utils/error.handler.js";
 import type { userType } from "../validations/user.validations.js";
+import type { IUserRepo } from "../interface/user.repository.interface.js";
 
-//post user
-const postUserService = async (input: userType) => {
-  const { name, email, age, yearsOfExperience, current_role, industry } = input;
-  const createdUser = await prisma.user.create({
-    data: {
-      name,
-      email,
-      yearsOfExperience,
-      current_role,
-      industry,
-      age,
-    },
-  });
-  return createdUser;
-};
+export default class UserService {
+  constructor(public userRepo: IUserRepo) {}
+  //post user
+  postUserService = async (data: userType) => {
+    const createdUser = await this.userRepo.create(data);
+    return createdUser;
+  };
 
-//get user by id
-const getUserByIdService = async (id: number) => {
- 
-  const getUserById = await prisma.user.findFirst({
-    where: {
-      id,
-    },
-  });
-  return getUserById;
-};
+  //get user by id
+  getUserByIdService = async (id: number) => {
+    const getUserById = await this.userRepo.findById(id);
+    return getUserById;
+  };
 
-//get all users
-const getAllUsersService = async () => {
-  const data = await prisma.user.findMany();
-  return data;
-};
+  //get all users
+  getAllUsersService = async () => {
+    const data = await this.userRepo.findAll();
+    return data;
+  };
 
-//update user
-const updateUserService = async (id: number, user: userType) => {
-  console.log(id);
-  const updatedUser = await prisma.user.update({
-    where: {
-      id,
-    },
-    data: user,
-  });
+  //update user
+  updateUserService = async (id: number, user: userType) => {
+    const updatedUser = await this.userRepo.update(id, user);
 
-  return updatedUser;
-};
-
-export {
-  postUserService,
-  getUserByIdService,
-  getAllUsersService,
-  updateUserService,
-};
+    return updatedUser;
+  };
+}
