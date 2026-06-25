@@ -1,27 +1,28 @@
 import type { NextFunction, Request, Response } from "express";
-import UserService from "../services/user.service.js";
-import { catchAsync } from "../utils/catch.async.js";
-import { HTTP_STATUS, USER_MESSAGE } from "../constants/constants.js";
+import UserService from "./user.service.js";
+import { catchAsync } from "../../utils/catch.async.js";
+import { HTTP_STATUS, USER_MESSAGE } from "../../constants/constants.js";
+import { success } from "zod";
 
 export default class UserController {
   constructor(private userService: UserService) {}
 
   //post user
-  postedUserController = catchAsync(
+  postedUser = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
       return res.status(HTTP_STATUS.CREATED).json({
         success: true,
         message: USER_MESSAGE.SIGNUP_SUCCESS,
-        data: await this.userService.postUserService(req.body),
+        data: await this.userService.postUser(req.body),
       });
     },
   );
 
   //get user by id
-  getUserByIdController = catchAsync(
+  getUserById = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
       const id = Number(req.params.id);
-      const data = await this.userService.getUserByIdService(id);
+      const data = await this.userService.getUserById(id);
       if (!data) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
           success: false,
@@ -37,9 +38,9 @@ export default class UserController {
   );
 
   //get all users
-  getAllUsersController = catchAsync(
+  getAllUsers = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
-      const data = await this.userService.getAllUsersService();
+      const data = await this.userService.getAllUsers();
       if (data.length === 0) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
           success: false,
@@ -55,17 +56,28 @@ export default class UserController {
   );
 
   //update User by id
-  updatedUserController = catchAsync(
+  updatedUser = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
       const id = Number(req.params.id);
       const data = req.body;
-      console.log(data);
-      const updatedUser = await this.userService.updateUserService(id, data);
+      const updatedUser = await this.userService.updateUser(id, data);
       console.log(updatedUser);
       return res.status(HTTP_STATUS.OK).json({
         success: true,
         message: USER_MESSAGE.UPDATE_USER_SUCCESS(id),
         data: updatedUser,
+      });
+    },
+  );
+
+  //delete user
+  deletedUser = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const id = Number(req.params.id);
+      res.status(HTTP_STATUS.OK).json({
+        success: true,
+        message: USER_MESSAGE.DELETE_USER_SUCCESS(id),
+        data: await this.userService.deleteUser(Number(id)),
       });
     },
   );

@@ -9,10 +9,15 @@ export const errorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
+
   if (err?.type === "entity.parse.failed") {
     err = new AppError(HTTP_STATUS.BAD_REQUEST, ERROR_MESSAGE.JSON_DATA_ERROR);
   }
+
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    if (err.code === "P1001") {
+      err = new AppError(500, "Database connection failed");
+    }
     if (err.code === "P2002") {
       const targets = (err.meta?.target as string) || "field";
       err = new AppError(
@@ -21,11 +26,15 @@ export const errorHandler = (
       );
     }
 
-    if (err.code === "P2025") {
+    if (err.code === 'P2025') {
       console.log(err);
-      const id = Number(req.params.id);
-      err = new AppError(HTTP_STATUS.NOT_FOUND, ERROR_MESSAGE.P2025_ERROR(id));
+  
+      err = new AppError(HTTP_STATUS.NOT_FOUND, err.meta.cause as string);
     }
+  }
+
+  if(err?.message?.includes("prisma")||err?.message?.includes("database")){
+    err=new AppError(500,"internal database error occurred")
   }
   const message = err.message || ERROR_MESSAGE.INERNAL_SERVER_ERROR;
   const statusCode = err.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR;

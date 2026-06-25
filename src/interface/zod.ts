@@ -1,4 +1,4 @@
-export interface zodOut {
+export interface ZodOut {
   body?: any;
   params?: any;
   query?: any;

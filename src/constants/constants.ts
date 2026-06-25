@@ -26,7 +26,6 @@ export const USER_MESSAGE = Object.freeze({
 export const ERROR_MESSAGE = Object.freeze({
   JSON_DATA_ERROR: "json format is not valid",
   P2002_ERROR: (targets: string) => `${targets} already exists`,
-  P2025_ERROR: (id: number | undefined) => `No User found with id: ${id}`,
   INERNAL_SERVER_ERROR: "Internal Server Error",
   ID_CHECK_FAIL: "Id should be a number",
 });

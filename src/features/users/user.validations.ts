@@ -30,13 +30,13 @@ const userBodySchema = z.object({
     .nonempty("please enter your industry")
     .toLowerCase(),
 });
-const userIdValidation=z.strictObject({
+const userIdValidation=z.object({
   params:userIdSchema,
 });
-const userBodyValidation=z.strictObject({
+const userBodyValidation=z.object({
   body:userBodySchema
 })
-const updateUserValidation=z.strictObject({
+const updateUserValidation=z.object({
   body:userBodySchema,
   params:userIdSchema
 });

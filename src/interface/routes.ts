@@ -1,5 +1,5 @@
 import type { Router } from "express";
 
-export interface RouterInterface {
+export interface Routes {
   router: Router;
 }

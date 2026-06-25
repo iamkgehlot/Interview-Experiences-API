@@ -2,9 +2,9 @@ import type { NextFunction, Request, Response } from "express";
 import { ZodError, ZodType } from "zod";
 import { HTTP_STATUS } from "../constants/constants.js";
 import AppError from "../utils/error.handler.js";
-import type { zodOut } from "../types/type.js";
+import type { ZodOut } from "../types/type.js";
 
-export const zodMiddleware = <T extends zodOut>(schema: ZodType<T>) => {
+export const zodMiddleware = <T extends ZodOut>(schema: ZodType<T>) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const validData = await schema.parseAsync({
