@@ -29,7 +29,7 @@ export const errorHandler = (
     if (err.code === 'P2025') {
       console.log(err);
   
-      err = new AppError(HTTP_STATUS.NOT_FOUND, err.meta.cause as string);
+      err = new AppError(HTTP_STATUS.NOT_FOUND, err.meta?.cause as string||"Record not Found");
     }
   }
 

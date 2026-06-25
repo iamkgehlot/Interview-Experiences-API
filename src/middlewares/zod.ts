@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import { ZodError, ZodType } from "zod";
 import { HTTP_STATUS } from "../constants/constants.js";
 import AppError from "../utils/error.handler.js";
-import type { ZodOut } from "../types/type.js";
+import type { ZodOut } from "../interface/zod.js";
 
 export const zodMiddleware = <T extends ZodOut>(schema: ZodType<T>) => {
   return async (req: Request, res: Response, next: NextFunction) => {
