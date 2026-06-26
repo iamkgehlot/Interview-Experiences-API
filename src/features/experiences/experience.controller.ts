@@ -8,7 +8,7 @@ import AppError from "../../utils/error.handler.js";
 export default class ExperienceController {
   constructor(private experienceService: ExperienceService) {}
 
-  createdExperience: RequestHandler = async (req, res, next) => {
+  createdExperience: RequestHandler = async (req, res) => {
     const userId = Number(req.params.userId);
     const data = await this.experienceService.createExperience(
       userId,
@@ -30,7 +30,7 @@ export default class ExperienceController {
       message: data,
     });
   };
-  getAllExperienceByUserId: RequestHandler = async (req, res, next) => {
+  getAllExperienceByUserId: RequestHandler = async (req, res) => {
     const userId = Number(req.params.userId);
     console.log(userId);
     const data = await this.experienceService.getAllExperienceByUserId(userId);
@@ -41,7 +41,7 @@ export default class ExperienceController {
     });
   };
 
-  getExperienceById: RequestHandler = async (req, res, next) => {
+  getExperienceById: RequestHandler = async (req, res) => {
     const experienceId=Number(req.params.experienceId);
     const data = await this.experienceService.getExpirenceByid(
       experienceId
@@ -53,7 +53,7 @@ export default class ExperienceController {
     });
   };
 
-  updateExperience: RequestHandler = async (req, res, next) => {
+  updateExperience: RequestHandler = async (req, res) => {
     const data = await this.experienceService.updateExperience(
       Number(req.params.experienceId),
       req.body,
@@ -64,7 +64,7 @@ export default class ExperienceController {
     });
   };
 
-  deleteExperience: RequestHandler = async (req, res, next) => {
+  deleteExperience: RequestHandler = async (req, res) => {
     const data = await this.experienceService.deleteExperience(
       Number(req.params.experienceId),
     );

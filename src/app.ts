@@ -1,4 +1,4 @@
-import Express, { Router, type Application } from "express";
+import Express, { type Application } from "express";
 import { errorHandler } from "./middlewares/error.handler.js";
 import type { Routes } from "./interface/routes.js";
 import { prisma } from "./config/prisma.js";
@@ -6,7 +6,7 @@ import { prisma } from "./config/prisma.js";
 export default class App {
   private app: Application;
   constructor(
-    private routers: any[],
+    private routers: Routes[],
     private port: number,
   ) {
     this.app = Express();

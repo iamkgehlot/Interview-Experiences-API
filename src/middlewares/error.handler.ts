@@ -4,10 +4,12 @@ import type { NextFunction, Request, Response } from "express";
 import AppError from "../utils/error.handler.js";
 
 export const errorHandler = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   err: any,
   req: Request,
   res: Response,
-  next: NextFunction,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _next: NextFunction,
 ) => {
   if (err?.type === "entity.parse.failed") {
     err = new AppError(HTTP_STATUS.BAD_REQUEST, ERROR_MESSAGE.JSON_DATA_ERROR);

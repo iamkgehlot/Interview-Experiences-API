@@ -1,5 +1,9 @@
 import App from "./app.js";
 import { envConfig } from "./config/env.config.js";
+import CommentController from "./features/comments/comment.controller.js";
+import PrismaCommentRepo from "./features/comments/comment.repo.prisma.js";
+import CommentRouter from "./features/comments/comment.router.js";
+import CommentService from "./features/comments/comment.service.js";
 import ExperienceController from "./features/experiences/experience.controller.js";
 import PrismaExperienceRepository from "./features/experiences/experience.repo.prisma.js";
 import ExperienceRouter from "./features/experiences/experience.router.js";
@@ -13,14 +17,20 @@ import UserService from "./features/users/user.service.js";
 const repo=new PrismaUserRepository();
 const userService=new UserService(repo);
 const userController=new UserController(userService);
-const routerUser=new UserRouter(userController);
+const userRouter=new UserRouter(userController);
 
 //experiences
 const experienceRepo=new PrismaExperienceRepository();
 const experienceService=new ExperienceService(experienceRepo);
 const experienceController=new ExperienceController(experienceService);
-const routerExperience=new ExperienceRouter(experienceController);
+const experienceRouter=new ExperienceRouter(experienceController);
+
+//comment
+const commentRepo=new PrismaCommentRepo();
+const commentService=new CommentService(commentRepo);
+const commentController=new CommentController(commentService);
+const commentRouter=new CommentRouter(commentController);
 
 //app
-const app=new App([routerUser,routerExperience],envConfig.PORT);
+const app=new App([userRouter,experienceRouter,commentRouter],envConfig.PORT);
 app.listen();

@@ -4,6 +4,7 @@ export const HTTP_STATUS = Object.freeze({
   BAD_REQUEST: 401,
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
+  NO_CONTENT:204
 });
 
 export const JSON_SUCCESS = Object.freeze({

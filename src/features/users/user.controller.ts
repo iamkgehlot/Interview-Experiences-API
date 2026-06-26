@@ -8,7 +8,7 @@ export default class UserController {
 
   //post user
   postedUser = catchAsync(
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (req: Request, res: Response) => {
       return res.status(HTTP_STATUS.CREATED).json({
         success: true,
         message: USER_MESSAGE.SIGNUP_SUCCESS,
@@ -19,7 +19,7 @@ export default class UserController {
 
   //get user by id
   getUserById = catchAsync(
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (req: Request, res: Response) => {
       const id = Number(req.params.id);
       const data = await this.userService.getUserById(id);
       if (!data) {
@@ -38,7 +38,7 @@ export default class UserController {
 
   //get all users
   getAllUsers = catchAsync(
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (req: Request, res: Response) => {
       const data = await this.userService.getAllUsers();
       if (data.length === 0) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
@@ -56,7 +56,7 @@ export default class UserController {
 
   //update User by id
   updatedUser = catchAsync(
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (req: Request, res: Response) => {
       const id = Number(req.params.id);
       const data = req.body;
       const updatedUser = await this.userService.updateUser(id, data);
@@ -71,7 +71,7 @@ export default class UserController {
 
   //delete user
   deletedUser = catchAsync(
-    async (req: Request, res: Response, next: NextFunction) => {
+    async (req: Request, res: Response) => {
       const id = Number(req.params.id);
       res.status(HTTP_STATUS.OK).json({
         success: true,
