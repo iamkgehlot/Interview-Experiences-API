@@ -26,14 +26,15 @@ const experienceSchema = z.object({
     .string()
     .min(20)
     .nonempty("please write full content of atlease 20 words"),
-  interviewDate: z.date(),
+  interviewDate: z.coerce.date(),
 });
 const userId = z.object({
   userId: z.coerce.number().int().positive(),
 });
 const experienceId = z.object({
-  id: z.coerce.number().int().positive(),
+  experienceId: z.coerce.number().int().positive(),
 });
+
 
 const experienceBodyValidation = z.object({
   body: experienceSchema,
@@ -41,9 +42,18 @@ const experienceBodyValidation = z.object({
 const experienceIdValidation = z.object({
   params: experienceId,
 });
+
+const userIdValidation=z.object({
+    params:userId
+});
+
+const userIdExperienceBodyValidation=z.object({
+    body:experienceSchema,
+    params:userId
+})
 const updateExperienceValidation = z.object({
   body: experienceSchema,
-  id: experienceId,
+  params: experienceId,
 });
 
 type experienceType = z.infer<typeof experienceSchema>;
@@ -53,4 +63,7 @@ export {
   experienceBodyValidation,
   experienceIdValidation,
   updateExperienceValidation,
+  userIdExperienceBodyValidation,
+  userIdValidation
+  
 };
