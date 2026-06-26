@@ -2,7 +2,6 @@ import type { NextFunction, Request, Response } from "express";
 import UserService from "./user.service.js";
 import { catchAsync } from "../../utils/catch.async.js";
 import { HTTP_STATUS, USER_MESSAGE } from "../../constants/constants.js";
-import { success } from "zod";
 
 export default class UserController {
   constructor(private userService: UserService) {}

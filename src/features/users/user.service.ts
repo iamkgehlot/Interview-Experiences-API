@@ -1,5 +1,5 @@
 import type { userType } from "./user.validations.js";
-import type { UserRepository } from "./user.repository.js";
+import type { UserRepository } from "./user.repo.js";
 import type { User } from "../../generated/prisma/client.js";
 
 export default class UserService {
