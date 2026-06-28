@@ -27,6 +27,7 @@ const experienceSchema = z.object({
     .min(20)
     .nonempty("please write full content of atlease 20 words"),
   interviewDate: z.coerce.date(),
+  tagName:z.string()
 });
 const userId = z.object({
   userId: z.coerce.number().int().positive(),

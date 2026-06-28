@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
@@ -45,7 +45,7 @@ model Experience{
   content String
   interviewDate DateTime
   comments Comment[]
-  tags ExperienceTag[]
+  tags Tag[]
   user User @relation(fields:[userId],references:[id])
 }
 
@@ -63,14 +63,7 @@ model Tag{
   tagName String @unique
   createdByUserid Int
   addedOn DateTime @default(now())
-  experience ExperienceTag[]
+  experience Experience[]
   user User @relation(fields:[createdByUserid],references:[id])
 }
 
-model ExperienceTag{
-  experienceId Int
-  tagId Int
-  experience Experience @relation(fields:[experienceId],references:[id])                  
-  tag Tag @relation(fields:[tagId],references:[id])
-  @@id([experienceId,tagId])
-}

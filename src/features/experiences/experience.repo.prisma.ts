@@ -5,12 +5,29 @@ import type { experienceType } from "./experience.validations.js";
 
 export default class PrismaExperienceRepository implements ExperienceRepo {
   async create(userId: number, data: experienceType): Promise<Experience> {
-    return await prisma.experience.create({ data: { ...data, userId } });
+    return await prisma.experience.create({
+      data: {
+        ...data,
+        userId,
+
+        tags: {
+          connectOrCreate: [{
+            where:{
+            tagName: data.tagName},
+            create: {
+              tagName: data.tagName,
+              createdByUserid: userId,
+            },
+          }],
+        },
+      },
+    });
   }
 
-  async findAllByUserId(userId: number): Promise<Experience[] > {
-  
-    return await prisma.experience.findMany({ where: userId===-1?{}: {userId}  });
+  async findAllByUserId(userId: number): Promise<Experience[]> {
+    return await prisma.experience.findMany({
+      where: userId === -1 ? {} : { userId },
+    });
   }
 
   async findById(id: number): Promise<Experience | null> {
