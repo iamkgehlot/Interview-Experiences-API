@@ -40,12 +40,7 @@ export default class UserController {
   getAllUsers = catchAsync(
     async (req: Request, res: Response) => {
       const data = await this.userService.getAllUsers();
-      if (data.length === 0) {
-        return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
-          message: USER_MESSAGE.ALL_USERS_FETCH_FAIL,
-        });
-      }
+      
       return res.status(HTTP_STATUS.OK).json({
         success: true,
         message: USER_MESSAGE.ALL_USERS_FETCH_SUCCESS,

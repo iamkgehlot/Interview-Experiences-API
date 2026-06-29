@@ -1,17 +1,24 @@
 import z from "zod";
-// model Tag{
-//   id Int @id @default(autoincrement())
-//   tagName String @unique
-//   createdByUserid Int
-//   addedOn DateTime @default(now())
-//   experience ExperienceTag[]
-//   user User @relation(fields:[createdByUserid],references:[id])
-// }
+
 const tagSchema = z.object({
   tagName: z.string().nonempty(),
-  userId: z.coerce.number().int().positive(),
+  // createdByUserid: z.coerce.number().int().positive(),
 });
-const tagValidation = z.object({
+
+const tagsIdSchema=z.object({
+  tagId:z.coerce.number().int().positive()
+})
+const tagIdBodyValidation=z.object({
+  body:tagSchema,
+  params:tagsIdSchema
+})
+const tagBodyValidation = z.object({
   body: tagSchema,
 });
-export { tagValidation };
+
+const tagIdValidation=z.object({
+  params:tagsIdSchema
+});
+
+type tagsType = z.infer<typeof tagSchema>;
+export {  type tagsType ,tagIdBodyValidation,tagBodyValidation,tagIdValidation};

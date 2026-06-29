@@ -11,9 +11,11 @@
 //   comments Comment[]
 //   tags ExperienceTag[]
 import z from "zod";
-import { interviewOutcome } from "../../generated/prisma/enums.js";
+import { interviewOutcome } from "../../generated/prisma/index.js";
 
-const experienceSchema = z.object({
+
+const baseExperienceSchema = z.object({
+  userId:z.coerce.number().int().positive() ,//to be removed and to fetch from authentication after implementation,
   company: z
     .string()
     .nonempty("interviewing company name is required")
@@ -27,37 +29,37 @@ const experienceSchema = z.object({
     .min(20)
     .nonempty("please write full content of atlease 20 words"),
   interviewDate: z.coerce.date(),
-  tagName:z.string()
+  tagName:z.array(z.string())
 });
-const userId = z.object({
+const paramsUserId = z.object({
   userId: z.coerce.number().int().positive(),
 });
-const experienceId = z.object({
+const paramsExperienceId = z.object({
   experienceId: z.coerce.number().int().positive(),
 });
 
 
 const experienceBodyValidation = z.object({
-  body: experienceSchema,
+  body: baseExperienceSchema,
 });
 const experienceIdValidation = z.object({
-  params: experienceId,
+  params: paramsExperienceId,
 });
 
 const userIdValidation=z.object({
-    params:userId
+    params:paramsUserId
 });
 
 const userIdExperienceBodyValidation=z.object({
-    body:experienceSchema,
-    params:userId
+    body:baseExperienceSchema,
+    params:paramsUserId
 })
 const updateExperienceValidation = z.object({
-  body: experienceSchema,
-  params: experienceId,
+  body: baseExperienceSchema,
+  params: paramsExperienceId,
 });
 
-type experienceType = z.infer<typeof experienceSchema>;
+type experienceType = z.infer<typeof baseExperienceSchema>;
 
 export {
   type experienceType,

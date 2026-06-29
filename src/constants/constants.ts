@@ -23,13 +23,18 @@ export const USER_MESSAGE = Object.freeze({
   DELETE_USER_SUCCESS: (id: string | number) =>
     `User with id: ${id} deleted successfully`,
 });
-// export const EXPERIENCE_MESSAGES=Object.freeze({
-//   NO_EXPERIENCE_FOUND_FOR_ID:(id:number)=>`no experience found with given Experience id: ${id}`,
-//   NO_EXPERIENCE_FOUND_FOR_USER_ID:(id:number)=>`no experience found with given USer id: ${id}`
-// })
+export const EXPERIENCE_MESSAGES=Object.freeze({
+  NO_EXPERIENCE_FOUND_FOR_ID:(id:number)=>`no experience found with given Experience id: ${id}`,
+ // NO_EXPERIENCE_FOUND_FOR_USER_ID:(id:number)=>`no experience found with given USer id: ${id}`
+})
 export const ERROR_MESSAGE = Object.freeze({
   JSON_DATA_ERROR: "json format is not valid",
   P2002_ERROR: (targets: string) => `${targets} already exists`,
   INTERNAL_SERVER_ERROR: "Internal Server Error",
   ID_CHECK_FAIL: "Id should be a number",
 });
+
+export const TAG_MESSAGE=Object.freeze({
+  TAG_FETCH_FAIL:(tagId:number)=>`cannot find tag with given id: ${tagId}`,
+//   ALL_TAG_FETCH_FAIL:"no tags found"
+ })

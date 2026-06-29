@@ -15,12 +15,12 @@ export const errorHandler = (
     err = new AppError(HTTP_STATUS.BAD_REQUEST, ERROR_MESSAGE.JSON_DATA_ERROR);
   }
 
-  if (
-   err instanceof Prisma.PrismaClientInitializationError ||
-    err instanceof Prisma.PrismaClientUnknownRequestError
-  ) {
-    err = new AppError(500, "internal database error occurred");
-  }
+  // if (
+  //  err instanceof Prisma.PrismaClientInitializationError ||
+  //   err instanceof Prisma.PrismaClientUnknownRequestError
+  // ) {
+  //   err = new AppError(500, "internal database error occurred");
+  // }
 
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     if (err.code === "P1001") {
@@ -43,7 +43,7 @@ export const errorHandler = (
       );
     }
   }
-  console.log(err.message);
+
   const message = err.message || ERROR_MESSAGE.INTERNAL_SERVER_ERROR;
   const statusCode = err.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR;
 

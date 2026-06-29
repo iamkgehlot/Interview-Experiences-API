@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 
 import type ExperienceService from "./experience.service.js";
-import {  HTTP_STATUS } from "../../constants/constants.js";
+import {  EXPERIENCE_MESSAGES, HTTP_STATUS } from "../../constants/constants.js";
 
 import AppError from "../../utils/error.handler.js";
 
@@ -22,9 +22,7 @@ export default class ExperienceController {
 
   getAllExperience: RequestHandler = async (req, res, next) => {
     const data = await this.experienceService.getAllExperience();
-    if (data.length === 0) {
-      return next(new AppError(HTTP_STATUS.NOT_FOUND, "no experience shared yet"));
-    }
+
     return res.status(HTTP_STATUS.OK).json({
       success: true,
       message: data,
@@ -41,11 +39,14 @@ export default class ExperienceController {
     });
   };
 
-  getExperienceById: RequestHandler = async (req, res) => {
+  getExperienceById: RequestHandler = async (req, res,next) => {
     const experienceId=Number(req.params.experienceId);
     const data = await this.experienceService.getExpirenceByid(
       experienceId
     );
+    if(!data){
+      return next(new AppError(HTTP_STATUS.NOT_FOUND,EXPERIENCE_MESSAGES.NO_EXPERIENCE_FOUND_FOR_ID(experienceId)))
+    }
 
     return res.status(HTTP_STATUS.OK).json({
       success: true,
