@@ -16,6 +16,18 @@ import UserController from "./features/users/user.controller.js";
 import PrismaUserRepository from "./features/users/user.repo.prisma.js";
 import UserRouter from "./features/users/user.router.js";
 import UserService from "./features/users/user.service.js";
+import PrismaAuthRepository from "./features/auth/auth.repo.prisma.js";
+import AuthService from "./features/auth/auth.service.js";
+import AuthController from "./features/auth/auth.controller.js";
+import AuthRouter from "./features/auth/auth.router.js";
+
+//auth
+const authRepo = new PrismaAuthRepository();
+const authService = new AuthService(authRepo);
+const authController = new AuthController(authService);
+const authRouter = new AuthRouter(authController);
+
+
 
 //user
 const repo = new PrismaUserRepository();
@@ -42,7 +54,7 @@ const tagControler = new TagController(tagService);
 const tagRouter = new TagRouter(tagControler);
 //app
 const app = new App(
-  [userRouter, experienceRouter, commentRouter, tagRouter],
+  [authRouter,userRouter, experienceRouter, commentRouter, tagRouter],
   envConfig.PORT,
 );
 app.listen();

@@ -25,6 +25,7 @@ model User{
   id Int @id @default(autoincrement())
   name String
   email String @unique
+  password String
   age Int 
   yearsOfExperience Int 
   current_role String

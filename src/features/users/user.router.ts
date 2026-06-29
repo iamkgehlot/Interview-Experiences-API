@@ -3,7 +3,7 @@ import UserController from "./user.controller.js";
 import { zodMiddleware } from "../../middlewares/zod.js";
 import {
   updateUserValidation,
-  userBodyValidation,
+
   userIdValidation,
 } from "./user.validations.js";
 import type { Routes } from "../../interface/routes.js";
@@ -16,11 +16,11 @@ export default class UserRouter implements Routes {
   }
 
   private userRoutes() {
-    this.router.post(
-      "/users",
-      zodMiddleware(userBodyValidation),
-      this.userController.postedUser,
-    );
+    // this.router.post(
+    //   "/users",
+    //   zodMiddleware(userBodyValidation),
+    //   this.userController.postedUser,
+    // );
 
 
     this.router.get(

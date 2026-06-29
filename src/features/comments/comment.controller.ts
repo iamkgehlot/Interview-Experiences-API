@@ -10,13 +10,12 @@ export default class CommentController {
     const comment = req.body;
     return res.status(HTTP_STATUS.CREATED).json({
       success: true,
-      message:COMMENT_MESSAGE.COMMENT_CREATED,
-      data:await this.commentService.create(experienceId, comment),
+      message: COMMENT_MESSAGE.COMMENT_CREATED,
+      data: await this.commentService.create(experienceId, comment),
     });
   };
 
   findByExperienceId: RequestHandler = async (req, res) => {
-
     const experienceId = Number(req.params.experienceId);
     return res.status(HTTP_STATUS.OK).json({
       success: true,
@@ -26,31 +25,25 @@ export default class CommentController {
 
   findByUserId: RequestHandler = async (req, res) => {
     const userId = Number(req.params.userId);
-    return res
-      .status(HTTP_STATUS.OK)
-      .json({
-        success: true,
-        data: await this.commentService.findByUserId(userId),
-      });
+    return res.status(HTTP_STATUS.OK).json({
+      success: true,
+      data: await this.commentService.findByUserId(userId),
+    });
   };
 
   update: RequestHandler = async (req, res) => {
     const commentId = Number(req.params.commentId);
     const comment = req.body;
-    return res
-      .status(HTTP_STATUS.OK)
-      .json({
-        success: true,
-        message:COMMENT_MESSAGE.COMMENT_UPDATED,
-        data: await this.commentService.update(commentId, comment),
-      });
+    return res.status(HTTP_STATUS.OK).json({
+      success: true,
+      message: COMMENT_MESSAGE.COMMENT_UPDATED,
+      data: await this.commentService.update(commentId, comment),
+    });
   };
 
   delete: RequestHandler = async (req, res) => {
     const commentId = Number(req.params.commentId);
-    await this.commentService.delete(commentId)
-    return res
-      .status(HTTP_STATUS.NO_CONTENT).send();
-      
+    await this.commentService.delete(commentId);
+    return res.status(HTTP_STATUS.NO_CONTENT).send();
   };
 }
