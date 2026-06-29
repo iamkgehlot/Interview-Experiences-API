@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import UserService from "./user.service.js";
 import { catchAsync } from "../../utils/catch.async.js";
 import { HTTP_STATUS, USER_MESSAGE } from "../../constants/constants.js";
+import AppError from "../../utils/error.handler.js";
 
 export default class UserController {
   constructor(private userService: UserService) {}
@@ -19,18 +20,14 @@ export default class UserController {
 
   //get user by id
   getUserById = catchAsync(
-    async (req: Request, res: Response) => {
+    async (req: Request, res: Response,next:NextFunction) => {
       const id = Number(req.params.id);
       const data = await this.userService.getUserById(id);
       if (!data) {
-        return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
-          message: USER_MESSAGE.USER_FETCH_FAIL(id),
-        });
+        return next(new AppError(HTTP_STATUS.NOT_FOUND, USER_MESSAGE.USER_FETCH_FAIL(id)));
       }
       return res.status(HTTP_STATUS.OK).json({
         success: true,
-        message: USER_MESSAGE.USER_FETCH_SUCCESS,
         data: data,
       });
     },
@@ -43,7 +40,6 @@ export default class UserController {
       
       return res.status(HTTP_STATUS.OK).json({
         success: true,
-        message: USER_MESSAGE.ALL_USERS_FETCH_SUCCESS,
         data: data,
       });
     },

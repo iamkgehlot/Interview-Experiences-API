@@ -11,6 +11,7 @@ export default class TagController {
     const tagName = req.body;
     res.status(HTTP_STATUS.CREATED).json({
       success: true,
+      message:TAG_MESSAGE.TAG_CREATED,
       data: await this.tagService.create(createdByUserid, tagName),
     });
   };
@@ -20,6 +21,7 @@ export default class TagController {
     const tagName = req.body;
     return res.status(HTTP_STATUS.OK).json({
       success: true,
+      message:TAG_MESSAGE.TAG_UPDATED,
       data: await this.tagService.update(tagId, tagName),
     });
   };
@@ -45,9 +47,9 @@ export default class TagController {
   };
 
   deleted: RequestHandler = async (req, res) => {
-    const deleteTag = await this.tagService.delete(Number(req.params.tagId));
+     await this.tagService.delete(Number(req.params.tagId));
     return res
       .status(HTTP_STATUS.NO_CONTENT)
-      .json({ success: true, data: deleteTag });
+      .send;
   };
 }
