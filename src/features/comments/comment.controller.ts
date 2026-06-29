@@ -50,7 +50,7 @@ export default class CommentController {
     const commentId = Number(req.params.commentId);
     await this.commentService.delete(commentId)
     return res
-      .status(HTTP_STATUS.NO_CONTENT).send;
+      .status(HTTP_STATUS.NO_CONTENT).send();
       
   };
 }

@@ -21,7 +21,7 @@ export default class ExperienceController {
     });
   };
 
-  getAllExperience: RequestHandler = async (req, res, next) => {
+  getAllExperience: RequestHandler = async (req, res) => {
     const data = await this.experienceService.getAllExperience();
     return res.status(HTTP_STATUS.OK).json({
       success: true,
@@ -71,6 +71,6 @@ export default class ExperienceController {
     await this.experienceService.deleteExperience(
       Number(req.params.experienceId),
     );
-    return res.status(HTTP_STATUS.NO_CONTENT).send;
+    return res.status(HTTP_STATUS.NO_CONTENT).send();
   };
 }

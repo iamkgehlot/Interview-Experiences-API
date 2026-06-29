@@ -50,6 +50,6 @@ export default class TagController {
      await this.tagService.delete(Number(req.params.tagId));
     return res
       .status(HTTP_STATUS.NO_CONTENT)
-      .send;
+      .send();
   };
 }

@@ -64,11 +64,8 @@ export default class UserController {
   deletedUser = catchAsync(
     async (req: Request, res: Response) => {
       const id = Number(req.params.id);
-      res.status(HTTP_STATUS.OK).json({
-        success: true,
-        message: USER_MESSAGE.DELETE_USER_SUCCESS(id),
-        data: await this.userService.deleteUser(Number(id)),
-      });
+      await this.userService.deleteUser(Number(id));
+      res.status(HTTP_STATUS.NO_CONTENT).send();
     },
   );
 }
