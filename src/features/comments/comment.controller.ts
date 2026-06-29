@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 import type CommentService from "./comment.service.js";
-import { HTTP_STATUS } from "../../constants/constants.js";
+import { COMMENT_MESSAGE, HTTP_STATUS } from "../../constants/constants.js";
 
 export default class CommentController {
   constructor(private commentService: CommentService) {}
@@ -10,7 +10,8 @@ export default class CommentController {
     const comment = req.body;
     return res.status(HTTP_STATUS.CREATED).json({
       success: true,
-      message:await this.commentService.create(experienceId, comment),
+      message:COMMENT_MESSAGE.COMMENT_CREATED,
+      data:await this.commentService.create(experienceId, comment),
     });
   };
 
@@ -19,7 +20,7 @@ export default class CommentController {
     const experienceId = Number(req.params.experienceId);
     return res.status(HTTP_STATUS.OK).json({
       success: true,
-      message: await this.commentService.findByExperienceId(experienceId),
+      data: await this.commentService.findByExperienceId(experienceId),
     });
   };
 
@@ -29,7 +30,7 @@ export default class CommentController {
       .status(HTTP_STATUS.OK)
       .json({
         success: true,
-        message: await this.commentService.findByUserId(userId),
+        data: await this.commentService.findByUserId(userId),
       });
   };
 
@@ -40,14 +41,16 @@ export default class CommentController {
       .status(HTTP_STATUS.OK)
       .json({
         success: true,
-        message: await this.commentService.update(commentId, comment),
+        message:COMMENT_MESSAGE.COMMENT_UPDATED,
+        data: await this.commentService.update(commentId, comment),
       });
   };
 
   delete: RequestHandler = async (req, res) => {
     const commentId = Number(req.params.commentId);
+    await this.commentService.delete(commentId)
     return res
-      .status(HTTP_STATUS.OK)
-      .json({ success: true, message: await this.commentService.delete(commentId) });
+      .status(HTTP_STATUS.NO_CONTENT).send;
+      
   };
 }
