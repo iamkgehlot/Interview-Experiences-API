@@ -13,11 +13,12 @@ export default class AuthService {
   constructor(public authRepo: AuthRepository) {}
 
   register = async (data: userType): Promise<CleanedUser> => {
-    const { password }=data;
+    const { password,...cleanData }=data;
     const saltRounds = 10;
     const hashedPassowrd = await bcrypt.hash(password, saltRounds);
-   return await this.authRepo.create(data,hashedPassowrd);
-  
+   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   const {password:p,...user}=await this.authRepo.create(cleanData,hashedPassowrd);
+  return user;
     
   };
 
