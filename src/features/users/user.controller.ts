@@ -8,15 +8,15 @@ export default class UserController {
   constructor(private userService: UserService) {}
 
   //post user
-  postedUser = catchAsync(
-    async (req: Request, res: Response) => {
-      return res.status(HTTP_STATUS.CREATED).json({
-        success: true,
-        message: USER_MESSAGE.SIGNUP_SUCCESS,
-        data: await this.userService.postUser(req.body),
-      });
-    },
-  );
+  // postedUser = catchAsync(
+  //   async (req: Request, res: Response) => {
+  //     return res.status(HTTP_STATUS.CREATED).json({
+  //       success: true,
+  //       message: USER_MESSAGE.SIGNUP_SUCCESS,
+  //       data: await this.userService.postUser(req.body),
+  //     });
+  //   },
+  // );
 
   //get user by id
   getUserById = catchAsync(

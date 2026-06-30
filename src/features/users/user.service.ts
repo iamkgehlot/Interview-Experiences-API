@@ -5,9 +5,9 @@ import type { User } from "../../generated/prisma/client.js";
 export default class UserService {
   constructor(public userRepo: UserRepository) {}
   //post user
-  postUser = async (data: userType): Promise<User> => {
-    return await this.userRepo.create(data);
-  };
+  // postUser = async (data: userType): Promise<User> => {
+  //   return await this.userRepo.create(data);
+  // };
 
   //get user by id
   getUserById = async (id: number): Promise<User | null> => {

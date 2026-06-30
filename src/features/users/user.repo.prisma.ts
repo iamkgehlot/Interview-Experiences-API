@@ -4,9 +4,9 @@ import type { userType } from "./user.validations.js";
 import {prisma } from "../../config/prisma.js";
 
 export default class PrismaUserRepository implements UserRepository {
-  async create(data: userType): Promise<User> {
-    return await prisma.user.create({ data });
-  }
+  // async create(data: userType): Promise<User> {
+  //   return await prisma.user.create({ data });
+  // }
 
   async findAll(): Promise<User[]> {
     return await prisma.user.findMany();

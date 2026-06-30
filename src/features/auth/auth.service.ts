@@ -1,5 +1,4 @@
 import type { AuthRepository } from "./auth.repo.js";
-import type { User } from "../../generated/prisma/index.js";
 import type { loginType, userType } from "./auth.validations.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -8,15 +7,18 @@ import { envConfig } from "../../config/env.config.js";
 import type login from "../../interface/login.service.promise.js";
 import { ERROR_MESSAGE, HTTP_STATUS } from "../../constants/constants.js";
 import AppError from "../../utils/error.handler.js";
+import type { CleanedUser } from "../../interface/user.cleaned.js";
 
 export default class AuthService {
   constructor(public authRepo: AuthRepository) {}
 
-  register = async (data: userType): Promise<User> => {
-    const { password } = data;
+  register = async (data: userType): Promise<CleanedUser> => {
+    const { password }=data;
     const saltRounds = 10;
     const hashedPassowrd = await bcrypt.hash(password, saltRounds);
-    return await this.authRepo.create(data,hashedPassowrd);
+   return await this.authRepo.create(data,hashedPassowrd);
+  
+    
   };
 
   login = async (data: loginType): Promise<login> => {

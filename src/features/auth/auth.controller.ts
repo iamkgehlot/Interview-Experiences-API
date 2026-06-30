@@ -19,7 +19,7 @@ export default class AuthController {
     const { userId, token } = await this.authService.login(req.body);
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: Number(envConfig.JWT_EXPIRES_IN),
+      maxAge: Number(envConfig.JWT_EXPIRES_IN)*1000,
       sameSite: "strict",
     });
 
@@ -29,7 +29,7 @@ export default class AuthController {
   loggedOutUser:RequestHandler =(req , res )=>{
        res.cookie("token", "", {
       httpOnly: true,
-      maxAge: Number(envConfig.JWT_EXPIRES_IN),
+      maxAge: 0,
       sameSite: "strict",
     });
     res.status(HTTP_STATUS.OK).json({success:true,message:AUTH_MESSAGE.LOGOUT_SUCESS})

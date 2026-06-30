@@ -24,20 +24,22 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
   }
 
   async update(id: number, data: experienceType): Promise<Experience> {
-    const { tagName,userId, ...experienceFields } = data;
+    const { tagName, userId, ...experienceFields } = data;
     return await prisma.experience.update({
       where: { id },
       data: {
         ...experienceFields,
-        tags: {
-          connectOrCreate: tagName.map((tag) => ({
-            where: { tagName: tag },
-            create: {
-              tagName: tag,
-              createdByUserid: userId,
-            },
-          })),
-        },
+        tags: tagName
+          ? {
+              connectOrCreate: tagName.map((tag) => ({
+                where: { tagName: tag },
+                create: {
+                  tagName: tag,
+                  createdByUserid: userId,
+                },
+              })),
+            }
+          : {},
       },
     });
   }
@@ -60,9 +62,9 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
       where: { id },
       include: {
         tags: {
-          select:{
-            tagName:true
-          }
+          select: {
+            tagName: true,
+          },
         },
       },
     });
