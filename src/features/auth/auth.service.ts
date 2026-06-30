@@ -16,10 +16,7 @@ export default class AuthService {
     const { password } = data;
     const saltRounds = 10;
     const hashedPassowrd = await bcrypt.hash(password, saltRounds);
-    data.password = hashedPassowrd;
-    const d = await bcrypt.compare("kamlesh978", data.password);
-    console.log(d);
-    return await this.authRepo.create(data);
+    return await this.authRepo.create(data,hashedPassowrd);
   };
 
   login = async (data: loginType): Promise<login> => {
@@ -33,7 +30,7 @@ export default class AuthService {
     }
   
     const token = jwt.sign({ sub: user.id }, envConfig.JWT_SECRET!, {
-      expiresIn: Number(process.env.JWT_EXPIRES_IN),
+      expiresIn: Number(envConfig.JWT_EXPIRES_IN),
     });
 
     return {

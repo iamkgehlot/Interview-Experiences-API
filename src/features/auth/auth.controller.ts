@@ -1,6 +1,7 @@
 import type { RequestHandler } from "express";
 import { AUTH_MESSAGE, HTTP_STATUS, USER_MESSAGE } from "../../constants/constants.js";
 import AuthService from "./auth.service.js";
+import { envConfig } from "../../config/env.config.js";
 
 export default class AuthController {
   constructor(private authService: AuthService) {}
@@ -18,7 +19,7 @@ export default class AuthController {
     const { userId, token } = await this.authService.login(req.body);
     res.cookie("token", token, {
       httpOnly: true,
-      maxAge: 15 * 60 * 1000,
+      maxAge: Number(envConfig.JWT_EXPIRES_IN),
       sameSite: "strict",
     });
 
@@ -26,7 +27,11 @@ export default class AuthController {
   };
 
   loggedOutUser:RequestHandler =(req , res )=>{
-    res.cookie('token',"",{});
+       res.cookie("token", "", {
+      httpOnly: true,
+      maxAge: Number(envConfig.JWT_EXPIRES_IN),
+      sameSite: "strict",
+    });
     res.status(HTTP_STATUS.OK).json({success:true,message:AUTH_MESSAGE.LOGOUT_SUCESS})
   }
 }
