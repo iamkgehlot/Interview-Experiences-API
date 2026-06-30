@@ -3,7 +3,7 @@ import type TagService from "./tag.service.js";
 import { HTTP_STATUS, TAG_MESSAGE } from "../../constants/constants.js";
 import AppError from "../../utils/error.handler.js";
 
-export default class TagController {
+export default class TagController { 
   constructor(private tagService: TagService) {}
 
   created: RequestHandler = async (req, res) => {

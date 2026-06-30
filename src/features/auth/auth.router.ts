@@ -18,6 +18,11 @@ export default class AuthRouter implements Routes {
       this.authController.registeredUser,
     );
 
-    this.router.post("/login",zodMiddleware(loginValidation),this.authController.loggedInUser);
+    this.router.post(
+      "/login",
+      zodMiddleware(loginValidation),
+      this.authController.loggedInUser,
+    );
+    this.router.post("/logout", this.authController.loggedOutUser);
   }
 }

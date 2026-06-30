@@ -5,17 +5,20 @@ export const HTTP_STATUS = Object.freeze({
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
   NO_CONTENT: 204,
-  UNAUTHORISED:401
+  UNAUTHORISED: 401,
 });
 
 export const JSON_SUCCESS = Object.freeze({
   TRUE: true,
   FALSE: false,
 });
+export const AUTH_MESSAGE=Object.freeze({
+  LOGIN_SUCESS: "User logged in successfully",
+  LOGOUT_SUCESS:"User logged out successfully",
+})
 
 export const USER_MESSAGE = Object.freeze({
   SIGNUP_SUCCESS: "User created successfully",
-  LOGIN_SUCESS: "User logged in successfully",
   USER_FETCH_SUCCESS: "User fetched successfully",
   USER_FETCH_FAIL: (id: number | string) => `No User found with id: ${id}`,
   ALL_USERS_FETCH_SUCCESS: "All Users fetched successfully",
@@ -35,6 +38,7 @@ export const ERROR_MESSAGE = Object.freeze({
   P2002_ERROR: (targets: string) => `${targets} already exists`,
   INTERNAL_SERVER_ERROR: "Internal Server Error",
   ID_CHECK_FAIL: "Id should be a number",
+  INVALID_CREDENTIALS: "Invalid Credentials",
 });
 
 export const TAG_MESSAGE = Object.freeze({

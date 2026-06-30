@@ -7,11 +7,12 @@ export default class PrismaAuthRepository implements AuthRepository {
   async create(data: userType): Promise<User> {
     return await prisma.user.create({ data });
   }
-  async login(data:loginType):Promise<{ password: string; } | null>{
+  async login(data:loginType):Promise<{ id:number,password: string } | null>{
     return await prisma.user.findFirst({where:{
       email:data.email
     },
     select:{
+      id:true,
       password:true
     }
   })

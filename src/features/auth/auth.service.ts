@@ -2,34 +2,43 @@ import type { AuthRepository } from "./auth.repo.js";
 import type { User } from "../../generated/prisma/index.js";
 import type { loginType, userType } from "./auth.validations.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-
+import { envConfig } from "../../config/env.config.js";
+import type login from "../../interface/login.service.promise.js";
+import { ERROR_MESSAGE, HTTP_STATUS } from "../../constants/constants.js";
+import AppError from "../../utils/error.handler.js";
 
 export default class AuthService {
   constructor(public authRepo: AuthRepository) {}
 
   register = async (data: userType): Promise<User> => {
-    const {password}=data;
-    const saltRounds=10;
-    const hashedPassowrd=await bcrypt.hash(password,saltRounds);
-    data.password=hashedPassowrd;
-    const d=await bcrypt.compare("kamlesh978",data.password);
+    const { password } = data;
+    const saltRounds = 10;
+    const hashedPassowrd = await bcrypt.hash(password, saltRounds);
+    data.password = hashedPassowrd;
+    const d = await bcrypt.compare("kamlesh978", data.password);
     console.log(d);
     return await this.authRepo.create(data);
   };
 
-  login =async(data:loginType):Promise<boolean> =>{
-    const fetchedData= await this.authRepo.login(data);
-    if(fetchedData?.password){
-      const result= await bcrypt.compare(data.password,fetchedData.password)
-   
-        return result
-
-      
+  login = async (data: loginType): Promise<login> => {
+    const user = await this.authRepo.login(data);
+    if (!user) {
+      throw new AppError(HTTP_STATUS.UNAUTHORISED,ERROR_MESSAGE.INVALID_CREDENTIALS);
     }
+    const result = await bcrypt.compare(data.password, user.password);
+    if (!result) {
+     throw new AppError(HTTP_STATUS.UNAUTHORISED,ERROR_MESSAGE.INVALID_CREDENTIALS);
+    }
+  
+    const token = jwt.sign({ sub: user.id }, envConfig.JWT_SECRET!, {
+      expiresIn: Number(process.env.JWT_EXPIRES_IN),
+    });
 
-
-return false;
-
-  }
+    return {
+      userId: user.id,
+      token,
+    };
+  };
 }

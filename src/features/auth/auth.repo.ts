@@ -3,5 +3,5 @@ import type { loginType, userType } from "./auth.validations.js";
 
 export interface AuthRepository {
   create(data: userType): Promise<User>;
-  login(data:loginType):Promise<{ password: string; } | null>;
+  login(data:loginType):Promise<{ id:number,password: string} | null>;
 }
