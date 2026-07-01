@@ -9,6 +9,7 @@ import {
   experienceIdValidation,
   userIdValidation,
 } from "./comment.validation.js";
+import { jwtProtect } from "../../middlewares/jwt.js";
 
 export default class CommentRouter implements Routes {
   router = Router();
@@ -20,26 +21,30 @@ export default class CommentRouter implements Routes {
     this.router.post(
       "/experiences/:experienceId/comments",
       zodMiddleware(commentBodyExperienceIDValidation),
+      jwtProtect,
       this.commentController.create,
     );
     this.router.get(
       "/experiences/:experienceId/comments",
-      zodMiddleware(experienceIdValidation),
+      zodMiddleware(experienceIdValidation),jwtProtect,
       this.commentController.findByExperienceId,
     );
     this.router.get(
       "/users/:userId/comments",
       zodMiddleware(userIdValidation),
+      jwtProtect,
       this.commentController.findByUserId,
     );
     this.router.patch(
       "/comments/:commentId",
       zodMiddleware(commentIdCommentBodyValidation),
+      jwtProtect,
       this.commentController.update,
     );
     this.router.delete(
       "/comments/:commentId",
       zodMiddleware(commentIdValidation),
+      jwtProtect,
       this.commentController.delete,
     );
   }

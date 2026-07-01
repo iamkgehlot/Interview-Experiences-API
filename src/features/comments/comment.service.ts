@@ -25,4 +25,8 @@ export default class CommentService {
   delete = async (commentId: number) => {
     return await this.commentRepo.delete(commentId);
   };
+
+  findUserid=async(commentId:number)=>{
+    return await this.commentRepo.findUserId(commentId);
+  }
 }

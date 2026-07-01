@@ -2,6 +2,8 @@ import Express, { type Application } from "express";
 import { errorHandler } from "./middlewares/error.handler.js";
 import type { Routes } from "./interface/routes.js";
 import { prisma } from "./config/prisma.js";
+import cookieParser from "cookie-parser";
+
 
 export default class App {
   private app: Application;
@@ -16,6 +18,7 @@ export default class App {
   }
   private initializeMiddlewares() {
     this.app.use(Express.json());
+    this.app.use(cookieParser());
   }
   private initializeRoutes(routerClasses: Routes[]) {
     routerClasses.forEach((routerClass) => {

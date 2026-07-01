@@ -34,4 +34,6 @@ export default class PrismaUserRepository implements UserRepository {
       id
     }})
   }
+
+  
 }

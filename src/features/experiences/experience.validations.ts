@@ -15,6 +15,7 @@ import { interviewOutcome } from "../../generated/prisma/index.js";
 
 
 const baseExperienceSchema = z.object({
+
   userId:z.coerce.number().int().positive() ,//to be removed and to fetch from authentication after implementation,
   company: z
     .string()
@@ -54,8 +55,10 @@ const userIdExperienceBodyValidation=z.object({
     body:baseExperienceSchema,
     params:paramsUserId
 })
+
+const updatedBaseExperienceSchema=baseExperienceSchema.partial().required({userId:true});
 const updateExperienceValidation = z.object({
-  body: baseExperienceSchema,
+  body: updatedBaseExperienceSchema,
   params: paramsExperienceId,
 });
 

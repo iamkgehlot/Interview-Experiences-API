@@ -73,4 +73,11 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
   async delete(id: number): Promise<Experience> {
     return await prisma.experience.delete({ where: { id } });
   }
+
+  async fetchUserId(experienceId:number):Promise<{userId:number}|null>{
+    return await prisma.experience.findFirst({where:{id:experienceId},
+    select:{
+      userId:true
+    }});
+  }
 }

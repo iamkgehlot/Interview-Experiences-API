@@ -37,4 +37,11 @@ export default class PrismaCommentRepo implements CommentRepo {
   async delete(commentId: number): Promise<Comment> {
     return await prisma.comment.delete({ where: { id: commentId } });
   }
+
+  async findUserId(commentId:number):Promise<{userId:number}|null>{
+    return await prisma.comment.findFirst({where:{id:commentId},
+    select:{
+      userId:true
+    }})
+  }
 }

@@ -1,7 +1,11 @@
 import type { RequestHandler } from "express";
 
 import type ExperienceService from "./experience.service.js";
-import { EXPERIENCE_MESSAGES, HTTP_STATUS } from "../../constants/constants.js";
+import {
+  AUTH_MESSAGE,
+  EXPERIENCE_MESSAGES,
+  HTTP_STATUS,
+} from "../../constants/constants.js";
 
 import AppError from "../../utils/error.handler.js";
 
@@ -55,11 +59,20 @@ export default class ExperienceController {
     });
   };
 
-  updateExperience: RequestHandler = async (req, res) => {
+  updateExperience: RequestHandler = async (req, res, next) => {
+    if (Number(req.body.userId) !== req.userId) {
+      console.log(req.userId);
+      return next(
+        
+        new AppError(HTTP_STATUS.UNAUTHORISED, AUTH_MESSAGE.NOT_PERMITTED),
+      );
+    }
+
     const data = await this.experienceService.updateExperience(
       Number(req.params.experienceId),
       req.body,
     );
+
     return res.status(HTTP_STATUS.OK).json({
       success: true,
       message: EXPERIENCE_MESSAGES.EXPERIENCE_UPDATED,
@@ -67,9 +80,14 @@ export default class ExperienceController {
     });
   };
 
-  deleteExperience: RequestHandler = async (req, res) => {
+  deleteExperience: RequestHandler = async (req, res, next) => {
+    const exId=  Number(req.params.experienceId);
+    const data= await this.experienceService.getExpirenceByid(exId);
+    if(data?.userId!==req.userId){
+      next(new AppError(HTTP_STATUS.FORBIDDEN,AUTH_MESSAGE.NOT_PERMITTED));
+    }
     await this.experienceService.deleteExperience(
-      Number(req.params.experienceId),
+    exId
     );
     return res.status(HTTP_STATUS.NO_CONTENT).send();
   };

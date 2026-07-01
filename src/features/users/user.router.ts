@@ -7,6 +7,7 @@ import {
   userIdValidation,
 } from "./user.validations.js";
 import type { Routes } from "../../interface/routes.js";
+import {jwtProtect} from "../../middlewares/jwt.js"; 
 
 export default class UserRouter implements Routes {
   router = Router();
@@ -24,7 +25,7 @@ export default class UserRouter implements Routes {
 
 
     this.router.get(
-      "/users/:id",
+      "/users/:id",jwtProtect,
       zodMiddleware(userIdValidation),
       this.userController.getUserById,
     );
@@ -32,7 +33,7 @@ export default class UserRouter implements Routes {
     this.router.get("/users", this.userController.getAllUsers);
 
     this.router.patch(
-      "/users/:id",
+      "/users/:id",jwtProtect,
       zodMiddleware(updateUserValidation),
       this.userController.updatedUser,
     );

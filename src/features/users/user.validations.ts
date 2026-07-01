@@ -36,8 +36,10 @@ const userIdValidation=z.object({
 const userBodyValidation=z.object({
   body:userBodySchema
 })
+
+const updatedUserBodySchema=userBodySchema.partial();
 const updateUserValidation=z.object({
-  body:userBodySchema,
+  body:updatedUserBodySchema,
   params:userIdSchema
 });
 

@@ -6,6 +6,7 @@ export const HTTP_STATUS = Object.freeze({
   INTERNAL_SERVER_ERROR: 500,
   NO_CONTENT: 204,
   UNAUTHORISED: 401,
+  FORBIDDEN:403
 });
 
 export const JSON_SUCCESS = Object.freeze({
@@ -15,6 +16,7 @@ export const JSON_SUCCESS = Object.freeze({
 export const AUTH_MESSAGE=Object.freeze({
   LOGIN_SUCESS: "User logged in successfully",
   LOGOUT_SUCESS:"User logged out successfully",
+  NOT_PERMITTED:"You are not Permitted for this action"
 })
 
 export const USER_MESSAGE = Object.freeze({

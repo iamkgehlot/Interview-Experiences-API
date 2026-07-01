@@ -32,8 +32,8 @@ export default class AuthService {
      throw new AppError(HTTP_STATUS.UNAUTHORISED,ERROR_MESSAGE.INVALID_CREDENTIALS);
     }
   
-    const token = jwt.sign({ sub: user.id }, envConfig.JWT_SECRET!, {
-      expiresIn: Number(envConfig.JWT_EXPIRES_IN),
+    const token = jwt.sign({ sub: String(user.id) }, envConfig.JWT_SECRET!, {
+      expiresIn: envConfig.JWT_EXPIRES_IN,
     });
 
     return {

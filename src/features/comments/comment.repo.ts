@@ -7,4 +7,5 @@ export default interface CommentRepo {
   findAllByUser(userId: number): Promise<Comment[]>;
   update(commentId: number, comment: commentType): Promise<Comment>;
   delete(commentId: number): Promise<Comment>;
+  findUserId(commentId:number):Promise<{userId:number}|null>
 }

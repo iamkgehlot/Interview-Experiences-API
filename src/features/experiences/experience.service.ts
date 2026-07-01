@@ -31,4 +31,8 @@ export default class ExperienceService {
   deleteExperience = async (id: number) => {
     return await this.experienceRepo.delete(id);
   };
+
+  findUserId=async(experienceId:number)=>{
+    return await this.experienceRepo.fetchUserId(experienceId);
+  }
 }
