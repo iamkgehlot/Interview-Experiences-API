@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 import AppError from "../utils/error.handler.js";
-import { HTTP_STATUS } from "../constants/constants.js";
+import { AUTH_MESSAGE, HTTP_STATUS } from "../constants/constants.js";
 import jwt from "jsonwebtoken";
 import { envConfig } from "../config/env.config.js";
 
@@ -14,7 +14,7 @@ export const jwtProtect: RequestHandler = (req, res, next) => {
 
   if (!token) {
     return next(
-      new AppError(HTTP_STATUS.UNAUTHORISED, "user is not not logged in"),
+      new AppError(HTTP_STATUS.UNAUTHORISED,AUTH_MESSAGE.TOKEN_NOT_FOUND ),
     );
   }
 
@@ -26,7 +26,7 @@ export const jwtProtect: RequestHandler = (req, res, next) => {
     next();
   } catch {
     return next(
-      new AppError(HTTP_STATUS.UNAUTHORISED, "token expired or not valid"),
+      new AppError(HTTP_STATUS.UNAUTHORISED,AUTH_MESSAGE.INVALID_TOKEN ),
     );
   }
 };

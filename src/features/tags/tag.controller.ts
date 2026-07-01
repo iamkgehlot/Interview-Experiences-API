@@ -1,13 +1,13 @@
 import type { RequestHandler } from "express";
 import type TagService from "./tag.service.js";
-import { HTTP_STATUS, TAG_MESSAGE } from "../../constants/constants.js";
+import { AUTH_MESSAGE, HTTP_STATUS, TAG_MESSAGE } from "../../constants/constants.js";
 import AppError from "../../utils/error.handler.js";
 
 export default class TagController { 
   constructor(private tagService: TagService) {}
 
   created: RequestHandler = async (req, res) => {
-    const createdByUserid = 1;
+    const createdByUserid = req.userId!;
     const tagName = req.body;
     res.status(HTTP_STATUS.CREATED).json({
       success: true,
@@ -16,8 +16,13 @@ export default class TagController {
     });
   };
 
-  updated: RequestHandler = async (req, res) => {
+  updated: RequestHandler = async (req, res,next) => {
     const tagId = Number(req.params.tagId);
+    const userIdAuth=req.userId;
+    const userIdObj=await this.tagService.findUserId(tagId);
+    if(userIdObj?.createdByUserid!==userIdAuth){
+      return next(new AppError(HTTP_STATUS.FORBIDDEN,AUTH_MESSAGE.NOT_PERMITTED));
+    }
     const tagName = req.body;
     return res.status(HTTP_STATUS.OK).json({
       success: true,
@@ -28,6 +33,12 @@ export default class TagController {
 
   findById: RequestHandler = async (req, res,next) => {
     const tagId = Number(req.params.tagId);
+    const userIdAuth=req.userId;
+    const userIdObj=await this.tagService.findUserId(tagId);
+    if(userIdObj?.createdByUserid!==userIdAuth){
+      return next(new AppError(HTTP_STATUS.FORBIDDEN,AUTH_MESSAGE.NOT_PERMITTED));
+    }
+    
     const data= await this.tagService.findById(tagId);
     if(!data){
         return next(new AppError(HTTP_STATUS.NOT_FOUND,TAG_MESSAGE.TAG_FETCH_FAIL(tagId)))

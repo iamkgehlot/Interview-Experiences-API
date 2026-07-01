@@ -12,10 +12,14 @@ import AppError from "../../utils/error.handler.js";
 export default class ExperienceController {
   constructor(private experienceService: ExperienceService) {}
 
-  createdExperience: RequestHandler = async (req, res) => {
-    const userId = Number(req.params.userId);
+  createdExperience: RequestHandler = async (req, res,next) => {
+    const userIdParams = Number(req.params.userId);
+    const userIdAuth=req.userId;
+    if(userIdAuth!==userIdParams){
+      next(new AppError(HTTP_STATUS.FORBIDDEN,AUTH_MESSAGE.NOT_PERMITTED));
+    }
     const data = await this.experienceService.createExperience(
-      userId,
+      userIdParams,
       req.body,
     );
     return res.status(HTTP_STATUS.CREATED).json({
@@ -60,16 +64,17 @@ export default class ExperienceController {
   };
 
   updateExperience: RequestHandler = async (req, res, next) => {
-    if (Number(req.body.userId) !== req.userId) {
-      console.log(req.userId);
+    const experienceId = Number(req.params.experienceId);
+    const userId = Number(req.userId);
+    const fetchedUserid = await this.experienceService.findUserId(experienceId);
+    if (fetchedUserid?.userId !== userId) {
       return next(
-        
-        new AppError(HTTP_STATUS.UNAUTHORISED, AUTH_MESSAGE.NOT_PERMITTED),
+        new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.NOT_PERMITTED),
       );
     }
 
     const data = await this.experienceService.updateExperience(
-      Number(req.params.experienceId),
+      experienceId,
       req.body,
     );
 
@@ -81,14 +86,15 @@ export default class ExperienceController {
   };
 
   deleteExperience: RequestHandler = async (req, res, next) => {
-    const exId=  Number(req.params.experienceId);
-    const data= await this.experienceService.getExpirenceByid(exId);
-    if(data?.userId!==req.userId){
-      next(new AppError(HTTP_STATUS.FORBIDDEN,AUTH_MESSAGE.NOT_PERMITTED));
+    const experienceId = Number(req.params.experienceId);
+    const userId = Number(req.userId);
+    const fetchedUserid = await this.experienceService.findUserId(experienceId);
+    if (fetchedUserid?.userId !== userId) {
+      return next(
+        new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.NOT_PERMITTED),
+      );
     }
-    await this.experienceService.deleteExperience(
-    exId
-    );
+    await this.experienceService.deleteExperience(experienceId);
     return res.status(HTTP_STATUS.NO_CONTENT).send();
   };
 }

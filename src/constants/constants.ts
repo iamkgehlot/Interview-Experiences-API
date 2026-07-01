@@ -16,7 +16,10 @@ export const JSON_SUCCESS = Object.freeze({
 export const AUTH_MESSAGE=Object.freeze({
   LOGIN_SUCESS: "User logged in successfully",
   LOGOUT_SUCESS:"User logged out successfully",
-  NOT_PERMITTED:"You are not Permitted for this action"
+  NOT_PERMITTED:"You are not Permitted for this action",
+  TOKEN_NOT_FOUND:"User is not logged in",
+  INVALID_TOKEN:"Token expired or not Valid"
+
 })
 
 export const USER_MESSAGE = Object.freeze({

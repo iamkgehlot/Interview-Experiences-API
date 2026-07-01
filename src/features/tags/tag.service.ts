@@ -20,4 +20,8 @@ export default class TagService {
   delete = async (tagId: number) => {
     return await this.tagRepo.delete(tagId);
   };
+
+  findUserId=async (tagId:number)=>{
+    return await this.tagRepo.findUserId(tagId);
+  }
 }
