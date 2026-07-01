@@ -10,7 +10,10 @@ import AppError from "../../utils/error.handler.js";
 export default class TagController {
   constructor(private tagService: TagService) {}
 
-  created: RequestHandler = async (req, res) => {
+  created: RequestHandler = async (req, res,next) => {
+    if(!req.userId){
+      return next(new AppError(HTTP_STATUS.FORBIDDEN,AUTH_MESSAGE.TOKEN_NOT_FOUND))
+    }
     const createdByUserid = req.userId!;
     const tagName = req.body;
     res.status(HTTP_STATUS.CREATED).json({

@@ -27,17 +27,19 @@ export default class UserRouter implements Routes {
     this.router.get(
       "/users/:id",jwtProtect,
       zodMiddleware(userIdValidation),
+      jwtProtect,
       this.userController.getUserById,
     );
 
-    this.router.get("/users", this.userController.getAllUsers);
+    this.router.get("/users", jwtProtect,this.userController.getAllUsers);
 
     this.router.patch(
-      "/users/:id",jwtProtect,
+      "/users/:id",
       zodMiddleware(updateUserValidation),
+      jwtProtect,
       this.userController.updatedUser,
     );
     
-    this.router.delete("/users/:id",this.userController.deletedUser)
+    this.router.delete("/users/:id",jwtProtect,this.userController.deletedUser)
   }
 }

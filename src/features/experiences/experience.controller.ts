@@ -19,7 +19,7 @@ export default class ExperienceController {
      return next(new AppError(HTTP_STATUS.FORBIDDEN,AUTH_MESSAGE.NOT_PERMITTED));
     }
     const data = await this.experienceService.createExperience(
-      userIdParams,
+      userIdAuth,
       req.body,
     );
     return res.status(HTTP_STATUS.CREATED).json({
@@ -38,8 +38,7 @@ export default class ExperienceController {
   };
   getAllExperienceByUserId: RequestHandler = async (req, res) => {
     const userId = Number(req.params.userId);
-    console.log(userId);
-    const data = await this.experienceService.getAllExperienceByUserId(userId);
+     const data = await this.experienceService.getAllExperienceByUserId(userId);
     return res.status(HTTP_STATUS.OK).json({
       success: true,
       data: data,
@@ -48,7 +47,7 @@ export default class ExperienceController {
 
   getExperienceById: RequestHandler = async (req, res, next) => {
     const experienceId = Number(req.params.experienceId);
-    const data = await this.experienceService.getExpirenceByid(experienceId);
+    const data = await this.experienceService.getExperienceByid(experienceId);
     if (!data) {
       return next(
         new AppError(
@@ -65,14 +64,14 @@ export default class ExperienceController {
 
   updateExperience: RequestHandler = async (req, res, next) => {
     const experienceId = Number(req.params.experienceId);
-    const userId = Number(req.userId);
+    const authUserId = Number(req.userId);
     const fetchedUserid = await this.experienceService.findUserId(experienceId);
-    if (fetchedUserid?.userId !== userId) {
+    if (fetchedUserid?.userId !== authUserId) {
       return next(
         new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.NOT_PERMITTED),
       );
     }
-
+    req.body.userId=authUserId;
     const data = await this.experienceService.updateExperience(
       experienceId,
       req.body,

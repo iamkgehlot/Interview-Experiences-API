@@ -5,8 +5,7 @@ export default class CommentService {
   constructor(private commentRepo: CommentRepo) {}
 
   create = async (experieceId: number, comment: commentType) => {
-    console.log(experieceId,comment)
-    return this.commentRepo.create(experieceId, comment);
+   return this.commentRepo.create(experieceId, comment);
   };
 
   findByExperienceId = async (experienceId: number) => {

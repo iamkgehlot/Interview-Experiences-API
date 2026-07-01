@@ -5,8 +5,7 @@ import type { commentType } from "./comment.validation.js";
 
 export default class PrismaCommentRepo implements CommentRepo {
   async create(experienceId: number, comment: commentType): Promise<Comment> {
-    console.log( await prisma.comment.create({ data: { ...comment, experienceId } }))
-    return await prisma.comment.create({ data: { ...comment, experienceId } });
+     return await prisma.comment.create({ data: { ...comment, experienceId } });
   }
 
   async findAllByExperience(experienceId: number): Promise<Comment[]> {

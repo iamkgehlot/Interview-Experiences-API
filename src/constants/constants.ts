@@ -48,11 +48,11 @@ export const ERROR_MESSAGE = Object.freeze({
 
 export const TAG_MESSAGE = Object.freeze({
   TAG_FETCH_FAIL: (tagId: number) => `cannot find tag with given id: ${tagId}`,
-  TAG_UPDATED: "Taf updated successfully",
-  TAG_CREATED: "tag created successfull",
+  TAG_UPDATED: "Tag updated successfully",
+  TAG_CREATED: "Tag created successfully",
 });
 
 export const COMMENT_MESSAGE = Object.freeze({
-  COMMENT_UPDATED: "Taf updated successfully",
-  COMMENT_CREATED: "tag created successfull",
+  COMMENT_UPDATED: "comment updated successfully",
+  COMMENT_CREATED: "comment created successfully",
 });

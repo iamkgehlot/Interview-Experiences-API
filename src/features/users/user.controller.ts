@@ -1,6 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
 import UserService from "./user.service.js";
-import { catchAsync } from "../../utils/catch.async.js";
 import {
   AUTH_MESSAGE,
   HTTP_STATUS,
@@ -23,63 +22,56 @@ export default class UserController {
   // );
 
   //get user by id
-  getUserById = catchAsync(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const id = Number(req.params.id);
-      const data = await this.userService.getUserById(id);
-      if (!data) {
-        return next(
-          new AppError(HTTP_STATUS.NOT_FOUND, USER_MESSAGE.USER_FETCH_FAIL(id)),
-        );
-      }
-      return res.status(HTTP_STATUS.OK).json({
-        success: true,
-        data: data,
-      });
-    },
-  );
+  getUserById = async (req: Request, res: Response, next: NextFunction) => {
+    const id = Number(req.params.id);
+    const data = await this.userService.getUserById(id);
+    if (!data) {
+      return next(
+        new AppError(HTTP_STATUS.NOT_FOUND, USER_MESSAGE.USER_FETCH_FAIL(id)),
+      );
+    }
+    return res.status(HTTP_STATUS.OK).json({
+      success: true,
+      data: data,
+    });
+  };
 
   //get all users
-  getAllUsers = catchAsync(async (req: Request, res: Response) => {
+  getAllUsers = async (req: Request, res: Response) => {
     const data = await this.userService.getAllUsers();
 
     return res.status(HTTP_STATUS.OK).json({
       success: true,
       data: data,
     });
-  });
+  };
 
   //update User by id
-  updatedUser = catchAsync(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const id = Number(req.params.id);
-      if (req.userId !== id) {
-        return next(
-          new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.NOT_PERMITTED),
-        );
-      }
-      const data = req.body;
-      const updatedUser = await this.userService.updateUser(id, data);
-      console.log(updatedUser);
-      return res.status(HTTP_STATUS.OK).json({
-        success: true,
-        message: USER_MESSAGE.UPDATE_USER_SUCCESS(id),
-        data: updatedUser,
-      });
-    },
-  );
+  updatedUser = async (req: Request, res: Response, next: NextFunction) => {
+    const id = Number(req.params.id);
+    if (req.userId !== id) {
+      return next(
+        new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.NOT_PERMITTED),
+      );
+    }
+    const data = req.body;
+    const updatedUser = await this.userService.updateUser(id, data);
+    return res.status(HTTP_STATUS.OK).json({
+      success: true,
+      message: USER_MESSAGE.UPDATE_USER_SUCCESS(id),
+      data: updatedUser,
+    });
+  };
 
   //delete user
-  deletedUser = catchAsync(
-    async (req: Request, res: Response, next: NextFunction) => {
-      const id = Number(req.params.id);
-      if (req.userId !== id) {
-        return next(
-          new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.NOT_PERMITTED),
-        );
-      }
-      await this.userService.deleteUser(Number(id));
-      res.status(HTTP_STATUS.NO_CONTENT).send();
-    },
-  );
+  deletedUser = async (req: Request, res: Response, next: NextFunction) => {
+    const id = Number(req.params.id);
+    if (req.userId !== id) {
+      return next(
+        new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.NOT_PERMITTED),
+      );
+    }
+    await this.userService.deleteUser(Number(id));
+    res.status(HTTP_STATUS.NO_CONTENT).send();
+  };
 }

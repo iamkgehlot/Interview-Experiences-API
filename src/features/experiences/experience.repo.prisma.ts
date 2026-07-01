@@ -42,10 +42,12 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
       },
     });
   }
-
+async findAllExperience():Promise<Experience[]>{
+  return await prisma.experience.findMany();
+}
   async findAllByUserId(userId: number): Promise<Experience[]> {
     return await prisma.experience.findMany({
-      where: userId === -1 ? {} : { userId },
+      where: {userId},
       include: {
         tags: {
           select: {

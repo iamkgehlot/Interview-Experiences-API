@@ -54,5 +54,5 @@ export {
   commentBodyExperienceIDValidation,
   commentIdCommentBodyValidation,
   commentIdValidation,
-  updateCommentBody
+  
 };

@@ -12,14 +12,14 @@ export default class ExperienceService {
     return this.experienceRepo.create(userId, data);
   };
   getAllExperience = async (): Promise<Experience[] > => {
-    return this.experienceRepo.findAllByUserId(-1);
+    return this.experienceRepo.findAllExperience();
   };
   getAllExperienceByUserId = async (
     userId: number,
   ): Promise<Experience[]> => {
     return await this.experienceRepo.findAllByUserId(userId);
   };
-  getExpirenceByid = async (id: number): Promise<Experience | null> => {
+  getExperienceByid = async (id: number): Promise<Experience | null> => {
     return this.experienceRepo.findById(id);
   };
   updateExperience = async (
