@@ -21,7 +21,15 @@ export default class UserService {
 
   //update user
   updateUser = async (id: number, user: userType): Promise<User> => {
-    return await this.userRepo.update(id, user);
+    const safeUser={
+    name: user.name,
+    email: user.email,
+    age: user.age,
+    yearsOfExperience: user.yearsOfExperience,
+    current_role: user.current_role,
+    industry: user.industry
+    }
+    return await this.userRepo.update(id, safeUser);
   };
 
   //delete User
