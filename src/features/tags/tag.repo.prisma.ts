@@ -7,7 +7,7 @@ export default class PrismaTagRepo implements TagsRepo{
   
 
     async create(createdByUserid:number,tagName: Tag): Promise<tagsType> {
-       return await prisma.tag.create({data:{...tagName,createdByUserid:tagName.createdByUserid}});
+       return await prisma.tag.create({data:{...tagName,createdByUserid:createdByUserid}});
     }
     async update(tagId:number,tagName: Tag ): Promise<tagsType> {
         return  await prisma.tag.update({where:{id:tagId},data:{

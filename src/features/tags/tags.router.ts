@@ -10,7 +10,7 @@ export default class TagRouter implements Routes {
   }
   router = Router();
 
-  async initaliazeRoutes() {
+   initaliazeRoutes() {
     this.router.post("/tags/",zodMiddleware(tagBodyValidation),  this.tagControler.created);
     this.router.get("/tags/:tagId", zodMiddleware(tagIdValidation), this.tagControler.findById);
     this.router.get("/tags/",  this.tagControler.findAll);

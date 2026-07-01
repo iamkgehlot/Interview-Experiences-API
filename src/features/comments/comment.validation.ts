@@ -38,11 +38,12 @@ const experienceIdValidation = z.object({
   params: experienceIdSchema,
 });
 
+const updateCommentValidation=commentSchema.partial().omit({userId:true});
+
 const commentIdCommentBodyValidation = z.object({
-  body: commentSchema,
+  body: updateCommentValidation,
   params: commentIdSchema,
 });
-
 type commentType = z.infer<typeof commentSchema>;
 
 export {
@@ -53,4 +54,5 @@ export {
   commentBodyExperienceIDValidation,
   commentIdCommentBodyValidation,
   commentIdValidation,
+  updateCommentBody
 };

@@ -1,8 +1,7 @@
 import type { Experience } from "../../generated/prisma/client.js";
 import type ExperienceRepo from "./experience.repo.js";
 import { prisma } from "../../config/prisma.js";
-import type { experienceType } from "./experience.validations.js";
-
+import {type experienceType} from "./experience.validations.js";
 export default class PrismaExperienceRepository implements ExperienceRepo {
   async create(userId: number, data: experienceType): Promise<Experience> {
     const { tagName, ...experienceFields } = data;

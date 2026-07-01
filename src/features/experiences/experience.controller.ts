@@ -16,7 +16,7 @@ export default class ExperienceController {
     const userIdParams = Number(req.params.userId);
     const userIdAuth=req.userId;
     if(userIdAuth!==userIdParams){
-      next(new AppError(HTTP_STATUS.FORBIDDEN,AUTH_MESSAGE.NOT_PERMITTED));
+     return next(new AppError(HTTP_STATUS.FORBIDDEN,AUTH_MESSAGE.NOT_PERMITTED));
     }
     const data = await this.experienceService.createExperience(
       userIdParams,

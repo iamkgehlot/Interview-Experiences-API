@@ -26,7 +26,19 @@ export default class ExperienceService {
     id: number,
     data: experienceType,
   ): Promise<Experience> => {
-    return await this.experienceRepo.update(id, data);
+    
+    const safeData= {
+    userId:data.userId,
+    company: data.company,
+    role: data.role,
+    roundsCount: data.roundsCount,
+    difficulty: data.difficulty,
+    outcome:data.outcome,
+    content: data.content,
+    interviewDate: data.interviewDate,
+    tagName: data.tagName
+}
+    return await this.experienceRepo.update(id, safeData);
   };
   deleteExperience = async (id: number) => {
     return await this.experienceRepo.delete(id);
