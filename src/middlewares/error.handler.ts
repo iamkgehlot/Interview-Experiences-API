@@ -42,7 +42,7 @@ export const errorHandler = (
       );
     }
   }
-
+  console.log(err.message)
   const message = err.message || ERROR_MESSAGE.INTERNAL_SERVER_ERROR;
   const statusCode = err.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR;
 

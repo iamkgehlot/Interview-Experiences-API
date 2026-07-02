@@ -22,8 +22,8 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
     });
   }
 
-  async update(id: number, data: experienceType): Promise<Experience> {
-    const { tagName, userId, ...experienceFields } = data;
+  async update(id: number, userId:number,data: experienceType): Promise<Experience> {
+    const { tagName, ...experienceFields } = data;
     return await prisma.experience.update({
       where: { id },
       data: {

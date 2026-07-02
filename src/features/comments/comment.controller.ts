@@ -10,13 +10,10 @@ import AppError from "../../utils/error.handler.js";
 export default class CommentController {
   constructor(private commentService: CommentService) {}
 
-  create: RequestHandler = async (req, res,next) => {
+  create: RequestHandler = async (req, res) => {
     const experienceId = Number(req.params.experienceId);
-    const userIdBody=req.body.userId;
     const userIdAUth=req.userId;
-    if(userIdBody!==userIdAUth){
-      return next(new AppError(HTTP_STATUS.FORBIDDEN,AUTH_MESSAGE.NOT_PERMITTED));
-    }
+    req.body.userId=userIdAUth;
     const comment = req.body;
     return res.status(HTTP_STATUS.CREATED).json({
       success: true,

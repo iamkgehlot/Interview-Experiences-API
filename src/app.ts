@@ -3,6 +3,7 @@ import { errorHandler } from "./middlewares/error.handler.js";
 import type { Routes } from "./interface/routes.js";
 import { prisma } from "./config/prisma.js";
 import cookieParser from "cookie-parser";
+import morgan from "morgan"
 
 
 export default class App {
@@ -18,6 +19,7 @@ export default class App {
   }
   private initializeMiddlewares() {
     this.app.use(Express.json());
+    this.app.use(morgan("combined"));
     this.app.use(cookieParser());
   }
   private initializeRoutes(routerClasses: Routes[]) {

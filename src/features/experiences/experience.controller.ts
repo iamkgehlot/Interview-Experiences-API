@@ -71,9 +71,10 @@ export default class ExperienceController {
         new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.NOT_PERMITTED),
       );
     }
-    req.body.userId=authUserId;
+
     const data = await this.experienceService.updateExperience(
       experienceId,
+      authUserId,
       req.body,
     );
 

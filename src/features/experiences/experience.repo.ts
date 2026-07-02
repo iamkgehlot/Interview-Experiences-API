@@ -6,7 +6,7 @@ export default interface ExperienceRepo{
     findAllByUserId(id:number):Promise<Experience[]>,
     findAllExperience():Promise<Experience[]>,
     findById(id:number):Promise<Experience|null>,
-    update(id:number,experience:experienceType):Promise<Experience>,
+    update(id:number,userId:number,experience:experienceType):Promise<Experience>,
     delete(id:number):Promise<Experience>,
     fetchUserId(experienceId:number):Promise<{userId:number}|null>
 }

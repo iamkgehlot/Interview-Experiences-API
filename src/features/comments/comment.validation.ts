@@ -25,10 +25,7 @@ const commentBodyValidation = z.object({
   body: commentSchema,
 });
 
-const commentBodyExperienceIDValidation = z.object({
-  body: commentSchema,
-  params: experienceIdSchema,
-});
+
 
 const userIdValidation = z.object({
   params: userIdSchema,
@@ -37,17 +34,25 @@ const userIdValidation = z.object({
 const experienceIdValidation = z.object({
   params: experienceIdSchema,
 });
-
-const updateCommentValidation=commentSchema.partial().omit({userId:true});
-
+ 
+const updateCreateCommentSchema=commentSchema.omit({userId:true});
+type updateCommentType=z.infer<typeof updateCreateCommentSchema>
 const commentIdCommentBodyValidation = z.object({
-  body: updateCommentValidation,
+  body: updateCreateCommentSchema,
   params: commentIdSchema,
 });
+
+const commentBodyExperienceIDValidation = z.object({
+  body: updateCreateCommentSchema,
+  params: experienceIdSchema,
+});
+
+
 type commentType = z.infer<typeof commentSchema>;
 
 export {
   type commentType,
+  type updateCommentType,
   commentBodyValidation,
   userIdValidation,
   experienceIdValidation,

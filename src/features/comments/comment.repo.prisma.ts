@@ -1,7 +1,7 @@
 import { prisma } from "../../config/prisma.js";
 import type { Comment } from "../../generated/prisma/client.js";
 import type CommentRepo from "./comment.repo.js";
-import type { commentType } from "./comment.validation.js";
+import type { commentType, updateCommentType } from "./comment.validation.js";
 
 export default class PrismaCommentRepo implements CommentRepo {
   async create(experienceId: number, comment: commentType): Promise<Comment> {
@@ -24,7 +24,7 @@ export default class PrismaCommentRepo implements CommentRepo {
     });
   }
 
-  async update(commentId: number, comment: commentType): Promise<Comment> {
+  async update(commentId: number, comment: updateCommentType): Promise<Comment> {
     return await prisma.comment.update({
       where: {
         id: commentId,

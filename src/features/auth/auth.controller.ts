@@ -24,7 +24,7 @@ export default class AuthController {
       secure:envConfig.NODE_ENV==="production"
     });
 
-    return res.status(200).json({ message: AUTH_MESSAGE.LOGIN_SUCESS, userId,token:token });
+    return res.status(200).json({ success:true,message: AUTH_MESSAGE.LOGIN_SUCESS, data:{userId,token:token} });
   };
 
   loggedOutUser:RequestHandler =(req , res )=>{
