@@ -1,4 +1,4 @@
-import type { Experience } from "../../generated/prisma/client.js";
+import type { Experience } from "@prisma/client";
 import type ExperienceRepo from "./experience.repo.js";
 import type { experienceType } from "./experience.validations.js";
 

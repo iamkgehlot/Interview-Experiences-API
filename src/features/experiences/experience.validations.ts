@@ -11,7 +11,7 @@
 //   comments Comment[]
 //   tags ExperienceTag[]
 import z from "zod";
-import { interviewOutcome } from "../../generated/prisma/index.js";
+import { interviewOutcome } from "@prisma/client";
 
 
 const baseExperienceSchema = z.object({

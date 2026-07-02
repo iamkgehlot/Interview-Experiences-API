@@ -1,5 +1,5 @@
 import { prisma } from "../../config/prisma.js";
-import type { User } from "../../generated/prisma/index.js";
+import type { User } from "@prisma/client";
 import type { cleanData } from "../../interface/user.cleaned.js";
 import type { AuthRepository } from "./auth.repo.js";
 import type { loginType } from "./auth.validations.js";

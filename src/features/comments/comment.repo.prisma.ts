@@ -1,5 +1,5 @@
 import { prisma } from "../../config/prisma.js";
-import type { Comment } from "../../generated/prisma/client.js";
+import type { Comment } from "@prisma/client";;
 import type CommentRepo from "./comment.repo.js";
 import type { commentType, updateCommentType } from "./comment.validation.js";
 

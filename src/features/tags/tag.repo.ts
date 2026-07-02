@@ -1,4 +1,4 @@
-import type { Tag } from "../../generated/prisma/index.js";
+import type { Tag } from "@prisma/client";
 import type { tagsType } from "./tag.validations.js";
 
 export default interface TagsRepo {

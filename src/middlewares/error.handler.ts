@@ -1,5 +1,5 @@
 import { ERROR_MESSAGE, HTTP_STATUS } from "../constants/constants.js";
-import { Prisma } from "../generated/prisma/client.js";
+import {  Prisma } from "@prisma/client";
 import type { NextFunction, Request, Response } from "express";
 import AppError from "../utils/error.handler.js";
 

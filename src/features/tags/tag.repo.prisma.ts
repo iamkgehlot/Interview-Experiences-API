@@ -1,5 +1,5 @@
 import { prisma } from "../../config/prisma.js";
-import type { Tag } from "../../generated/prisma/index.js";
+import type { Tag } from "@prisma/client";
 import type TagsRepo from "./tag.repo.js";
 import type { tagsType } from "./tag.validations.js";
 
