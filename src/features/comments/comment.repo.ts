@@ -1,4 +1,5 @@
-import type { Comment } from "../../generated/prisma/client.js";
+import type { Comment } from "@prisma/client";
+
 import type { commentType, updateCommentType } from "./comment.validation.js";
 
 export default interface CommentRepo {
