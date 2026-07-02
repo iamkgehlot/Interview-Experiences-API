@@ -18,7 +18,7 @@ export default class App {
     this.initializeErrorHandling();
   }
   private initializeMiddlewares() {
-    this.app.set('trust proxy', 1);
+    this.app.set('trust proxy', true);
     this.app.use(Express.json());
     this.app.use(morgan("combined"));
     this.app.use(cookieParser());
