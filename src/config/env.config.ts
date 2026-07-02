@@ -9,6 +9,6 @@ export const envConfig = Object.freeze({
   PORT: Number(process.env.PORT) || 3000,
   JWT_SECRET:process.env.JWT_SECRET,
   JWT_EXPIRES_IN:jwtExpiresIn,
-  COOKIE_EXPIRES_IN:jwtExpiresIn * 100,
+  COOKIE_EXPIRES_IN:jwtExpiresIn * 1000,
   NODE_ENV:process.env.NODE_ENV || "development"
 });
