@@ -1,5 +1,9 @@
 import type { RequestHandler } from "express";
-import { AUTH_MESSAGE, HTTP_STATUS, USER_MESSAGE } from "../../constants/constants.js";
+import {
+  AUTH_MESSAGE,
+  HTTP_STATUS,
+  USER_MESSAGE,
+} from "../../constants/constants.js";
 import AuthService from "./auth.service.js";
 import { envConfig } from "../../config/env.config.js";
 
@@ -17,25 +21,48 @@ export default class AuthController {
   };
 
   loggedInUser: RequestHandler = async (req, res) => {
-    const { userId, token } = await this.authService.login(req.body);
-    res.cookie("token", token, {
+    const { userId, accessToken, refreshToken } = await this.authService.login(
+      req.body,
+    );
+
+    res.cookie("token", refreshToken, {
       httpOnly: true,
-      maxAge: envConfig.COOKIE_EXPIRES_IN,
+      maxAge: envConfig.COOKIE_MAXAGE,
       sameSite: "strict",
-      secure:envConfig.NODE_ENV==="production"
+      secure: envConfig.NODE_ENV === "production",
     });
 
-    return res.status(200).json({ success:true,message: AUTH_MESSAGE.LOGIN_SUCESS, data:{userId,token:token} });
+    return res.status(200).json({
+      success: true,
+      message: AUTH_MESSAGE.LOGIN_SUCESS,
+      data: { userId, token: accessToken },
+    });
   };
-  
-  loggedOutUser:RequestHandler =(req , res  )=>{
-    
-       res.cookie("token", "", {
+
+  loggedOutUser: RequestHandler = (req, res) => {
+    res.cookie("token", "", {
       httpOnly: true,
       maxAge: 0,
       sameSite: "strict",
-      secure : envConfig.NODE_ENV==="production"
+      secure: envConfig.NODE_ENV === "production",
     });
-    res.status(HTTP_STATUS.OK).json({success:true,message:AUTH_MESSAGE.LOGOUT_SUCESS})
-  }
+    res
+      .status(HTTP_STATUS.OK)
+      .json({ success: true, message: AUTH_MESSAGE.LOGOUT_SUCESS });
+  };
+
+  refreshToken: RequestHandler = async (req, res) => {
+    const token = req.cookies.token;
+    console.log(token);
+    const newTokens = await this.authService.refreshToken(token);
+
+    res.cookie("token", newTokens.refreshToken, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: envConfig.NODE_ENV === "production",
+      maxAge: envConfig.REFRESH_COOKIE_MAXAGE,
+    });
+
+    res.status(HTTP_STATUS.OK).json({success:true,message:"refresh done",data:{accesstoken:newTokens.acessToken}})
+  };
 }

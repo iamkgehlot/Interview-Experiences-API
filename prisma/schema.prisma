@@ -32,6 +32,7 @@ model User{
   tags Tag[]
   experience Experience[]
   comments Comment[]
+  refresh_tokens RefreshTokens[]
 }
 
 model Experience{
@@ -65,5 +66,15 @@ model Tag{
   addedOn DateTime @default(now())
   experience Experience[]
   user User @relation(fields:[createdByUserid],references:[id])
+}
+
+model RefreshTokens{
+  id Int @id @default(autoincrement())
+  token String @unique
+  userId Int 
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user User @relation(fields:[userId],references:[id])
+  @@map("refresh_tokens")
 }
 

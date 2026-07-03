@@ -4,6 +4,7 @@ import type { Routes } from "../../interface/routes.js";
 import type AuthController from "./auth.controller.js";
 import { loginValidation, userBodyValidation } from "./auth.validations.js";
 import { jwtProtect } from "../../middlewares/jwt.js";
+import { refreshTokenCheck } from "../../middlewares/refresh.jwt.js";
 
 export default class AuthRouter implements Routes {
   router = Router();
@@ -24,6 +25,8 @@ export default class AuthRouter implements Routes {
       zodMiddleware(loginValidation),
       this.authController.loggedInUser,
     );
-    this.router.post("/logout",jwtProtect, this.authController.loggedOutUser);
+    this.router.post("/logout", jwtProtect, this.authController.loggedOutUser);
+
+    this.router.post("/refresh",refreshTokenCheck,this.authController.refreshToken);
   }
 }
