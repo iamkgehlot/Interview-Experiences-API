@@ -1,7 +1,7 @@
 import { type User } from "@prisma/client";
 import type { UserRepository } from "./user.repo.js";
 import type { userType } from "./user.validations.js";
-import {prisma } from "../../config/prisma.js";
+import { prisma } from "../../config/prisma.js";
 
 export default class PrismaUserRepository implements UserRepository {
   // async create(data: userType): Promise<User> {
@@ -28,12 +28,17 @@ export default class PrismaUserRepository implements UserRepository {
       data,
     });
   }
-  
-  async delete(id:number):Promise<User>{
-    return await prisma.user.delete({where:{
-      id
-    }})
-  }
 
-  
+  async delete(id: number): Promise<User> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [tagdel, commentDel, experienceDel, userDel] =
+      await prisma.$transaction([
+        prisma.tag.deleteMany({ where: { createdByUserid: id } }),
+        prisma.comment.deleteMany({ where: { userId: id } }),
+        prisma.experience.deleteMany({ where: { userId: id } }),
+
+        prisma.user.delete({ where: { id } }),
+      ]);
+    return userDel;
+  }
 }

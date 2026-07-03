@@ -1,7 +1,7 @@
 import type { Experience } from "@prisma/client";
 import type ExperienceRepo from "./experience.repo.js";
 import { prisma } from "../../config/prisma.js";
-import {type experienceType} from "./experience.validations.js";
+import { type experienceType } from "./experience.validations.js";
 export default class PrismaExperienceRepository implements ExperienceRepo {
   async create(userId: number, data: experienceType): Promise<Experience> {
     const { tagName, ...experienceFields } = data;
@@ -22,7 +22,11 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
     });
   }
 
-  async update(id: number, userId:number,data: experienceType): Promise<Experience> {
+  async update(
+    id: number,
+    userId: number,
+    data: experienceType,
+  ): Promise<Experience> {
     const { tagName, ...experienceFields } = data;
     return await prisma.experience.update({
       where: { id },
@@ -42,12 +46,12 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
       },
     });
   }
-async findAllExperience():Promise<Experience[]>{
-  return await prisma.experience.findMany();
-}
+  async findAllExperience(): Promise<Experience[]> {
+    return await prisma.experience.findMany();
+  }
   async findAllByUserId(userId: number): Promise<Experience[]> {
     return await prisma.experience.findMany({
-      where: {userId},
+      where: { userId },
       include: {
         tags: {
           select: {
@@ -72,13 +76,20 @@ async findAllExperience():Promise<Experience[]>{
   }
 
   async delete(id: number): Promise<Experience> {
-    return await prisma.experience.delete({ where: { id } });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [commentDel, experienceDel] = await prisma.$transaction([
+      prisma.comment.deleteMany({ where: { experienceId: id } }),
+      prisma.experience.delete({ where: { id } }),
+    ]);
+    return experienceDel;
   }
 
-  async fetchUserId(experienceId:number):Promise<{userId:number}|null>{
-    return await prisma.experience.findFirst({where:{id:experienceId},
-    select:{
-      userId:true
-    }});
+  async fetchUserId(experienceId: number): Promise<{ userId: number } | null> {
+    return await prisma.experience.findFirst({
+      where: { id: experienceId },
+      select: {
+        userId: true,
+      },
+    });
   }
 }

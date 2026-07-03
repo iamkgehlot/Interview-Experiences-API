@@ -6,6 +6,7 @@ import {
   USER_MESSAGE,
 } from "../../constants/constants.js";
 import AppError from "../../utils/error.handler.js";
+import { envConfig } from "../../config/env.config.js";
 
 export default class UserController {
   constructor(private userService: UserService) {}
@@ -72,6 +73,12 @@ export default class UserController {
       );
     }
     await this.userService.deleteUser(Number(id));
-    res.status(HTTP_STATUS.NO_CONTENT).send();
+     res.cookie("token", "", {
+         httpOnly: true,
+         maxAge: 0,
+         sameSite: "strict",
+         secure : envConfig.NODE_ENV==="production"
+       });
+    return res.status(200).json({ success: true, message: "User deleted" });
   };
 }
