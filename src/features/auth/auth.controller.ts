@@ -2,7 +2,7 @@ import type { RequestHandler } from "express";
 import { AUTH_MESSAGE, HTTP_STATUS, USER_MESSAGE } from "../../constants/constants.js";
 import AuthService from "./auth.service.js";
 import { envConfig } from "../../config/env.config.js";
-import AppError from "../../utils/error.handler.js";
+
 
 export default class AuthController {
   constructor(private authService: AuthService) {}
@@ -28,7 +28,7 @@ export default class AuthController {
     return res.status(200).json({ success:true,message: AUTH_MESSAGE.LOGIN_SUCESS, data:{userId,token:token} });
   };
   
-  loggedOutUser:RequestHandler =(req , res, next  )=>{
+  loggedOutUser:RequestHandler =(req , res  )=>{
     
        res.cookie("token", "", {
       httpOnly: true,

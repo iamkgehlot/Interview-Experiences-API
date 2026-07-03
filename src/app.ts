@@ -3,9 +3,14 @@ import { errorHandler } from "./middlewares/error.handler.js";
 import type { Routes } from "./interface/routes.js";
 import { prisma } from "./config/prisma.js";
 import cookieParser from "cookie-parser";
-import morgan from "morgan"
+import morgan from "morgan";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "node:url";
+import { dirname } from "node:path";
 
+const __filename= fileURLToPath(import.meta.url);
+const __dirname=dirname(__filename);
 
 export default class App {
   private app: Application;
@@ -19,8 +24,8 @@ export default class App {
     this.initializeErrorHandling();
   }
   private initializeMiddlewares() {
-    this.app.use(cors())
-    this.app.set('trust proxy', true);
+    this.app.use(cors());
+    this.app.set("trust proxy", true);
     this.app.use(Express.json());
     this.app.use(morgan("combined"));
     this.app.use(cookieParser());
@@ -28,6 +33,11 @@ export default class App {
   private initializeRoutes(routerClasses: Routes[]) {
     routerClasses.forEach((routerClass) => {
       this.app.use("/api", routerClass.router);
+    });
+    //serve front end page
+    this.app.use(Express.static(path.join(__dirname, "../public")));
+    this.app.get("/", (req, res) => {
+      res.sendFile(path.join(__dirname, "../public/index.html"));
     });
   }
   private initializeErrorHandling() {
