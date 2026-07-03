@@ -16,7 +16,15 @@ A robust, type-safe, and highly scalable RESTful API built to share, manage, and
 
 **CLEAN CODE • FEATURE-BASED ARCHITECTURE • STRONGLY TYPED**
 
-</div>
+<div align="center">
+
+---
+
+<div align="center"> 
+  
+🟢 **Live API URL:** [https://interview-experiences-api.onrender.com/](https://interview-experiences-api.onrender.com/)
+
+<div align="center">
 
 ---
 
