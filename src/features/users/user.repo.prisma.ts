@@ -30,15 +30,6 @@ export default class PrismaUserRepository implements UserRepository {
   }
 
   async delete(id: number): Promise<User> {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [tagdel, commentDel, experienceDel, userDel] =
-      await prisma.$transaction([
-        prisma.tag.deleteMany({ where: { createdByUserid: id } }),
-        prisma.comment.deleteMany({ where: { userId: id } }),
-        prisma.experience.deleteMany({ where: { userId: id } }),
-
-        prisma.user.delete({ where: { id } }),
-      ]);
-    return userDel;
+    return await prisma.user.delete({ where: { id } });
   }
 }

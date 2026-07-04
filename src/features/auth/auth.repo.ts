@@ -10,10 +10,12 @@ export interface AuthRepository {
   replaceRefreshToken(
     oldToken: string,
     newToken: string,
+    expiresAt: Date,
   ): Promise<RefreshTokens>;
   createRefreshToken(
     userId: number,
     token: string,
     expiresAt: Date,
   ): Promise<RefreshTokens>;
+  logOut(token: string): Promise<RefreshTokens>;
 }

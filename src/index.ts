@@ -27,8 +27,6 @@ const authService = new AuthService(authRepo);
 const authController = new AuthController(authService);
 const authRouter = new AuthRouter(authController);
 
-
-
 //user
 const repo = new PrismaUserRepository();
 const userService = new UserService(repo);
@@ -54,7 +52,7 @@ const tagControler = new TagController(tagService);
 const tagRouter = new TagRouter(tagControler);
 //app
 const app = new App(
-  [authRouter,userRouter, experienceRouter, commentRouter, tagRouter],
+  [authRouter, userRouter, experienceRouter, commentRouter, tagRouter],
   envConfig.PORT,
 );
 app.listen();

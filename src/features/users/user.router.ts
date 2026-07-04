@@ -1,13 +1,9 @@
 import { Router } from "express";
 import UserController from "./user.controller.js";
 import { zodMiddleware } from "../../middlewares/zod.js";
-import {
-  updateUserValidation,
-
-  userIdValidation,
-} from "./user.validations.js";
+import { updateUserValidation, userIdValidation } from "./user.validations.js";
 import type { Routes } from "../../interface/routes.js";
-import {jwtProtect} from "../../middlewares/jwt.js"; 
+import { jwtProtect } from "../../middlewares/jwt.js";
 
 export default class UserRouter implements Routes {
   router = Router();
@@ -23,15 +19,15 @@ export default class UserRouter implements Routes {
     //   this.userController.postedUser,
     // );
 
-
     this.router.get(
-      "/users/:id",jwtProtect,
+      "/users/:id",
+      jwtProtect,
       zodMiddleware(userIdValidation),
       jwtProtect,
       this.userController.getUserById,
     );
 
-    this.router.get("/users", jwtProtect,this.userController.getAllUsers);
+    this.router.get("/users", jwtProtect, this.userController.getAllUsers);
 
     this.router.patch(
       "/users/:id",
@@ -39,7 +35,11 @@ export default class UserRouter implements Routes {
       jwtProtect,
       this.userController.updatedUser,
     );
-    
-    this.router.delete("/users/:id",jwtProtect,this.userController.deletedUser)
+
+    this.router.delete(
+      "/users/:id",
+      jwtProtect,
+      this.userController.deletedUser,
+    );
   }
 }

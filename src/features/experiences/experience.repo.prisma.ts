@@ -76,12 +76,7 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
   }
 
   async delete(id: number): Promise<Experience> {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [commentDel, experienceDel] = await prisma.$transaction([
-      prisma.comment.deleteMany({ where: { experienceId: id } }),
-      prisma.experience.delete({ where: { id } }),
-    ]);
-    return experienceDel;
+    return await prisma.experience.delete({ where: { id } });
   }
 
   async fetchUserId(experienceId: number): Promise<{ userId: number } | null> {

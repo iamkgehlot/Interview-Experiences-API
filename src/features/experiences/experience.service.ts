@@ -11,12 +11,10 @@ export default class ExperienceService {
   ): Promise<Experience> => {
     return this.experienceRepo.create(userId, data);
   };
-  getAllExperience = async (): Promise<Experience[] > => {
+  getAllExperience = async (): Promise<Experience[]> => {
     return this.experienceRepo.findAllExperience();
   };
-  getAllExperienceByUserId = async (
-    userId: number,
-  ): Promise<Experience[]> => {
+  getAllExperienceByUserId = async (userId: number): Promise<Experience[]> => {
     return await this.experienceRepo.findAllByUserId(userId);
   };
   getExperienceByid = async (id: number): Promise<Experience | null> => {
@@ -24,27 +22,26 @@ export default class ExperienceService {
   };
   updateExperience = async (
     id: number,
-    userId:number,
+    userId: number,
     data: experienceType,
   ): Promise<Experience> => {
-    
-    const safeData= {
-    company: data.company,
-    role: data.role,
-    roundsCount: data.roundsCount,
-    difficulty: data.difficulty,
-    outcome:data.outcome,
-    content: data.content,
-    interviewDate: data.interviewDate,
-    tagName: data.tagName
-}
-    return await this.experienceRepo.update(id,userId, safeData);
+    const safeData = {
+      company: data.company,
+      role: data.role,
+      roundsCount: data.roundsCount,
+      difficulty: data.difficulty,
+      outcome: data.outcome,
+      content: data.content,
+      interviewDate: data.interviewDate,
+      tagName: data.tagName,
+    };
+    return await this.experienceRepo.update(id, userId, safeData);
   };
   deleteExperience = async (id: number) => {
     return await this.experienceRepo.delete(id);
   };
 
-  findUserId=async(experienceId:number)=>{
+  findUserId = async (experienceId: number) => {
     return await this.experienceRepo.fetchUserId(experienceId);
-  }
+  };
 }

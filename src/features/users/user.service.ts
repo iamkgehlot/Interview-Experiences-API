@@ -15,20 +15,20 @@ export default class UserService {
   };
 
   //get all users
-  getAllUsers = async (): Promise<User[] |[]> => {
+  getAllUsers = async (): Promise<User[] | []> => {
     return await this.userRepo.findAll();
   };
 
   //update user
   updateUser = async (id: number, user: userType): Promise<User> => {
-    const safeUser={
-    name: user.name,
-    email: user.email,
-    age: user.age,
-    yearsOfExperience: user.yearsOfExperience,
-    current_role: user.current_role,
-    industry: user.industry
-    }
+    const safeUser = {
+      name: user.name,
+      email: user.email,
+      age: user.age,
+      yearsOfExperience: user.yearsOfExperience,
+      current_role: user.current_role,
+      industry: user.industry,
+    };
     return await this.userRepo.update(id, safeUser);
   };
 

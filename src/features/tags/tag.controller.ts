@@ -10,9 +10,11 @@ import AppError from "../../utils/error.handler.js";
 export default class TagController {
   constructor(private tagService: TagService) {}
 
-  created: RequestHandler = async (req, res,next) => {
-    if(!req.userId){
-      return next(new AppError(HTTP_STATUS.FORBIDDEN,AUTH_MESSAGE.TOKEN_NOT_FOUND))
+  created: RequestHandler = async (req, res, next) => {
+    if (!req.userId) {
+      return next(
+        new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.TOKEN_NOT_FOUND),
+      );
     }
     const createdByUserid = req.userId!;
     const tagName = req.body;
@@ -27,8 +29,10 @@ export default class TagController {
     const tagId = Number(req.params.tagId);
     const userIdAuth = req.userId;
     const userIdObj = await this.tagService.findUserId(tagId);
-    if(!userIdObj){
-      return next(new AppError(HTTP_STATUS.NOT_FOUND,TAG_MESSAGE.TAG_FETCH_FAIL(tagId)))
+    if (!userIdObj) {
+      return next(
+        new AppError(HTTP_STATUS.NOT_FOUND, TAG_MESSAGE.TAG_FETCH_FAIL(tagId)),
+      );
     }
     if (userIdObj?.createdByUserid !== userIdAuth) {
       return next(
@@ -65,8 +69,10 @@ export default class TagController {
     const tagId = Number(req.params.tagId);
     const userIdAuth = req.userId;
     const userIdObj = await this.tagService.findUserId(tagId);
-    if(!userIdObj){
-      return next(new AppError(HTTP_STATUS.NOT_FOUND,TAG_MESSAGE.TAG_FETCH_FAIL(tagId)))
+    if (!userIdObj) {
+      return next(
+        new AppError(HTTP_STATUS.NOT_FOUND, TAG_MESSAGE.TAG_FETCH_FAIL(tagId)),
+      );
     }
     if (userIdObj?.createdByUserid !== userIdAuth) {
       return next(

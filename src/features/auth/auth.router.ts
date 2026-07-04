@@ -25,8 +25,16 @@ export default class AuthRouter implements Routes {
       zodMiddleware(loginValidation),
       this.authController.loggedInUser,
     );
-    this.router.post("/logout", jwtProtect, this.authController.loggedOutUser);
+    this.router.post(
+      "/logout",
+      refreshTokenCheck,
+      this.authController.loggedOutUser,
+    );
 
-    this.router.post("/refresh",refreshTokenCheck,this.authController.refreshToken);
+    this.router.post(
+      "/refresh",
+      refreshTokenCheck,
+      this.authController.refreshToken,
+    );
   }
 }

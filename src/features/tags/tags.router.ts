@@ -11,11 +11,31 @@ export default class TagRouter implements Routes {
   }
   router = Router();
 
-   initaliazeRoutes() {
-    this.router.post("/tags/",jwtProtect,zodMiddleware(tagBodyValidation),  this.tagControler.created);
-    this.router.get("/tags/:tagId", jwtProtect,zodMiddleware(tagIdValidation), this.tagControler.findById);
+  initaliazeRoutes() {
+    this.router.post(
+      "/tags/",
+      jwtProtect,
+      zodMiddleware(tagBodyValidation),
+      this.tagControler.created,
+    );
+    this.router.get(
+      "/tags/:tagId",
+      jwtProtect,
+      zodMiddleware(tagIdValidation),
+      this.tagControler.findById,
+    );
     this.router.get("/tags/", jwtProtect, this.tagControler.findAll);
-    this.router.patch("/tags/:tagId",jwtProtect,zodMiddleware(tagBodyValidation) , this.tagControler.updated);
-    this.router.delete("/tags/:tagId",jwtProtect,zodMiddleware(tagIdValidation),  this.tagControler.deleted);
+    this.router.patch(
+      "/tags/:tagId",
+      jwtProtect,
+      zodMiddleware(tagBodyValidation),
+      this.tagControler.updated,
+    );
+    this.router.delete(
+      "/tags/:tagId",
+      jwtProtect,
+      zodMiddleware(tagIdValidation),
+      this.tagControler.deleted,
+    );
   }
 }

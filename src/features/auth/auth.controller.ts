@@ -7,7 +7,6 @@ import {
 import AuthService from "./auth.service.js";
 import { envConfig } from "../../config/env.config.js";
 
-
 export default class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -27,7 +26,7 @@ export default class AuthController {
 
     res.cookie("token", refreshToken, {
       httpOnly: true,
-      maxAge: envConfig.COOKIE_MAXAGE,
+      maxAge: envConfig.REFRESH_COOKIE_MAXAGE,
       sameSite: "strict",
       secure: envConfig.NODE_ENV === "production",
     });
@@ -39,16 +38,19 @@ export default class AuthController {
     });
   };
 
-  loggedOutUser: RequestHandler = (req, res) => {
+  loggedOutUser: RequestHandler = async (req, res) => {
+    const logoutUser = await this.authService.logOut(req.cookies.token);
     res.cookie("token", "", {
       httpOnly: true,
       maxAge: 0,
       sameSite: "strict",
       secure: envConfig.NODE_ENV === "production",
     });
-    res
-      .status(HTTP_STATUS.OK)
-      .json({ success: true, message: AUTH_MESSAGE.LOGOUT_SUCESS });
+    res.status(HTTP_STATUS.OK).json({
+      success: true,
+      message: AUTH_MESSAGE.LOGOUT_SUCESS,
+      data: { userId: logoutUser },
+    });
   };
 
   refreshToken: RequestHandler = async (req, res) => {
@@ -63,6 +65,10 @@ export default class AuthController {
       maxAge: envConfig.REFRESH_COOKIE_MAXAGE,
     });
 
-    res.status(HTTP_STATUS.OK).json({success:true,message:"refresh done",data:{accesstoken:newTokens.acessToken}})
+    res.status(HTTP_STATUS.OK).json({
+      success: true,
+      message: "refresh done",
+      data: { accesstoken: newTokens.acessToken },
+    });
   };
 }

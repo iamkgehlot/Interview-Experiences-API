@@ -12,8 +12,8 @@ export default class CommentController {
 
   create: RequestHandler = async (req, res) => {
     const experienceId = Number(req.params.experienceId);
-    const userIdAUth=req.userId;
-    req.body.userId=userIdAUth;
+    const userIdAUth = req.userId;
+    req.body.userId = userIdAUth;
     const comment = req.body;
     return res.status(HTTP_STATUS.CREATED).json({
       success: true,

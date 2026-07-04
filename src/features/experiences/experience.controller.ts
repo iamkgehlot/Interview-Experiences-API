@@ -12,11 +12,13 @@ import AppError from "../../utils/error.handler.js";
 export default class ExperienceController {
   constructor(private experienceService: ExperienceService) {}
 
-  createdExperience: RequestHandler = async (req, res,next) => {
+  createdExperience: RequestHandler = async (req, res, next) => {
     const userIdParams = Number(req.params.userId);
-    const userIdAuth=req.userId;
-    if(userIdAuth!==userIdParams){
-     return next(new AppError(HTTP_STATUS.FORBIDDEN,AUTH_MESSAGE.NOT_PERMITTED));
+    const userIdAuth = req.userId;
+    if (userIdAuth !== userIdParams) {
+      return next(
+        new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.NOT_PERMITTED),
+      );
     }
     const data = await this.experienceService.createExperience(
       userIdAuth,
@@ -38,7 +40,7 @@ export default class ExperienceController {
   };
   getAllExperienceByUserId: RequestHandler = async (req, res) => {
     const userId = Number(req.params.userId);
-     const data = await this.experienceService.getAllExperienceByUserId(userId);
+    const data = await this.experienceService.getAllExperienceByUserId(userId);
     return res.status(HTTP_STATUS.OK).json({
       success: true,
       data: data,

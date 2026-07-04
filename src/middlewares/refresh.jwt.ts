@@ -5,8 +5,7 @@ import { envConfig } from "../config/env.config.js";
 import jwt from "jsonwebtoken";
 
 export const refreshTokenCheck: RequestHandler = (req, res, next) => {
-  console.log(req.cookies.token);
-  if (!req.cookies && !req.cookies.token) {
+  if (!req.cookies?.token) {
     return next(
       new AppError(HTTP_STATUS.UNAUTHORISED, AUTH_MESSAGE.TOKEN_NOT_FOUND),
     );

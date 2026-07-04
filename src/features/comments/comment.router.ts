@@ -26,7 +26,8 @@ export default class CommentRouter implements Routes {
     );
     this.router.get(
       "/experiences/:experienceId/comments",
-      zodMiddleware(experienceIdValidation),jwtProtect,
+      zodMiddleware(experienceIdValidation),
+      jwtProtect,
       this.commentController.findByExperienceId,
     );
     this.router.get(

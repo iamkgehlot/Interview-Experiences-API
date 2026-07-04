@@ -5,15 +5,14 @@ export default class CommentService {
   constructor(private commentRepo: CommentRepo) {}
 
   create = async (experieceId: number, comment: commentType) => {
-    const safeData={
-      userId:comment.userId,
-      comment:comment.comment
-    }
-   return this.commentRepo.create(experieceId, safeData);
+    const safeData = {
+      userId: comment.userId,
+      comment: comment.comment,
+    };
+    return this.commentRepo.create(experieceId, safeData);
   };
 
   findByExperienceId = async (experienceId: number) => {
-   
     return await this.commentRepo.findAllByExperience(experienceId);
   };
 
@@ -22,9 +21,9 @@ export default class CommentService {
   };
 
   update = async (commentId: number, comment: updateCommentType) => {
-    const safeData={
-      comment:comment.comment
-    }
+    const safeData = {
+      comment: comment.comment,
+    };
     return await this.commentRepo.update(commentId, safeData);
   };
 
@@ -32,7 +31,7 @@ export default class CommentService {
     return await this.commentRepo.delete(commentId);
   };
 
-  findUserid=async(commentId:number)=>{
+  findUserid = async (commentId: number) => {
     return await this.commentRepo.findUserId(commentId);
-  }
+  };
 }

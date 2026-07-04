@@ -6,13 +6,13 @@ import { envConfig } from "../config/env.config.js";
 
 export const jwtProtect: RequestHandler = (req, res, next) => {
   let token: string | undefined;
-   if (req.headers.authorization?.startsWith("Bearer ")) {
+  if (req.headers.authorization?.startsWith("Bearer ")) {
     token = req.headers.authorization.split(" ")[1];
   }
 
   if (!token) {
     return next(
-      new AppError(HTTP_STATUS.UNAUTHORISED,AUTH_MESSAGE.TOKEN_NOT_FOUND ),
+      new AppError(HTTP_STATUS.UNAUTHORISED, AUTH_MESSAGE.TOKEN_NOT_FOUND),
     );
   }
 
@@ -24,7 +24,7 @@ export const jwtProtect: RequestHandler = (req, res, next) => {
     next();
   } catch {
     return next(
-      new AppError(HTTP_STATUS.UNAUTHORISED,AUTH_MESSAGE.INVALID_TOKEN ),
+      new AppError(HTTP_STATUS.UNAUTHORISED, AUTH_MESSAGE.INVALID_TOKEN),
     );
   }
 };

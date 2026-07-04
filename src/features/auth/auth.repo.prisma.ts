@@ -28,7 +28,6 @@ export default class PrismaAuthRepository implements AuthRepository {
   }
 
   async refreshToken(token: string): Promise<{ token: string } | null> {
-    console.log("prismaaaaaaaaaaaaaaaaaa      "+token);
     return await prisma.refreshTokens.findFirst({
       where: { token: token },
       select: {
@@ -44,18 +43,28 @@ export default class PrismaAuthRepository implements AuthRepository {
   async replaceRefreshToken(
     oldToken: string,
     newToken: string,
+    expiresAt: Date,
   ): Promise<RefreshTokens> {
     return await prisma.refreshTokens.update({
       where: { token: oldToken },
-      data: { token: newToken },
+      data: { token: newToken, expiresAt, createdAt: new Date() },
     });
   }
 
-  async createRefreshToken(userId:number,token:string,expiresAt:Date):Promise<RefreshTokens>{
-    return await prisma.refreshTokens.create({data:{
-      token,
-      userId,
-      expiresAt
-    }})
+  async createRefreshToken(
+    userId: number,
+    token: string,
+    expiresAt: Date,
+  ): Promise<RefreshTokens> {
+    return await prisma.refreshTokens.create({
+      data: {
+        token,
+        userId,
+        expiresAt,
+      },
+    });
+  }
+  async logOut(token: string): Promise<RefreshTokens> {
+    return prisma.refreshTokens.delete({ where: { token } });
   }
 }

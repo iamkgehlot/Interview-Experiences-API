@@ -73,12 +73,12 @@ export default class UserController {
       );
     }
     await this.userService.deleteUser(Number(id));
-     res.cookie("token", "", {
-         httpOnly: true,
-         maxAge: 0,
-         sameSite: "strict",
-         secure : envConfig.NODE_ENV==="production"
-       });
+    res.cookie("token", "", {
+      httpOnly: true,
+      maxAge: 0,
+      sameSite: "strict",
+      secure: envConfig.NODE_ENV === "production",
+    });
     return res.status(200).json({ success: true, message: "User deleted" });
   };
 }

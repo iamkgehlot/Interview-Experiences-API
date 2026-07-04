@@ -1,5 +1,5 @@
-export default interface login{
-    userId:number,
-    accessToken:string,
-    refreshToken:string,
+export default interface login {
+  userId: number;
+  accessToken: string;
+  refreshToken: string;
 }

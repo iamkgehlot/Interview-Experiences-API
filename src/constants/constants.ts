@@ -6,21 +6,20 @@ export const HTTP_STATUS = Object.freeze({
   INTERNAL_SERVER_ERROR: 500,
   NO_CONTENT: 204,
   UNAUTHORISED: 401,
-  FORBIDDEN:403
+  FORBIDDEN: 403,
 });
 
 export const JSON_SUCCESS = Object.freeze({
   TRUE: true,
   FALSE: false,
 });
-export const AUTH_MESSAGE=Object.freeze({
+export const AUTH_MESSAGE = Object.freeze({
   LOGIN_SUCESS: "User logged in successfully",
-  LOGOUT_SUCESS:"User logged out successfully",
-  NOT_PERMITTED:"You are not Permitted for this action",
-  TOKEN_NOT_FOUND:"User is not logged in",
-  INVALID_TOKEN:"Token expired or not Valid"
-
-})
+  LOGOUT_SUCESS: "User logged out successfully",
+  NOT_PERMITTED: "You are not Permitted for this action",
+  TOKEN_NOT_FOUND: "User is not logged in",
+  INVALID_TOKEN: "Token expired or not Valid",
+});
 
 export const USER_MESSAGE = Object.freeze({
   SIGNUP_SUCCESS: "User created successfully",

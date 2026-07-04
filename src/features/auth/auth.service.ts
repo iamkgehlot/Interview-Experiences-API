@@ -55,14 +55,16 @@ export default class AuthService {
       { expiresIn: envConfig.REFRESH_TOKEN_EXPIRES_IN as StringValue },
     );
 
-    const dateMs = Date.now();
-    const DaysToMs7 = 7 * 24 * 60 * 60 * 1000;
-    const nowPlus7Days = dateMs + DaysToMs7;
+    const expTimeObj = jwt.verify(
+      refreshToken,
+      envConfig.REFRESH_JWT_SECRET,
+    ) as { exp: number };
+    const expTime = new Date(expTimeObj.exp * 1000);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const savedToken = await this.authRepo.createRefreshToken(
       user.id,
       refreshToken,
-      new Date(nowPlus7Days),
+      expTime,
     );
 
     return {
@@ -95,12 +97,20 @@ export default class AuthService {
     const newAccessToken = jwt.sign({ sub: userId }, envConfig.JWT_SECRET, {
       expiresIn: envConfig.JWT_EXPIRES_IN,
     });
-
+    const nowMs = Date.now();
+    const DaysToMs7 = 7 * 24 * 60 * 60 * 1000;
+    const dateMs7 = nowMs + DaysToMs7;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const replacedToken = await this.authRepo.replaceRefreshToken(
       oldToken!.token,
       newToken,
+      new Date(dateMs7),
     );
     return { refreshToken: newToken, acessToken: newAccessToken };
+  };
+
+  logOut = async (token: string): Promise<number> => {
+    const logoutUser = await this.authRepo.logOut(token);
+    return logoutUser.id;
   };
 }

@@ -24,7 +24,11 @@ export default class ExperienceRouter implements Routes {
       this.experienceController.createdExperience,
     );
 
-    this.router.get("/experiences", jwtProtect,this.experienceController.getAllExperience);
+    this.router.get(
+      "/experiences",
+      jwtProtect,
+      this.experienceController.getAllExperience,
+    );
 
     this.router.get(
       "/users/:userId/experiences",
