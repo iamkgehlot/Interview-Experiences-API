@@ -3,7 +3,7 @@ import type { Request, Response, NextFunction } from "express";
 import AppError from "../utils/error.handler.js";
 import { AUTH_MESSAGE, HTTP_STATUS } from "../constants/constants.js";
 
-type fetchedUserid = (id: number) => Promise<{ userId: number } |{id:number}| null>;
+type fetchedUserid = (id: number) => Promise<{ userId: number } | null>;
 
 export const roleAndAccessCheck = (
   allowedRoles: SystemRole[],
@@ -12,7 +12,7 @@ export const roleAndAccessCheck = (
 ) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const reqUserId = req.userId;
-    const reqRole = req.role as SystemRole;
+    const reqRole = req.role ;
 
     if (reqRole === undefined || reqUserId === undefined) {
       throw new AppError(
