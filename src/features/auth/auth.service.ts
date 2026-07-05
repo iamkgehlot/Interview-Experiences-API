@@ -9,6 +9,7 @@ import { ERROR_MESSAGE, HTTP_STATUS } from "../../constants/constants.js";
 import AppError from "../../utils/error.handler.js";
 import type { CleanedUser } from "../../interface/user.cleaned.js";
 import type { StringValue } from "ms";
+import type { SystemRole } from "@prisma/client";
 
 export default class AuthService {
   constructor(public authRepo: AuthRepository) {}
@@ -78,10 +79,11 @@ export default class AuthService {
     token: string,
   ): Promise<{ refreshToken: string; acessToken: string }> => {
     const userIdObj = jwt.verify(token, envConfig.REFRESH_JWT_SECRET) as {
-      sub: string;
+      sub: string,role:SystemRole
     };
 
     const userId = Number(userIdObj.sub);
+    const role=userIdObj.role;
 
     const oldToken = await this.authRepo.refreshToken(token);
 
@@ -94,17 +96,16 @@ export default class AuthService {
       expiresIn: envConfig.REFRESH_TOKEN_EXPIRES_IN as StringValue,
     });
 
-    const newAccessToken = jwt.sign({ sub: userId }, envConfig.JWT_SECRET, {
+    const newAccessToken = jwt.sign({ sub: userId ,role:role}, envConfig.JWT_SECRET, {
       expiresIn: envConfig.JWT_EXPIRES_IN,
     });
-    const nowMs = Date.now();
-    const DaysToMs7 = 7 * 24 * 60 * 60 * 1000;
-    const dateMs7 = nowMs + DaysToMs7;
+    const newExpiryDateObj=jwt.verify(newToken,envConfig.REFRESH_TOKEN_EXPIRES_IN) as {exp:number};
+    const newExpiryDate=newExpiryDateObj.exp*1000;//
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const replacedToken = await this.authRepo.replaceRefreshToken(
       oldToken!.token,
       newToken,
-      new Date(dateMs7),
+      new Date(newExpiryDate),
     );
     return { refreshToken: newToken, acessToken: newAccessToken };
   };

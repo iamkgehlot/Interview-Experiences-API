@@ -3,6 +3,7 @@ import AppError from "../utils/error.handler.js";
 import { AUTH_MESSAGE, HTTP_STATUS } from "../constants/constants.js";
 import jwt from "jsonwebtoken";
 import { envConfig } from "../config/env.config.js";
+import type { SystemRole } from "@prisma/client";
 
 export const jwtProtect: RequestHandler = (req, res, next) => {
   let token: string | undefined;
@@ -18,7 +19,7 @@ export const jwtProtect: RequestHandler = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, envConfig.JWT_SECRET as string) as {
-      sub: string,role:string
+      sub: string,role:SystemRole
     };
     req.userId = Number(decoded.sub);
     req.role=decoded.role;

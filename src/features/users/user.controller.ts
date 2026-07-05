@@ -1,12 +1,12 @@
 import type { NextFunction, Request, Response } from "express";
 import UserService from "./user.service.js";
 import {
-  AUTH_MESSAGE,
   HTTP_STATUS,
   USER_MESSAGE,
 } from "../../constants/constants.js";
 import AppError from "../../utils/error.handler.js";
 import { envConfig } from "../../config/env.config.js";
+import { SystemRole } from "@prisma/client";
 
 export default class UserController {
   constructor(private userService: UserService) {}
@@ -62,14 +62,15 @@ export default class UserController {
   //delete user
   deletedUser = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    
-    await this.userService.deleteUser(Number(id));
-    res.cookie("token", "", {
-      httpOnly: true,
-      maxAge: 0,
-      sameSite: "strict",
-      secure: envConfig.NODE_ENV === "production",
-    });
+    if (req.role === SystemRole.ADMIN) {
+      await this.userService.deleteUser(Number(id));
+      res.cookie("token", "", {
+        httpOnly: true,
+        maxAge: 0,
+        sameSite: "strict",
+        secure: envConfig.NODE_ENV === "production",
+      });
+    }
     return res.status(200).json({ success: true, message: "User deleted" });
   };
 }
