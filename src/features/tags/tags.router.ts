@@ -4,7 +4,7 @@ import type TagController from "./tag.controller.js";
 import { zodMiddleware } from "../../middlewares/zod.js";
 import { tagBodyValidation, tagIdValidation } from "./tag.validations.js";
 import { jwtProtect } from "../../middlewares/jwt.js";
-import { roleAndAccessCheck } from "../../middlewares/auth.gaurd.js";
+import { roleAndAccessCheck } from "../../middlewares/auth.guard.js";
 import { SystemRole } from "@prisma/client";
 import type TagsRepo from "./tag.repo.js";
 

@@ -24,8 +24,8 @@ const baseExperienceSchema = z.object({
   outcome: z.enum(interviewOutcome),
   content: z
     .string()
-    .min(20)
-    .nonempty("please write full content of atlease 20 words"),
+    .min(100)
+    .nonempty(),
   interviewDate: z.coerce.date(),
   tagName: z.array(z.string()),
 });
