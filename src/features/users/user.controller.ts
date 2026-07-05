@@ -62,8 +62,8 @@ export default class UserController {
   //delete user
   deletedUser = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    if (req.role === SystemRole.ADMIN) {
-      await this.userService.deleteUser(Number(id));
+    await this.userService.deleteUser(Number(id));
+    if (id === req.userId){
       res.cookie("token", "", {
         httpOnly: true,
         maxAge: 0,
