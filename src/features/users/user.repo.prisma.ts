@@ -32,4 +32,9 @@ export default class PrismaUserRepository implements UserRepository {
   async delete(id: number): Promise<User> {
     return await prisma.user.delete({ where: { id } });
   }
+
+  async findUserId(id:number):Promise<{userId:number}|null>{
+    const userIdfetched=await prisma.user.findFirst({where:{id},select:{id:true}});
+    return userIdfetched?{userId:userIdfetched.id}:null
+  }
 }

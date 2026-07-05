@@ -20,8 +20,16 @@ enum interviewOutcome{
   NO_RESPONSE  
   WITHDRAWN
   }
+
+  enum SystemRole{
+    ADMIN
+    USER
+  }
+
+//model
 model User{
   id Int @id @default(autoincrement())
+  role SystemRole @default(USER)
   name String
   email String @unique
   password String

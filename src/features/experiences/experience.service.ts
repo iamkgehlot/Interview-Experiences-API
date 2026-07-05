@@ -1,6 +1,8 @@
 import type { Experience } from "@prisma/client";
 import type ExperienceRepo from "./experience.repo.js";
 import type { experienceType } from "./experience.validations.js";
+import AppError from "../../utils/error.handler.js";
+import { ERROR_MESSAGE, EXPERIENCE_MESSAGES, HTTP_STATUS } from "../../constants/constants.js";
 
 export default class ExperienceService {
   constructor(private experienceRepo: ExperienceRepo) {}
@@ -18,7 +20,12 @@ export default class ExperienceService {
     return await this.experienceRepo.findAllByUserId(userId);
   };
   getExperienceByid = async (id: number): Promise<Experience | null> => {
-    return this.experienceRepo.findById(id);
+    const data = this.experienceRepo.findById(id);
+    if(!data){
+      throw new AppError(HTTP_STATUS.NOT_FOUND,EXPERIENCE_MESSAGES.NO_EXPERIENCE_FOUND_FOR_ID(id));
+      
+    }
+    return data;
   };
   updateExperience = async (
     id: number,

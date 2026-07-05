@@ -42,7 +42,7 @@ export default class AuthService {
     }
 
     const accessToken = jwt.sign(
-      { sub: String(user.id) },
+      { sub: String(user.id), role: user.role },
       envConfig.JWT_SECRET!,
       {
         expiresIn: envConfig.JWT_EXPIRES_IN,
@@ -50,7 +50,7 @@ export default class AuthService {
     );
 
     const refreshToken = jwt.sign(
-      { sub: String(user.id) },
+      { sub: String(user.id), role: user.role },
       envConfig.REFRESH_JWT_SECRET,
       { expiresIn: envConfig.REFRESH_TOKEN_EXPIRES_IN as StringValue },
     );

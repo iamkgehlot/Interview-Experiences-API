@@ -79,7 +79,7 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
     return await prisma.experience.delete({ where: { id } });
   }
 
-  async fetchUserId(experienceId: number): Promise<{ userId: number } | null> {
+  async fetchUserIdByExperienceId(experienceId: number): Promise<{ userId: number } | null> {
     return await prisma.experience.findFirst({
       where: { id: experienceId },
       select: {
@@ -87,4 +87,12 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
       },
     });
   }
+
+  async fetchUserId(userId:number):Promise<{userId:number}|null>{
+    const data=await prisma.user.findFirst({where:{id:userId},select:{
+      id:true
+    }})
+     return data?{userId:data.id}:null;
+  };
+   
 }

@@ -12,5 +12,8 @@ export default interface ExperienceRepo {
     experience: experienceType,
   ): Promise<Experience>;
   delete(id: number): Promise<Experience>;
-  fetchUserId(experienceId: number): Promise<{ userId: number } | null>;
+  fetchUserIdByExperienceId(
+    experienceId: number,
+  ): Promise<{ userId: number } | null>;
+  fetchUserId(userId: number): Promise<{ userId: number } | null>;
 }

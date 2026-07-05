@@ -10,10 +10,13 @@ import {
   userIdValidation,
 } from "./comment.validation.js";
 import { jwtProtect } from "../../middlewares/jwt.js";
+import { roleAndAccessCheck } from "../../middlewares/auth.gaurd.js";
+import { SystemRole } from "@prisma/client";
+import type CommentRepo from "./comment.repo.js";
 
 export default class CommentRouter implements Routes {
   router = Router();
-  constructor(private commentController: CommentController) {
+  constructor(private commentController: CommentController,private commentRepo:CommentRepo) {
     this.initalizeComment();
   }
 
@@ -22,6 +25,7 @@ export default class CommentRouter implements Routes {
       "/experiences/:experienceId/comments",
       zodMiddleware(commentBodyExperienceIDValidation),
       jwtProtect,
+      roleAndAccessCheck([SystemRole.ADMIN],"experienceId",(id)=>this.commentRepo.findUserIdByExperienceId(id)), 
       this.commentController.create,
     );
     this.router.get(
@@ -40,12 +44,14 @@ export default class CommentRouter implements Routes {
       "/comments/:commentId",
       zodMiddleware(commentIdCommentBodyValidation),
       jwtProtect,
+      roleAndAccessCheck([SystemRole.ADMIN],"commentId",(id)=>this.commentRepo.findUserId(id)),
       this.commentController.update,
     );
     this.router.delete(
       "/comments/:commentId",
       zodMiddleware(commentIdValidation),
       jwtProtect,
+      roleAndAccessCheck([SystemRole.ADMIN],"commentId",(id)=>this.commentRepo.findUserId(id)),
       this.commentController.delete,
     );
   }

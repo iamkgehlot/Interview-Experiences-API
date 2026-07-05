@@ -48,13 +48,8 @@ export default class UserController {
   };
 
   //update User by id
-  updatedUser = async (req: Request, res: Response, next: NextFunction) => {
+  updatedUser = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    if (req.userId !== id) {
-      return next(
-        new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.NOT_PERMITTED),
-      );
-    }
     const data = req.body;
     const updatedUser = await this.userService.updateUser(id, data);
     return res.status(HTTP_STATUS.OK).json({
@@ -65,13 +60,9 @@ export default class UserController {
   };
 
   //delete user
-  deletedUser = async (req: Request, res: Response, next: NextFunction) => {
+  deletedUser = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
-    if (req.userId !== id) {
-      return next(
-        new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.NOT_PERMITTED),
-      );
-    }
+    
     await this.userService.deleteUser(Number(id));
     res.cookie("token", "", {
       httpOnly: true,

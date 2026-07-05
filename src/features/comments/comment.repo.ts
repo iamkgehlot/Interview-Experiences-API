@@ -9,4 +9,7 @@ export default interface CommentRepo {
   update(commentId: number, comment: updateCommentType): Promise<Comment>;
   delete(commentId: number): Promise<Comment>;
   findUserId(commentId: number): Promise<{ userId: number } | null>;
+  findUserIdByExperienceId(
+    experienceId: number,
+  ): Promise<{ userId: number } | null>;
 }

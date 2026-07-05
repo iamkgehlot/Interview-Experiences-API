@@ -1,5 +1,5 @@
 import { prisma } from "../../config/prisma.js";
-import type { Prisma, RefreshTokens, User } from "@prisma/client";
+import type { Prisma, RefreshTokens, SystemRole, User } from "@prisma/client";
 import type { cleanData } from "../../interface/user.cleaned.js";
 import type { AuthRepository } from "./auth.repo.js";
 import type { loginType } from "./auth.validations.js";
@@ -15,13 +15,14 @@ export default class PrismaAuthRepository implements AuthRepository {
   }
   async login(
     data: loginType,
-  ): Promise<{ id: number; password: string } | null> {
+  ): Promise<{ id: number,role:SystemRole, password: string } | null> {
     return await prisma.user.findUnique({
       where: {
         email: data.email,
       },
       select: {
         id: true,
+        role:true,
         password: true,
       },
     });

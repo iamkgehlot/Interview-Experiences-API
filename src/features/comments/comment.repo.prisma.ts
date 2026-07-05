@@ -48,4 +48,9 @@ export default class PrismaCommentRepo implements CommentRepo {
       },
     });
   }
+  async findUserIdByExperienceId(
+    experienceId: number,
+  ): Promise<{ userId: number } | null>{
+    return prisma.experience.findFirst({where:{id:experienceId},select:{userId:true}})
+  }
 }

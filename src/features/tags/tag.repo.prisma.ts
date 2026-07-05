@@ -29,12 +29,13 @@ export default class PrismaTagRepo implements TagsRepo {
     return await prisma.tag.findMany();
   }
 
-  async findUserId(tagId: number): Promise<{ createdByUserid: number } | null> {
-    return await prisma.tag.findFirst({
+  async findUserId(tagId: number): Promise<{ userId: number } | null> {
+    const data= await prisma.tag.findFirst({
       where: { id: tagId },
       select: {
         createdByUserid: true,
       },
     });
+    return data?{userId:data.createdByUserid}:null;
   }
 }

@@ -9,10 +9,16 @@ import {
   userIdExperienceBodyValidation,
 } from "./experience.validations.js";
 import { jwtProtect } from "../../middlewares/jwt.js";
+import type ExperienceRepo from "./experience.repo.js";
+import { roleAndAccessCheck } from "../../middlewares/auth.gaurd.js";
+import { SystemRole } from "@prisma/client";
 
 export default class ExperienceRouter implements Routes {
   router = Router();
-  constructor(private experienceController: ExperienceController) {
+  constructor(
+    private experienceController: ExperienceController,
+    private experienceRepo: ExperienceRepo,
+  ) {
     this.initializeRoutes();
   }
 
@@ -21,6 +27,11 @@ export default class ExperienceRouter implements Routes {
       "/users/:userId/experiences",
       zodMiddleware(userIdExperienceBodyValidation),
       jwtProtect,
+      roleAndAccessCheck(
+        [SystemRole.ADMIN],
+        "userId",
+        (id: number) => this.experienceRepo.fetchUserId(id),
+      ),
       this.experienceController.createdExperience,
     );
 
@@ -48,6 +59,11 @@ export default class ExperienceRouter implements Routes {
       "/experiences/:experienceId",
       zodMiddleware(updateExperienceValidation),
       jwtProtect,
+      roleAndAccessCheck(
+        [SystemRole.ADMIN],
+        "experienceId",
+        (id: number) => this.experienceRepo.fetchUserIdByExperienceId(id),
+      ),
       this.experienceController.updateExperience,
     );
 
@@ -55,6 +71,9 @@ export default class ExperienceRouter implements Routes {
       "/experiences/:experienceId",
       zodMiddleware(experienceIdValidation),
       jwtProtect,
+      roleAndAccessCheck([SystemRole.ADMIN], "experienceId", (id: number) =>
+        this.experienceRepo.fetchUserIdByExperienceId(id),
+      ),
       this.experienceController.deleteExperience,
     );
   }
