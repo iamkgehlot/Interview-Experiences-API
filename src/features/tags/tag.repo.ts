@@ -7,5 +7,5 @@ export default interface TagsRepo {
   delete(tagId: number): Promise<Tag | null>;
   findById(tagId: number): Promise<tagsType | null>;
   findAll(): Promise<tagsType[]>;
-  findUserId(tagId:number):Promise<{createdByUserid:number}|null>;
+  findUserId(tagId: number): Promise<{ userId: number } | null>;
 }

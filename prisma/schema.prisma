@@ -20,8 +20,16 @@ enum interviewOutcome{
   NO_RESPONSE  
   WITHDRAWN
   }
+
+  enum SystemRole{
+    ADMIN
+    USER
+  }
+
+//model
 model User{
   id Int @id @default(autoincrement())
+  role SystemRole @default(USER)
   name String
   email String @unique
   password String
@@ -32,6 +40,7 @@ model User{
   tags Tag[]
   experience Experience[]
   comments Comment[]
+  refresh_tokens RefreshTokens[]
 }
 
 model Experience{
@@ -46,7 +55,7 @@ model Experience{
   interviewDate DateTime
   comments Comment[]
   tags Tag[]
-  user User @relation(fields:[userId],references:[id])
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
 }
 
 model Comment{
@@ -54,16 +63,26 @@ model Comment{
   userId Int 
   experienceId Int
   comment String
-  user User @relation(fields:[userId],references:[id])
-  experience Experience @relation(fields:[experienceId],references:[id])
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  experience Experience @relation(fields:[experienceId],references:[id],onDelete:Cascade)
 }
 
 model Tag{
   id Int @id @default(autoincrement())
   tagName String @unique
-  createdByUserid Int
+  createdByUserid Int?
   addedOn DateTime @default(now())
   experience Experience[]
-  user User @relation(fields:[createdByUserid],references:[id])
+  user User? @relation(fields:[createdByUserid],references:[id],onDelete:SetNull)
+}
+
+model RefreshTokens{
+  id Int @id @default(autoincrement())
+  token String @unique
+  userId Int 
+  expiresAt DateTime 
+  createdAt DateTime @default(now())
+  user User @relation(fields:[userId],references:[id],onDelete:Cascade)
+  @@map("refresh_tokens")
 }
 

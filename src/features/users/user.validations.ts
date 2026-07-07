@@ -1,7 +1,10 @@
 import { z } from "zod";
 
 const userIdSchema = z.object({
-  id: z.coerce.number("id in url should be valid positive number").int().positive("id in should be valid positive number"),
+  id: z.coerce
+    .number("id in url should be valid positive number")
+    .int()
+    .positive("id in should be valid positive number"),
 });
 
 const userBodySchema = z.object({
@@ -30,20 +33,26 @@ const userBodySchema = z.object({
     .nonempty("please enter your industry")
     .toLowerCase(),
 });
-const userIdValidation=z.object({
-  params:userIdSchema,
+const userIdValidation = z.object({
+  params: userIdSchema,
 });
-const userBodyValidation=z.object({
-  body:userBodySchema
-})
-
-const updatedUserBodySchema=userBodySchema.partial();
-const updateUserValidation=z.object({
-  body:updatedUserBodySchema,
-  params:userIdSchema
+const userBodyValidation = z.object({
+  body: userBodySchema,
 });
 
+const updatedUserBodySchema = userBodySchema.partial();
+const updateUserValidation = z.object({
+  body: updatedUserBodySchema,
+  params: userIdSchema,
+});
 
 type userType = z.infer<typeof userBodySchema>;
 
-export { updateUserValidation, type userType,userBodyValidation,userIdValidation};
+
+
+export {
+  updateUserValidation,
+  type userType,
+  userBodyValidation,
+  userIdValidation,
+};

@@ -13,7 +13,6 @@
 import z from "zod";
 import { interviewOutcome } from "@prisma/client";
 
-
 const baseExperienceSchema = z.object({
   company: z
     .string()
@@ -25,10 +24,10 @@ const baseExperienceSchema = z.object({
   outcome: z.enum(interviewOutcome),
   content: z
     .string()
-    .min(20)
-    .nonempty("please write full content of atlease 20 words"),
+    .min(100)
+    .nonempty(),
   interviewDate: z.coerce.date(),
-  tagName:z.array(z.string())
+  tagName: z.array(z.string()),
 });
 const paramsUserId = z.object({
   userId: z.coerce.number().int().positive(),
@@ -37,7 +36,6 @@ const paramsExperienceId = z.object({
   experienceId: z.coerce.number().int().positive(),
 });
 
-
 const experienceBodyValidation = z.object({
   body: baseExperienceSchema,
 });
@@ -45,16 +43,16 @@ const experienceIdValidation = z.object({
   params: paramsExperienceId,
 });
 
-const userIdValidation=z.object({
-    params:paramsUserId
+const userIdValidation = z.object({
+  params: paramsUserId,
 });
 
-const userIdExperienceBodyValidation=z.object({
-    body:baseExperienceSchema,
-    params:paramsUserId
-})
+const userIdExperienceBodyValidation = z.object({
+  body: baseExperienceSchema,
+  params: paramsUserId,
+});
 
-const updatedBaseExperienceSchema=baseExperienceSchema.partial();
+const updatedBaseExperienceSchema = baseExperienceSchema.partial();
 const updateExperienceValidation = z.object({
   body: updatedBaseExperienceSchema,
   params: paramsExperienceId,
@@ -68,6 +66,5 @@ export {
   experienceIdValidation,
   updateExperienceValidation,
   userIdExperienceBodyValidation,
-  userIdValidation
-  
+  userIdValidation,
 };

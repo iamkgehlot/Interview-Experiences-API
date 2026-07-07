@@ -1,18 +1,20 @@
 import { Router } from "express";
 import UserController from "./user.controller.js";
 import { zodMiddleware } from "../../middlewares/zod.js";
-import {
-  updateUserValidation,
-
-  userIdValidation,
-} from "./user.validations.js";
+import { updateUserValidation, userIdValidation } from "./user.validations.js";
 import type { Routes } from "../../interface/routes.js";
-import {jwtProtect} from "../../middlewares/jwt.js"; 
+import { jwtProtect } from "../../middlewares/jwt.js";
+import { roleAndAccessCheck } from "../../middlewares/auth.gaurd.js";
+import { SystemRole } from "@prisma/client";
+import type { UserRepository } from "./user.repo.js";
 
 export default class UserRouter implements Routes {
   router = Router();
 
-  constructor(private userController: UserController) {
+  constructor(
+    private userController: UserController,
+    private userRepo: UserRepository,
+  ) {
     this.userRoutes();
   }
 
@@ -23,23 +25,33 @@ export default class UserRouter implements Routes {
     //   this.userController.postedUser,
     // );
 
-
     this.router.get(
-      "/users/:id",jwtProtect,
+      "/users/:id",
       zodMiddleware(userIdValidation),
       jwtProtect,
       this.userController.getUserById,
     );
 
-    this.router.get("/users", jwtProtect,this.userController.getAllUsers);
+    this.router.get("/users", jwtProtect, this.userController.getAllUsers);
 
     this.router.patch(
       "/users/:id",
       zodMiddleware(updateUserValidation),
       jwtProtect,
+            roleAndAccessCheck([SystemRole.ADMIN], "id", (id: number) =>
+        this.userRepo.findUserId(id),
+      ),
+      
       this.userController.updatedUser,
     );
-    
-    this.router.delete("/users/:id",jwtProtect,this.userController.deletedUser)
+
+    this.router.delete(
+      "/users/:id",
+      jwtProtect,
+       roleAndAccessCheck([SystemRole.ADMIN], "id", (id: number) =>
+        this.userRepo.findUserId(id),
+      ),
+      this.userController.deletedUser,
+    );
   }
 }

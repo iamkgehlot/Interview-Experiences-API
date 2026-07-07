@@ -28,20 +28,20 @@ const userBodySchema = z.object({
     .toLowerCase(),
 });
 
-const loginSchema=z.object({
-  email:z.email().nonempty(),
-  password:z.string().min(8).nonempty()
+const loginSchema = z.object({
+  email: z.email().nonempty(),
+  password: z.string().min(8).nonempty(),
 });
 
-const loginValidation=z.object({
-  body:loginSchema
-})
+const loginValidation = z.object({
+  body: loginSchema,
+});
 const userBodyValidation = z.object({
   body: userBodySchema,
 });
 
-type userType=z.infer<typeof userBodySchema>;
+type userType = z.infer<typeof userBodySchema>;
 
-type loginType=z.infer<typeof loginSchema>;
+type loginType = z.infer<typeof loginSchema>;
 
-export { userBodyValidation,type userType,type loginType,loginValidation};
+export { userBodyValidation, type userType, type loginType, loginValidation };

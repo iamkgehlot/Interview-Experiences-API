@@ -1,19 +1,11 @@
 import type { RequestHandler } from "express";
 import type TagService from "./tag.service.js";
-import {
-  AUTH_MESSAGE,
-  HTTP_STATUS,
-  TAG_MESSAGE,
-} from "../../constants/constants.js";
-import AppError from "../../utils/error.handler.js";
+import { HTTP_STATUS, TAG_MESSAGE } from "../../constants/constants.js";
 
 export default class TagController {
   constructor(private tagService: TagService) {}
 
-  created: RequestHandler = async (req, res,next) => {
-    if(!req.userId){
-      return next(new AppError(HTTP_STATUS.FORBIDDEN,AUTH_MESSAGE.TOKEN_NOT_FOUND))
-    }
+  created: RequestHandler = async (req, res) => {
     const createdByUserid = req.userId!;
     const tagName = req.body;
     res.status(HTTP_STATUS.CREATED).json({
@@ -23,18 +15,8 @@ export default class TagController {
     });
   };
 
-  updated: RequestHandler = async (req, res, next) => {
+  updated: RequestHandler = async (req, res) => {
     const tagId = Number(req.params.tagId);
-    const userIdAuth = req.userId;
-    const userIdObj = await this.tagService.findUserId(tagId);
-    if(!userIdObj){
-      return next(new AppError(HTTP_STATUS.NOT_FOUND,TAG_MESSAGE.TAG_FETCH_FAIL(tagId)))
-    }
-    if (userIdObj?.createdByUserid !== userIdAuth) {
-      return next(
-        new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.NOT_PERMITTED),
-      );
-    }
     const tagName = req.body;
     return res.status(HTTP_STATUS.OK).json({
       success: true,
@@ -43,15 +25,9 @@ export default class TagController {
     });
   };
 
-  findById: RequestHandler = async (req, res, next) => {
+  findById: RequestHandler = async (req, res) => {
     const tagId = Number(req.params.tagId);
     const data = await this.tagService.findById(tagId);
-    if (!data) {
-      return next(
-        new AppError(HTTP_STATUS.NOT_FOUND, TAG_MESSAGE.TAG_FETCH_FAIL(tagId)),
-      );
-    }
-
     return res.status(HTTP_STATUS.OK).json({ success: true, data: data });
   };
 
@@ -61,19 +37,10 @@ export default class TagController {
     return res.status(HTTP_STATUS.OK).json({ success: true, data: data });
   };
 
-  deleted: RequestHandler = async (req, res, next) => {
+  deleted: RequestHandler = async (req, res) => {
     const tagId = Number(req.params.tagId);
-    const userIdAuth = req.userId;
-    const userIdObj = await this.tagService.findUserId(tagId);
-    if(!userIdObj){
-      return next(new AppError(HTTP_STATUS.NOT_FOUND,TAG_MESSAGE.TAG_FETCH_FAIL(tagId)))
-    }
-    if (userIdObj?.createdByUserid !== userIdAuth) {
-      return next(
-        new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.NOT_PERMITTED),
-      );
-    }
-    await this.tagService.delete(Number(req.params.tagId));
+
+    await this.tagService.delete(tagId);
     return res.status(HTTP_STATUS.NO_CONTENT).send();
   };
 }

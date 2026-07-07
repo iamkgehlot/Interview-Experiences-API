@@ -14,7 +14,7 @@ export const zodMiddleware = <T extends ZodOut>(schema: ZodType<T>) => {
       });
       req.body = validData.body || req.body;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      req.params = (validData.params as any)|| req.params;
+      req.params = (validData.params as any) || req.params;
 
       next();
     } catch (error) {
@@ -24,8 +24,13 @@ export const zodMiddleware = <T extends ZodOut>(schema: ZodType<T>) => {
           path: data.path.join("."),
         }));
 
-        next( new AppError( HTTP_STATUS.BAD_REQUEST,"validation error",errorMessage,
-        ));
+        next(
+          new AppError(
+            HTTP_STATUS.BAD_REQUEST,
+            "validation error",
+            errorMessage,
+          ),
+        );
       }
     }
   };

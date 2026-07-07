@@ -1,19 +1,14 @@
 import type { RequestHandler } from "express";
 import type CommentService from "./comment.service.js";
-import {
-  AUTH_MESSAGE,
-  COMMENT_MESSAGE,
-  HTTP_STATUS,
-} from "../../constants/constants.js";
-import AppError from "../../utils/error.handler.js";
+import { COMMENT_MESSAGE, HTTP_STATUS } from "../../constants/constants.js";
 
 export default class CommentController {
   constructor(private commentService: CommentService) {}
 
   create: RequestHandler = async (req, res) => {
     const experienceId = Number(req.params.experienceId);
-    const userIdAUth=req.userId;
-    req.body.userId=userIdAUth;
+    const userIdAUth = req.userId;
+    req.body.userId = userIdAUth;
     const comment = req.body;
     return res.status(HTTP_STATUS.CREATED).json({
       success: true,
@@ -38,14 +33,9 @@ export default class CommentController {
     });
   };
 
-  update: RequestHandler = async (req, res, next) => {
+  update: RequestHandler = async (req, res) => {
     const commentId = Number(req.params.commentId);
-    const userIdObj = await this.commentService.findUserid(commentId);
-    if (req.userId !== userIdObj?.userId) {
-      return next(
-        new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.NOT_PERMITTED),
-      );
-    }
+
     const comment = req.body;
     return res.status(HTTP_STATUS.OK).json({
       success: true,
@@ -54,14 +44,9 @@ export default class CommentController {
     });
   };
 
-  delete: RequestHandler = async (req, res, next) => {
+  delete: RequestHandler = async (req, res) => {
     const commentId = Number(req.params.commentId);
-    const userIdObj = await this.commentService.findUserid(commentId);
-    if (req.userId !== userIdObj?.userId) {
-      return next(
-        new AppError(HTTP_STATUS.FORBIDDEN, AUTH_MESSAGE.NOT_PERMITTED),
-      );
-    }
+
     await this.commentService.delete(commentId);
     return res.status(HTTP_STATUS.NO_CONTENT).send();
   };
