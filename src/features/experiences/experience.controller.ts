@@ -38,7 +38,7 @@ export default class ExperienceController {
 
   getExperienceById: RequestHandler = async (req, res) => {
     const experienceId = Number(req.params.experienceId);
-    const data = await this.experienceService.getExperienceByid(experienceId);
+    const data = await this.experienceService.getExperienceById(experienceId);
 
     return res.status(HTTP_STATUS.OK).json({
       success: true,

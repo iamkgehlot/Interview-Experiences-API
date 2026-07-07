@@ -31,25 +31,25 @@ const authRouter = new AuthRouter(authController);
 const repo = new PrismaUserRepository();
 const userService = new UserService(repo);
 const userController = new UserController(userService);
-const userRouter = new UserRouter(userController);
+const userRouter = new UserRouter(userController,repo);
 
 //experiences
 const experienceRepo = new PrismaExperienceRepository();
 const experienceService = new ExperienceService(experienceRepo);
 const experienceController = new ExperienceController(experienceService);
-const experienceRouter = new ExperienceRouter(experienceController);
+const experienceRouter = new ExperienceRouter(experienceController,experienceRepo);
 
 //comment
 const commentRepo = new PrismaCommentRepo();
 const commentService = new CommentService(commentRepo);
 const commentController = new CommentController(commentService);
-const commentRouter = new CommentRouter(commentController);
+const commentRouter = new CommentRouter(commentController,commentRepo);
 
 //tags
 const tagRepo = new PrismaTagRepo();
 const tagService = new TagService(tagRepo);
-const tagControler = new TagController(tagService);
-const tagRouter = new TagRouter(tagControler);
+const tagController = new TagController(tagService);
+const tagRouter = new TagRouter(tagController,tagRepo);
 //app
 const app = new App(
   [authRouter, userRouter, experienceRouter, commentRouter, tagRouter],

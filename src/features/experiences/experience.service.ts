@@ -19,8 +19,8 @@ export default class ExperienceService {
   getAllExperienceByUserId = async (userId: number): Promise<Experience[]> => {
     return await this.experienceRepo.findAllByUserId(userId);
   };
-  getExperienceByid = async (id: number): Promise<Experience | null> => {
-    const data = this.experienceRepo.findById(id);
+  getExperienceById = async (id: number): Promise<Experience | null> => {
+    const data = await this.experienceRepo.findById(id);
     if(!data){
       throw new AppError(HTTP_STATUS.NOT_FOUND,EXPERIENCE_MESSAGES.NO_EXPERIENCE_FOUND_FOR_ID(id));
       

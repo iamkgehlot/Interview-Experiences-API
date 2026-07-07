@@ -5,11 +5,10 @@ import type { AuthRepository } from "./auth.repo.js";
 import type { loginType } from "./auth.validations.js";
 
 export default class PrismaAuthRepository implements AuthRepository {
-  async create(data: cleanData, hashedPassowrd: string): Promise<User> {
+  async create(data: cleanData): Promise<User> {
     return await prisma.user.create({
       data: {
-        ...data,
-        password: hashedPassowrd,
+        ...data
       },
     });
   }

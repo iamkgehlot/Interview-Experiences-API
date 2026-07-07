@@ -27,7 +27,6 @@ export default class UserRouter implements Routes {
 
     this.router.get(
       "/users/:id",
-      jwtProtect,
       zodMiddleware(userIdValidation),
       jwtProtect,
       this.userController.getUserById,
@@ -49,7 +48,7 @@ export default class UserRouter implements Routes {
     this.router.delete(
       "/users/:id",
       jwtProtect,
-            roleAndAccessCheck([SystemRole.ADMIN], "id", (id: number) =>
+       roleAndAccessCheck([SystemRole.ADMIN], "id", (id: number) =>
         this.userRepo.findUserId(id),
       ),
       this.userController.deletedUser,

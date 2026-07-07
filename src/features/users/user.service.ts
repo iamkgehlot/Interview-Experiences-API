@@ -1,39 +1,46 @@
 import type { userType } from "./user.validations.js";
 import type { UserRepository } from "./user.repo.js";
-import type { User } from "@prisma/client";
+
+import type { safeData } from "../../types/user.return.js";
 
 export default class UserService {
   constructor(public userRepo: UserRepository) {}
-  //post user
-  // postUser = async (data: userType): Promise<User> => {
-  //   return await this.userRepo.create(data);
-  // };
 
   //get user by id
-  getUserById = async (id: number): Promise<User | null> => {
-    return await this.userRepo.findById(id);
+  getUserById = async (id: number): Promise<safeData | null> => {
+    const data= await this.userRepo.findById(id);
+    //sanitize outgoing user
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {password,...safeData}=data;
+    return safeData;
   };
 
   //get all users
-  getAllUsers = async (): Promise<User[] | []> => {
-    return await this.userRepo.findAll();
+  getAllUsers = async (): Promise<safeData[] | []> => {
+    const allUsers = await this.userRepo.findAll();
+    //sanitize outgoing user
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const safeData = allUsers.map(({ password, ...rest }) => rest);
+    return safeData;
   };
 
   //update user
-  updateUser = async (id: number, user: userType): Promise<User> => {
-    const safeUser = {
-      name: user.name,
-      email: user.email,
-      age: user.age,
-      yearsOfExperience: user.yearsOfExperience,
-      current_role: user.current_role,
-      industry: user.industry,
-    };
-    return await this.userRepo.update(id, safeUser);
+  updateUser = async (id: number, user: userType): Promise<safeData> => {
+    //sanitize incoming data;
+    const { name, email, age, yearsOfExperience, current_role, industry } =
+      user;
+    const safeUser = {name,email,age,yearsOfExperience,current_role,industry };
+
+    const data = await this.userRepo.update(id, safeUser);
+
+    //sanitze data
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...rest } = data;
+    return rest;
   };
 
   //delete User
-  deleteUser = async (id: number): Promise<User> => {
-    return await this.userRepo.delete(id);
+  deleteUser = async (id: number): Promise<void> => {
+     await this.userRepo.delete(id);
   };
 }

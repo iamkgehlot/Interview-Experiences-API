@@ -35,7 +35,7 @@ export const EXPERIENCE_MESSAGES = Object.freeze({
   NO_EXPERIENCE_FOUND_FOR_ID: (id: number) =>
     `no experience found with given Experience id: ${id}`,
   EXPERIENCE_CREATE: "experience created successfully",
-  EXPERIENCE_UPDATED: "experience updated successfull",
+  EXPERIENCE_UPDATED: "experience updated successfully",
 });
 export const ERROR_MESSAGE = Object.freeze({
   JSON_DATA_ERROR: "json format is not valid",

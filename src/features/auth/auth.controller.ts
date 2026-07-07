@@ -56,7 +56,6 @@ export default class AuthController {
 
   refreshToken: RequestHandler = async (req, res) => {
     const token = req.cookies.token;
-    console.log(token);
     const newTokens = await this.authService.refreshToken(token);
 
     res.cookie("token", newTokens.refreshToken, {
@@ -69,7 +68,7 @@ export default class AuthController {
     res.status(HTTP_STATUS.OK).json({
       success: true,
       message: "refresh done",
-      data: { accesstoken: newTokens.acessToken },
+      data: { accesstoken: newTokens.accessToken },
     });
   };
 }

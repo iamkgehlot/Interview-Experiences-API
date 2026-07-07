@@ -20,10 +20,10 @@ export default class CommentRouter implements Routes {
     private commentController: CommentController,
     private commentRepo: CommentRepo,
   ) {
-    this.initalizeComment();
+    this.initializeComment();
   }
 
-  initalizeComment() {
+  initializeComment() {
     this.router.post(
       "/experiences/:experienceId/comments",
       zodMiddleware(commentBodyExperienceIDValidation),

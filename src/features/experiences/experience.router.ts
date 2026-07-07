@@ -30,7 +30,7 @@ export default class ExperienceRouter implements Routes {
       roleAndAccessCheck(
         [SystemRole.ADMIN],
         "userId",
-        (id: number) => this.experienceRepo.fetchUserId(id),
+        (id: number) =>  this.experienceRepo.fetchUserId(id),
       ),
       this.experienceController.createdExperience,
     );

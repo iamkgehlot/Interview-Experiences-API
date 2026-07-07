@@ -14,7 +14,7 @@ export const errorHandler = (
   if (err?.type === "entity.parse.failed") {
     err = new AppError(HTTP_STATUS.BAD_REQUEST, ERROR_MESSAGE.JSON_DATA_ERROR);
   }
-  if (err instanceof AppError) {
+
     if (
       err instanceof Prisma.PrismaClientInitializationError ||
       err instanceof Prisma.PrismaClientUnknownRequestError
@@ -41,6 +41,7 @@ export const errorHandler = (
         );
       }
     }
+if (err instanceof AppError) {
     const message = err.message || ERROR_MESSAGE.INTERNAL_SERVER_ERROR;
     const statusCode = err.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR;
 
@@ -48,11 +49,11 @@ export const errorHandler = (
       .status(statusCode)
       .json({ success: false, message: message, path: err.errorPathReason });
   }
-  console.log(err);
+  console.log(err.message);
   const message = ERROR_MESSAGE.INTERNAL_SERVER_ERROR;
   const statusCode = HTTP_STATUS.INTERNAL_SERVER_ERROR;
 
   return res
     .status(statusCode)
-    .json({ success: false, message: message, path: err.errorPathReason });
+    .json({ success: false, message: message});
 };

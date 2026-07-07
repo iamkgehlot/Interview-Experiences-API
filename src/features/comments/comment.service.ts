@@ -4,12 +4,12 @@ import type { commentType, updateCommentType } from "./comment.validation.js";
 export default class CommentService {
   constructor(private commentRepo: CommentRepo) {}
 
-  create = async (experieceId: number, comment: commentType) => {
+  create = async (experienceId: number, comment: commentType) => {
     const safeData = {
       userId: comment.userId,
       comment: comment.comment,
     };
-    return this.commentRepo.create(experieceId, safeData);
+    return this.commentRepo.create(experienceId, safeData);
   };
 
   findByExperienceId = async (experienceId: number) => {
