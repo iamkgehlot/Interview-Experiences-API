@@ -73,7 +73,7 @@ model Tag{
   createdByUserid Int?
   addedOn DateTime @default(now())
   experience Experience[]
-  user User @relation(fields:[createdByUserid],references:[id],onDelete:setNull)
+  user User? @relation(fields:[createdByUserid],references:[id],onDelete:SetNull)
 }
 
 model RefreshTokens{
