@@ -70,10 +70,10 @@ model Comment{
 model Tag{
   id Int @id @default(autoincrement())
   tagName String @unique
-  createdByUserid Int
+  createdByUserid Int?
   addedOn DateTime @default(now())
   experience Experience[]
-  user User @relation(fields:[createdByUserid],references:[id],onDelete:Cascade)
+  user User @relation(fields:[createdByUserid],references:[id],onDelete:setNull)
 }
 
 model RefreshTokens{

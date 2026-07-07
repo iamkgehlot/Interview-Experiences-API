@@ -2,7 +2,7 @@ import type { Experience } from "@prisma/client";
 import type ExperienceRepo from "./experience.repo.js";
 import type { experienceType } from "./experience.validations.js";
 import AppError from "../../utils/error.handler.js";
-import { ERROR_MESSAGE, EXPERIENCE_MESSAGES, HTTP_STATUS } from "../../constants/constants.js";
+import { EXPERIENCE_MESSAGES, HTTP_STATUS } from "../../constants/constants.js";
 
 export default class ExperienceService {
   constructor(private experienceRepo: ExperienceRepo) {}
@@ -48,7 +48,5 @@ export default class ExperienceService {
     return await this.experienceRepo.delete(id);
   };
 
-  findUserId = async (experienceId: number) => {
-    return await this.experienceRepo.fetchUserId(experienceId);
-  };
+
 }

@@ -2,6 +2,8 @@ import type { userType } from "./user.validations.js";
 import type { UserRepository } from "./user.repo.js";
 
 import type { safeData } from "../../types/user.return.js";
+import AppError from "../../utils/error.handler.js";
+import {HTTP_STATUS, USER_MESSAGE } from "../../constants/constants.js";
 
 export default class UserService {
   constructor(public userRepo: UserRepository) {}
@@ -9,6 +11,9 @@ export default class UserService {
   //get user by id
   getUserById = async (id: number): Promise<safeData | null> => {
     const data= await this.userRepo.findById(id);
+    if(!data){
+      throw new AppError(HTTP_STATUS.NOT_FOUND,USER_MESSAGE.USER_FETCH_FAIL(id))
+    }
     //sanitize outgoing user
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {password,...safeData}=data;

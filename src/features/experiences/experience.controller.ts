@@ -28,7 +28,7 @@ export default class ExperienceController {
     });
   };
   getAllExperienceByUserId: RequestHandler = async (req, res) => {
-    const userId = req.userId;
+    const userId = Number(req.params.id);
     const data = await this.experienceService.getAllExperienceByUserId(userId!);
     return res.status(HTTP_STATUS.OK).json({
       success: true,

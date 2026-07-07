@@ -33,7 +33,8 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
       data: {
         ...experienceFields,
         tags: tagName
-          ? {
+          ? { 
+              set: [],
               connectOrCreate: tagName.map((tag) => ({
                 where: { tagName: tag },
                 create: {
@@ -88,11 +89,6 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
     });
   }
 
-  async fetchUserId(userId:number):Promise<{userId:number}|null>{
-    const data=await prisma.user.findFirst({where:{id:userId},select:{
-      id:true
-    }})
-     return data?{userId:data.id}:null;
-  };
+ 
    
 }

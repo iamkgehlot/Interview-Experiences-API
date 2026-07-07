@@ -15,5 +15,5 @@ export default interface ExperienceRepo {
   fetchUserIdByExperienceId(
     experienceId: number,
   ): Promise<{ userId: number } | null>;
-  fetchUserId(userId: number): Promise<{ userId: number } | null>;
+
 }

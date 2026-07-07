@@ -10,7 +10,7 @@ import {
   userIdValidation,
 } from "./comment.validation.js";
 import { jwtProtect } from "../../middlewares/jwt.js";
-import { roleAndAccessCheck } from "../../middlewares/auth.guard.js";
+import { roleAndAccessCheck } from "../../middlewares/auth.gaurd.js";
 import { SystemRole } from "@prisma/client";
 import type CommentRepo from "./comment.repo.js";
 
