@@ -64,7 +64,9 @@ export default class ExperienceController {
 
   deleteExperience: RequestHandler = async (req, res) => {
     const experienceId = Number(req.params.experienceId);
-    await this.experienceService.deleteExperience(experienceId);
+    const userId=Number(req.userId);
+    const role=req.role;
+    await this.experienceService.deleteExperience(experienceId,userId,role!);
     return res.status(HTTP_STATUS.NO_CONTENT).send();
   };
 }

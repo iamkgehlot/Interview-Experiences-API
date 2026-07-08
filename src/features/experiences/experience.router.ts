@@ -54,6 +54,9 @@ export default class ExperienceRouter implements Routes {
       "/experiences/:experienceId",
       zodMiddleware(updateExperienceValidation),
       jwtProtect,
+       roleAndAccessCheck([SystemRole.ADMIN], "experienceId", (id: number) =>
+        this.experienceRepo.fetchUserIdByExperienceId(id),
+      ),
       this.experienceController.updateExperience,
     );
 

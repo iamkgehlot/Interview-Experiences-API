@@ -1,4 +1,4 @@
-import type { Experience } from "@prisma/client";
+import {  type Experience } from "@prisma/client";
 import type ExperienceRepo from "./experience.repo.js";
 import type { experienceType } from "./experience.validations.js";
 import AppError from "../../utils/error.handler.js";
@@ -32,6 +32,13 @@ export default class ExperienceService {
     userId: number,
     data: experienceType,
   ): Promise<Experience> => {
+    // const getAuthorId=await this.experienceRepo.fetchUserIdByExperienceId(id);
+    // if(!getAuthorId){
+    //   throw new AppError(HTTP_STATUS.NOT_FOUND,EXPERIENCE_MESSAGES.NO_EXPERIENCE_FOUND_FOR_ID(id));
+    // }
+    // if(userId!==getAuthorId.userId){
+    //   throw new AppError(HTTP_STATUS.UNAUTHORISED,AUTH_MESSAGE.NOT_PERMITTED);
+    // }
     const safeData = {
       company: data.company,
       role: data.role,
@@ -45,6 +52,18 @@ export default class ExperienceService {
     return await this.experienceRepo.update(id, userId, safeData);
   };
   deleteExperience = async (id: number) => {
+    
+    // const getAuthorId=await this.experienceRepo.fetchUserIdByExperienceId(id);
+    // if(!getAuthorId){
+    //   console.log("in no author found")
+    //   throw new AppError(HTTP_STATUS.NOT_FOUND,EXPERIENCE_MESSAGES.NO_EXPERIENCE_FOUND_FOR_ID(id));
+    // }
+    // if(userId!==getAuthorId.userId && !(role===SystemRole.ADMIN)){
+    //   console.log("usrid not equal author")
+    //   throw new AppError(HTTP_STATUS.UNAUTHORISED,AUTH_MESSAGE.NOT_PERMITTED);
+
+    // }
+    // console.log("i skipped all")
     return await this.experienceRepo.delete(id);
   };
 
