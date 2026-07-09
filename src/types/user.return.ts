@@ -1,6 +1,6 @@
 import type { SystemRole } from "@prisma/client";
 
-export type safeData={
+export type SafeUser={
  name: string;
  id: number;
  role: SystemRole;

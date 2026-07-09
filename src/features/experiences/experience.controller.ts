@@ -28,7 +28,7 @@ export default class ExperienceController {
     });
   };
   getAllExperienceByUserId: RequestHandler = async (req, res) => {
-    const userId = Number(req.params.id);
+    const userId = Number(req.params.userId);
     const data = await this.experienceService.getAllExperienceByUserId(userId!);
     return res.status(HTTP_STATUS.OK).json({
       success: true,
@@ -64,9 +64,8 @@ export default class ExperienceController {
 
   deleteExperience: RequestHandler = async (req, res) => {
     const experienceId = Number(req.params.experienceId);
-    const userId=Number(req.userId);
-    const role=req.role;
-    await this.experienceService.deleteExperience(experienceId,userId,role!);
+    
+    await this.experienceService.deleteExperience(experienceId);
     return res.status(HTTP_STATUS.NO_CONTENT).send();
   };
 }
