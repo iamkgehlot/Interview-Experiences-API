@@ -4,17 +4,24 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 import { envConfig } from "../../config/env.config.js";
-import type login from "../../interface/login.service.promise.js";
+
 import { ERROR_MESSAGE, HTTP_STATUS } from "../../constants/constants.js";
 import AppError from "../../utils/error.handler.js";
 import type { StringValue } from "ms";
 import { SystemRole } from "@prisma/client";
-import type { safeData } from "../../types/user.return.js";
+import type { SafeUser } from "../users/user.return.js";
+
+//
+interface login {
+  userId: number;
+  accessToken: string;
+  refreshToken: string;
+}
 
 export default class AuthService {
   constructor(public authRepo: AuthRepository) {}
 
-  register = async (data: userType): Promise<safeData> => {
+  register = async (data: userType): Promise<SafeUser> => {
     const { password : pIncoming, ...cleanData } = data;
     const role=SystemRole.USER;
     

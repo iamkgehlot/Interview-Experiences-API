@@ -2,6 +2,7 @@ import type { RequestHandler } from "express";
 
 import type ExperienceService from "./experience.service.js";
 import { EXPERIENCE_MESSAGES, HTTP_STATUS } from "../../constants/constants.js";
+import type { ExperienceQuery } from "../../types/query.types.js";
 
 export default class ExperienceController {
   constructor(private experienceService: ExperienceService) {}
@@ -20,8 +21,9 @@ export default class ExperienceController {
     });
   };
 
-  getAllExperience: RequestHandler = async (req, res) => {
-    const data = await this.experienceService.getAllExperience();
+  getAllExperience: RequestHandler<unknown,unknown,unknown,ExperienceQuery> = async (req, res) => {
+    const query=req.query;
+    const data = await this.experienceService.getAllExperience(query);
     return res.status(HTTP_STATUS.OK).json({
       success: true,
       data: data,

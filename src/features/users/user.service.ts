@@ -1,7 +1,7 @@
 import type { userType } from "./user.validations.js";
 import type { UserRepository } from "./user.repo.js";
 
-import type { SafeUser } from "../../types/user.return.js";
+import type { SafeUser } from "./user.return.js";
 import AppError from "../../utils/error.handler.js";
 import {HTTP_STATUS, USER_MESSAGE } from "../../constants/constants.js";
 

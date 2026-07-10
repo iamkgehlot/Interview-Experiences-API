@@ -1,6 +1,6 @@
 import type { User } from "@prisma/client";
 import type { userType } from "./user.validations.js";
-import type { SafeUser } from "../../types/user.return.js";
+import type { SafeUser } from "./user.return.js";
 
 export interface UserRepository {
   // create(data: userType): Promise<User>;

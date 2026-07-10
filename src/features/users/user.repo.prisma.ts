@@ -2,7 +2,7 @@ import { type User } from "@prisma/client";
 import type { UserRepository } from "./user.repo.js";
 import type { userType } from "./user.validations.js";
 import { prisma } from "../../config/prisma.js";
-import type { SafeUser } from "../../types/user.return.js";
+import type { SafeUser } from "./user.return.js";
 
 export default class PrismaUserRepository implements UserRepository {
   // async create(data: userType): Promise<User> {

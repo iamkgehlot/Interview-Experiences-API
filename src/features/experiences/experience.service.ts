@@ -3,6 +3,7 @@ import type ExperienceRepo from "./experience.repo.js";
 import type { experienceType } from "./experience.validations.js";
 import AppError from "../../utils/error.handler.js";
 import { EXPERIENCE_MESSAGES, HTTP_STATUS } from "../../constants/constants.js";
+import type { ExperienceQuery } from "../../types/query.types.js";
 
 export default class ExperienceService {
   constructor(private experienceRepo: ExperienceRepo) {}
@@ -13,8 +14,8 @@ export default class ExperienceService {
   ): Promise<Experience> => {
     return this.experienceRepo.create(userId, data);
   };
-  getAllExperience = async (): Promise<Experience[]> => {
-    return this.experienceRepo.findAllExperience();
+  getAllExperience = async (query:ExperienceQuery): Promise<Experience[]> => {
+    return this.experienceRepo.findAllExperience(query);
   };
   getAllExperienceByUserId = async (userId: number): Promise<Experience[]> => {
     return await this.experienceRepo.findAllByUserId(userId);
