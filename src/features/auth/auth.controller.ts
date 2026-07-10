@@ -7,7 +7,6 @@ import {
 import AuthService from "./auth.service.js";
 import { envConfig } from "../../config/env.config.js";
 
-
 export default class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -64,7 +63,7 @@ export default class AuthController {
       secure: envConfig.NODE_ENV === "production",
       maxAge: envConfig.REFRESH_COOKIE_MAXAGE,
     });
-  
+
     res.status(HTTP_STATUS.OK).json({
       success: true,
       message: "refresh done",

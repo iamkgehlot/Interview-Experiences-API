@@ -48,8 +48,6 @@ const updateUserValidation = z.object({
 
 type userType = z.infer<typeof userBodySchema>;
 
-
-
 export {
   updateUserValidation,
   type userType,

@@ -48,5 +48,4 @@ export default class PrismaCommentRepo implements CommentRepo {
       },
     });
   }
- 
 }

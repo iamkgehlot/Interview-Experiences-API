@@ -35,10 +35,8 @@ export default class TagRouter implements Routes {
       "/tags/:tagId",
       zodMiddleware(tagBodyValidation),
       jwtProtect,
-      roleAndAccessCheck(
-        [SystemRole.ADMIN],
-        "tagId",
-        (id) => this.tagRepo.findUserId(id),
+      roleAndAccessCheck([SystemRole.ADMIN], "tagId", (id) =>
+        this.tagRepo.findUserId(id),
       ),
       this.tagControler.updated,
     );

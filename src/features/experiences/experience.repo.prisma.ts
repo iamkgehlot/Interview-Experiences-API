@@ -2,7 +2,8 @@ import { Prisma, type Experience } from "@prisma/client";
 import type ExperienceRepo from "./experience.repo.js";
 import { prisma } from "../../config/prisma.js";
 import { type experienceType } from "./experience.validations.js";
-import type { ExperienceQuery } from "../../types/query.types.js";
+import type { ExperienceQueryValidation } from "./experience.query.validation.js";
+import type { experienceTypes } from "../../types/experience.types.js";
 
 export default class PrismaExperienceRepository implements ExperienceRepo {
   async create(userId: number, data: experienceType): Promise<Experience> {
@@ -50,7 +51,9 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
     });
   }
 
-  async findAllExperience(query: ExperienceQuery): Promise<Experience[]> {
+  async findAllExperience(
+    query: ExperienceQueryValidation,
+  ): Promise<{match:experienceTypes[],totalMatch:number,page:number,limit:number,totalPages:number}> {
     const page = Math.max(1, Number(query.page || "1"));
     const limit = Math.max(1, Number(query.limit || "10"));
     const skip: number = (page - 1) * limit;
@@ -61,11 +64,10 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
       where.userId = Number(query.userId);
     }
 
-
     if (query.tagName) {
       where.tags = {
         some: {
-          tagName:{contains:query.tagName}
+          tagName: { contains: query.tagName,mode:'insensitive' },
         },
       };
     }
@@ -73,7 +75,7 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
     if (query.tagId) {
       where.tags = {
         some: {
-          id:Number(query.tagId) 
+          id: Number(query.tagId),
         },
       };
     }
@@ -88,24 +90,34 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
 
     if (query.search) {
       where.OR = [
-        { company: { contains: query.search } },
-        { role: { contains: query.search } },
-        { content: { contains: query.search } },
+        { company: { contains: query.search, mode: "insensitive" } },
+        { role: { contains: query.search, mode: "insensitive" } },
+        { content: { contains: query.search, mode: "insensitive" } },
       ];
     }
-
-    return await prisma.experience.findMany({
+const [match, totalMatch]=await Promise.all([
+   prisma.experience.findMany({
       where,
       skip,
       take: limit,
-      include:{
-        tags:{
-          select:{
-            tagName:true
-          }
-        }
-      }
-    });
+      
+      include: {
+        tags: {
+          select: {
+            tagName: true,
+          },
+        },
+      },
+    }),
+    prisma.experience.count({
+      where
+      
+    })
+  ]);
+  const totalPages=Math.ceil(totalMatch/(limit||0));
+  const result={match,totalMatch,page,limit,totalPages};
+  console.log(result);
+  return result;
   }
 
   async findAllByUserId(userId: number): Promise<Experience[]> {

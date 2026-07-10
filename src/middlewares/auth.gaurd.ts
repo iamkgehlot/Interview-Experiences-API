@@ -12,7 +12,7 @@ export const roleAndAccessCheck = (
 ) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const reqUserId = req.userId;
-    const reqRole = req.role ;
+    const reqRole = req.role;
 
     if (reqRole === undefined || reqUserId === undefined) {
       throw new AppError(

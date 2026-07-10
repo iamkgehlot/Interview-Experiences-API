@@ -30,6 +30,4 @@ export default class CommentService {
   delete = async (commentId: number) => {
     return await this.commentRepo.delete(commentId);
   };
-
-
 }

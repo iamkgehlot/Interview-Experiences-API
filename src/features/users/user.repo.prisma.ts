@@ -5,9 +5,7 @@ import { prisma } from "../../config/prisma.js";
 import type { SafeUser } from "./user.return.js";
 
 export default class PrismaUserRepository implements UserRepository {
-  // async create(data: userType): Promise<User> {
-  //   return await prisma.user.create({ data });
-  // }
+
 
   async findAll(): Promise<SafeUser[]> {
     return await prisma.user.findMany({
@@ -29,8 +27,8 @@ export default class PrismaUserRepository implements UserRepository {
       where: {
         id,
       },
-      select:{
-         id: true,
+      select: {
+        id: true,
         name: true,
         role: true,
         email: true,
@@ -38,8 +36,7 @@ export default class PrismaUserRepository implements UserRepository {
         yearsOfExperience: true,
         current_role: true,
         industry: true,
-
-      }
+      },
     });
   }
 

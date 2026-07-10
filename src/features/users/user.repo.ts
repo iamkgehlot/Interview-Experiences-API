@@ -8,5 +8,5 @@ export interface UserRepository {
   findById(id: number): Promise<SafeUser | null>;
   update(id: number, data: userType): Promise<SafeUser>;
   delete(id: number): Promise<User>;
-  findUserId(id:number):Promise<{userId:number}|null>
+  findUserId(id: number): Promise<{ userId: number } | null>;
 }

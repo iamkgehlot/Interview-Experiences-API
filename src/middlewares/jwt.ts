@@ -19,10 +19,11 @@ export const jwtProtect: RequestHandler = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, envConfig.JWT_SECRET as string) as {
-      sub: string,role:SystemRole
+      sub: string;
+      role: SystemRole;
     };
     req.userId = Number(decoded.sub);
-    req.role=decoded.role;
+    req.role = decoded.role;
     next();
   } catch {
     return next(

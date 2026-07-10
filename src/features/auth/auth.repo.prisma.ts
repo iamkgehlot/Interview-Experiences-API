@@ -8,20 +8,20 @@ export default class PrismaAuthRepository implements AuthRepository {
   async create(data: cleanData): Promise<User> {
     return await prisma.user.create({
       data: {
-        ...data
+        ...data,
       },
     });
   }
   async login(
     data: loginType,
-  ): Promise<{ id: number,role:SystemRole, password: string } | null> {
+  ): Promise<{ id: number; role: SystemRole; password: string } | null> {
     return await prisma.user.findUnique({
       where: {
         email: data.email,
       },
       select: {
         id: true,
-        role:true,
+        role: true,
         password: true,
       },
     });

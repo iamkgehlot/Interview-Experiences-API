@@ -22,23 +22,20 @@ export default class AuthService {
   constructor(public authRepo: AuthRepository) {}
 
   register = async (data: userType): Promise<SafeUser> => {
-    const { password : pIncoming, ...cleanData } = data;
-    const role=SystemRole.USER;
-    
+    const { password: pIncoming, ...cleanData } = data;
+    const role = SystemRole.USER;
+
     const saltRounds = 10;
     const password = await bcrypt.hash(pIncoming, saltRounds);
 
-    const fullData={role,password,...cleanData};
+    const fullData = { role, password, ...cleanData };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: p, ...user } = await this.authRepo.create(
-      fullData
-    );
+    const { password: p, ...user } = await this.authRepo.create(fullData);
     return user;
   };
 
   login = async (data: loginType): Promise<login> => {
-
     //check login id password in db
     const user = await this.authRepo.login(data);
     if (!user) {
@@ -63,15 +60,15 @@ export default class AuthService {
         expiresIn: envConfig.JWT_EXPIRES_IN,
       },
     );
-    
-    //generate refresh token 
+
+    //generate refresh token
     const refreshToken = jwt.sign(
       { sub: String(user.id), role: user.role },
       envConfig.REFRESH_JWT_SECRET,
       { expiresIn: envConfig.REFRESH_TOKEN_EXPIRES_IN as StringValue },
     );
 
-    //Get exp time of refresh token 
+    //Get exp time of refresh token
     const expTimeObj = jwt.verify(
       refreshToken,
       envConfig.REFRESH_JWT_SECRET,
@@ -96,18 +93,18 @@ export default class AuthService {
   refreshToken = async (
     token: string,
   ): Promise<{ refreshToken: string; accessToken: string }> => {
-
     //get user id and role from incoming refresh token
     const userIdObj = jwt.verify(token, envConfig.REFRESH_JWT_SECRET) as {
-      sub: string,role:SystemRole
+      sub: string;
+      role: SystemRole;
     };
-    
+
     const userId = Number(userIdObj.sub);
-    const role=userIdObj.role;
+    const role = userIdObj.role;
 
     // check if incoming token exists in db
     const oldToken = await this.authRepo.refreshToken(token);
-    
+
     //if not delete all active refresh token of user. forcing him to login again
     if (!oldToken?.token) {
       await this.authRepo.deleteRefreshToken(userId);
@@ -115,17 +112,28 @@ export default class AuthService {
     }
 
     //generate new refresh token if old token is verified
-    const newToken = jwt.sign({ sub: userId,role:role }, envConfig.REFRESH_JWT_SECRET, {
-      expiresIn: envConfig.REFRESH_TOKEN_EXPIRES_IN as StringValue,
-    });
-    const newExpiryDateObj=jwt.verify(newToken,envConfig.REFRESH_JWT_SECRET) as {exp:number};
-    const newExpiryDate=newExpiryDateObj.exp*1000;//
-    
+    const newToken = jwt.sign(
+      { sub: userId, role: role },
+      envConfig.REFRESH_JWT_SECRET,
+      {
+        expiresIn: envConfig.REFRESH_TOKEN_EXPIRES_IN as StringValue,
+      },
+    );
+    const newExpiryDateObj = jwt.verify(
+      newToken,
+      envConfig.REFRESH_JWT_SECRET,
+    ) as { exp: number };
+    const newExpiryDate = newExpiryDateObj.exp * 1000; //
+
     //generate new accesss token
-    const newAccessToken = jwt.sign({ sub: userId ,role:role}, envConfig.JWT_SECRET, {
-      expiresIn: envConfig.JWT_EXPIRES_IN,
-    });
-   
+    const newAccessToken = jwt.sign(
+      { sub: userId, role: role },
+      envConfig.JWT_SECRET,
+      {
+        expiresIn: envConfig.JWT_EXPIRES_IN,
+      },
+    );
+
     //replace new refresh token in db
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const replacedToken = await this.authRepo.replaceRefreshToken(

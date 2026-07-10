@@ -22,10 +22,7 @@ const baseExperienceSchema = z.object({
   roundsCount: z.number().min(1).max(5),
   difficulty: z.number().min(1).max(5),
   outcome: z.enum(interviewOutcome),
-  content: z
-    .string()
-    .min(100)
-    .nonempty(),
+  content: z.string().min(100).nonempty(),
   interviewDate: z.coerce.date(),
   tagName: z.array(z.string()),
 });

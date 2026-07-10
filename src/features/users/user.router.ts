@@ -38,17 +38,17 @@ export default class UserRouter implements Routes {
       "/users/:id",
       zodMiddleware(updateUserValidation),
       jwtProtect,
-            roleAndAccessCheck([SystemRole.ADMIN], "id", (id: number) =>
+      roleAndAccessCheck([SystemRole.ADMIN], "id", (id: number) =>
         this.userRepo.findUserId(id),
       ),
-      
+
       this.userController.updatedUser,
     );
 
     this.router.delete(
       "/users/:id",
       jwtProtect,
-       roleAndAccessCheck([SystemRole.ADMIN], "id", (id: number) =>
+      roleAndAccessCheck([SystemRole.ADMIN], "id", (id: number) =>
         this.userRepo.findUserId(id),
       ),
       this.userController.deletedUser,

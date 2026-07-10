@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, type RequestHandler } from "express";
 import type ExperienceController from "./experience.controller.js";
 import type { Routes } from "../../interface/routes.js";
 import { zodMiddleware } from "../../middlewares/zod.js";
@@ -33,7 +33,7 @@ export default class ExperienceRouter implements Routes {
     this.router.get(
       "/experiences",
       jwtProtect,
-      this.experienceController.getAllExperience,
+      this.experienceController.getAllExperience as unknown as RequestHandler,
     );
 
     this.router.get(
@@ -54,7 +54,7 @@ export default class ExperienceRouter implements Routes {
       "/experiences/:experienceId",
       zodMiddleware(updateExperienceValidation),
       jwtProtect,
-       roleAndAccessCheck([SystemRole.ADMIN], "experienceId", (id: number) =>
+      roleAndAccessCheck([SystemRole.ADMIN], "experienceId", (id: number) =>
         this.experienceRepo.fetchUserIdByExperienceId(id),
       ),
       this.experienceController.updateExperience,

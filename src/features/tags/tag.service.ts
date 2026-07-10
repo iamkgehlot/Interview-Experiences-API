@@ -10,7 +10,7 @@ export default class TagService {
   create = async (createdByUserid: number, tagName: Tag): Promise<tagsType> => {
     return await this.tagRepo.create(createdByUserid, tagName);
   };
-  findById = async (tagId: number):Promise<tagsType> => {
+  findById = async (tagId: number): Promise<tagsType> => {
     const data = await this.tagRepo.findById(tagId);
     if (!data) {
       throw new AppError(

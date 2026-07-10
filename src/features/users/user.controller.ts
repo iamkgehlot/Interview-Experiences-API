@@ -1,9 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import UserService from "./user.service.js";
-import {
-  HTTP_STATUS,
-  USER_MESSAGE,
-} from "../../constants/constants.js";
+import { HTTP_STATUS, USER_MESSAGE } from "../../constants/constants.js";
 import AppError from "../../utils/error.handler.js";
 import { envConfig } from "../../config/env.config.js";
 import { SystemRole } from "@prisma/client";
@@ -63,7 +60,7 @@ export default class UserController {
   deletedUser = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     await this.userService.deleteUser(Number(id));
-    if (id === req.userId){
+    if (id === req.userId) {
       res.cookie("token", "", {
         httpOnly: true,
         maxAge: 0,
