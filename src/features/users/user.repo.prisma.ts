@@ -1,46 +1,34 @@
-import { type User } from "@prisma/client";
 import type { UserRepository } from "./user.repo.js";
 import type { userType } from "./user.validations.js";
 import { prisma } from "../../config/prisma.js";
-import type { SafeUser } from "./user.return.js";
+import type { UserDTOType } from "./user.DTO.js";
+
 
 export default class PrismaUserRepository implements UserRepository {
+  // async create(data: userType): Promise<User> {
+  //   return await prisma.user.create({ data });
+  // }
 
-
-  async findAll(): Promise<SafeUser[]> {
+  async findAll(): Promise<UserDTOType[]> {
     return await prisma.user.findMany({
-      select: {
-        id: true,
-        name: true,
-        role: true,
-        email: true,
-        age: true,
-        yearsOfExperience: true,
-        current_role: true,
-        industry: true,
-      },
+    omit:{
+      password:false
+    }
     });
   }
 
-  async findById(id: number): Promise<SafeUser | null> {
+  async findById(id: number): Promise<UserDTOType | null> {
     return await prisma.user.findFirst({
       where: {
         id,
       },
-      select: {
-        id: true,
-        name: true,
-        role: true,
-        email: true,
-        age: true,
-        yearsOfExperience: true,
-        current_role: true,
-        industry: true,
-      },
+     omit:{
+      password:false
+     }
     });
   }
 
-  async update(id: number, data: userType): Promise<User> {
+  async update(id: number, data: userType): Promise<UserDTOType> {
     return await prisma.user.update({
       where: {
         id,
@@ -49,7 +37,7 @@ export default class PrismaUserRepository implements UserRepository {
     });
   }
 
-  async delete(id: number): Promise<User> {
+  async delete(id: number): Promise<UserDTOType> {
     return await prisma.user.delete({ where: { id } });
   }
 

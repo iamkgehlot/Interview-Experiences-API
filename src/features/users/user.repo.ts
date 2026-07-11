@@ -1,12 +1,13 @@
-import type { User } from "@prisma/client";
-import type { userType } from "./user.validations.js";
-import type { SafeUser } from "./user.return.js";
+
+import type { updatedUserType } from "./user.validations.js";
+
+import type { UserDTOType } from "./user.DTO.js";
 
 export interface UserRepository {
   // create(data: userType): Promise<User>;
-  findAll(): Promise<SafeUser[]>;
-  findById(id: number): Promise<SafeUser | null>;
-  update(id: number, data: userType): Promise<SafeUser>;
-  delete(id: number): Promise<User>;
+  findAll(): Promise<UserDTOType[]>;
+  findById(id: number): Promise<UserDTOType | null>;
+  update(id: number, data: updatedUserType): Promise<UserDTOType>;
+  delete(id: number): Promise<UserDTOType>;
   findUserId(id: number): Promise<{ userId: number } | null>;
 }

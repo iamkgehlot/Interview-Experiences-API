@@ -41,16 +41,21 @@ const userBodyValidation = z.object({
 });
 
 const updatedUserBodySchema = userBodySchema.partial();
+type updatedUserType=z.infer<typeof updatedUserBodySchema>;
 const updateUserValidation = z.object({
   body: updatedUserBodySchema,
   params: userIdSchema,
 });
 
 type userType = z.infer<typeof userBodySchema>;
+ 
 
 export {
+  type updatedUserType,
   updateUserValidation,
   type userType,
   userBodyValidation,
   userIdValidation,
+  userBodySchema,
+  updatedUserBodySchema
 };

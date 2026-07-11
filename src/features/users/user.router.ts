@@ -32,7 +32,7 @@ export default class UserRouter implements Routes {
       this.userController.getUserById,
     );
 
-    this.router.get("/users", jwtProtect, this.userController.getAllUsers);
+    this.router.get("/users", jwtProtect,roleAndAccessCheck([SystemRole.ADMIN]), this.userController.getAllUsers);
 
     this.router.patch(
       "/users/:id",
