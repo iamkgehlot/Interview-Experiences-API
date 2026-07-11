@@ -1,7 +1,7 @@
 
 import type { updatedUserType } from "./user.validations.js";
 
-import type { UserDTOType } from "./user.DTO.js";
+import type { UserDTOType } from "../../types/user.DTO.js";
 
 export interface UserRepository {
   // create(data: userType): Promise<User>;

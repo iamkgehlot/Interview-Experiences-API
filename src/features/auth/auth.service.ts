@@ -1,5 +1,5 @@
 import type { AuthRepository } from "./auth.repo.js";
-import type { loginType, userType } from "./auth.validations.js";
+import { userBodySchema, type loginType, type userType } from "./auth.validations.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -9,7 +9,14 @@ import { ERROR_MESSAGE, HTTP_STATUS } from "../../constants/constants.js";
 import AppError from "../../utils/error.handler.js";
 import type { StringValue } from "ms";
 import { SystemRole } from "@prisma/client";
-import type { SafeUser } from "../users/user.return.js";
+import { userDTO, type UserDTOType } from "../../types/user.DTO.js";
+import { getLogger } from "../../context/logger.js";
+
+const logger=getLogger().child({
+  service:"service",
+  module:"auth"
+
+})
 
 //
 interface login {
@@ -21,18 +28,27 @@ interface login {
 export default class AuthService {
   constructor(public authRepo: AuthRepository) {}
 
-  register = async (data: userType): Promise<SafeUser> => {
-    const { password: pIncoming, ...cleanData } = data;
+  register = async (data: userType): Promise<UserDTOType> => {
+    
+    //sanitizing incoming data here so service layer is not dependent on controller or zodmiddleware
+    const safeData=userBodySchema.parse(data);
+    
+    
+    const { password: pIncoming, ...cleanData } = safeData;
     const role = SystemRole.USER;
 
     const saltRounds = 10;
     const password = await bcrypt.hash(pIncoming, saltRounds);
 
     const fullData = { role, password, ...cleanData };
+    logger.debug({data:fullData},"sanitized data and generated password")
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: p, ...user } = await this.authRepo.create(fullData);
-    return user;
+    const user = await this.authRepo.create(fullData);
+
+    //service layer is independent of incoming data from repo. 
+    //mistaken password leak from repo will be handled below
+    const safeUser = userDTO.parse(user);
+    return safeUser;
   };
 
   login = async (data: loginType): Promise<login> => {

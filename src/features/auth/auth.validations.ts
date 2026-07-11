@@ -40,8 +40,9 @@ const userBodyValidation = z.object({
   body: userBodySchema,
 });
 
+
 type userType = z.infer<typeof userBodySchema>;
 
 type loginType = z.infer<typeof loginSchema>;
 
-export { userBodyValidation, type userType, type loginType, loginValidation };
+export { userBodyValidation, type userType, type loginType, loginValidation ,userBodySchema};

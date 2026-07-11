@@ -1,9 +1,10 @@
-import type { Prisma, RefreshTokens, SystemRole, User } from "@prisma/client";
-import type { cleanData } from "../../interface/user.cleaned.js";
-import type { loginType } from "./auth.validations.js";
+import type { Prisma, RefreshTokens, SystemRole } from "@prisma/client";
+
+import type { loginType, userType } from "./auth.validations.js";
+import type { UserDTOType } from "../../types/user.DTO.js";
 
 export interface AuthRepository {
-  create(data: cleanData): Promise<User>;
+  create(data: userType): Promise<UserDTOType>;
   login(
     data: loginType,
   ): Promise<{ id: number; role: SystemRole; password: string } | null>;

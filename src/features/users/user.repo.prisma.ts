@@ -1,8 +1,7 @@
 import type { UserRepository } from "./user.repo.js";
 import type { userType } from "./user.validations.js";
 import { prisma } from "../../config/prisma.js";
-import type { UserDTOType } from "./user.DTO.js";
-
+import type { UserDTOType } from "../../types/user.DTO.js";
 
 export default class PrismaUserRepository implements UserRepository {
   // async create(data: userType): Promise<User> {
@@ -11,9 +10,9 @@ export default class PrismaUserRepository implements UserRepository {
 
   async findAll(): Promise<UserDTOType[]> {
     return await prisma.user.findMany({
-    omit:{
-      password:true
-    }
+      omit: {
+        password: true,
+      },
     });
   }
 
@@ -22,9 +21,9 @@ export default class PrismaUserRepository implements UserRepository {
       where: {
         id,
       },
-     omit:{
-      password:true
-     }
+      omit: {
+        password: true,
+      },
     });
   }
 
@@ -34,9 +33,9 @@ export default class PrismaUserRepository implements UserRepository {
         id,
       },
       data,
-      omit:{
-        password:true
-      }
+      omit: {
+        password: true,
+      },
     });
   }
 

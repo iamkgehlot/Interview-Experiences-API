@@ -1,7 +1,7 @@
 import type { UserRepository } from "./user.repo.js";
 import AppError from "../../utils/error.handler.js";
 import { HTTP_STATUS, USER_MESSAGE } from "../../constants/constants.js";
-import { userDTO, type UserDTOType } from "./user.DTO.js";
+import { userDTO, type UserDTOType } from "../../types/user.DTO.js";
 import z from "zod";
 import { updatedUserBodySchema, type userType } from "./user.validations.js";
 

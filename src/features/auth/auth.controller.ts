@@ -6,16 +6,24 @@ import {
 } from "../../constants/constants.js";
 import AuthService from "./auth.service.js";
 import { envConfig } from "../../config/env.config.js";
+import { getLogger } from "../../context/logger.js";
+
+const logger=getLogger();
+
 
 export default class AuthController {
   constructor(private authService: AuthService) {}
 
   //register user
   registeredUser: RequestHandler = async (req, res) => {
+    logger.info({reqbody:req.body},"data reached request body")
+    const data=await this.authService.register(req.body)
+    logger.info({data:data},"outgoing data")
+    
     return res.status(HTTP_STATUS.CREATED).json({
       success: true,
       message: USER_MESSAGE.SIGNUP_SUCCESS,
-      data: await this.authService.register(req.body),
+      data: data
     });
   };
 

@@ -1,14 +1,26 @@
 import { prisma } from "../../config/prisma.js";
-import type { Prisma, RefreshTokens, SystemRole, User } from "@prisma/client";
-import type { cleanData } from "../../interface/user.cleaned.js";
+import type { Prisma, RefreshTokens, SystemRole } from "@prisma/client";
 import type { AuthRepository } from "./auth.repo.js";
-import type { loginType } from "./auth.validations.js";
+import type { loginType, userType } from "./auth.validations.js";
+import type { UserDTOType } from "../../types/user.DTO.js";
+import { getLogger } from "../../context/logger.js";
+
+
+const logger=getLogger().child({
+  service:"service",
+  module:"auth"
+
+})
 
 export default class PrismaAuthRepository implements AuthRepository {
-  async create(data: cleanData): Promise<User> {
+  async create(data: userType): Promise<UserDTOType> {
+    logger.info({data:data},"data in db layer")
     return await prisma.user.create({
       data: {
         ...data,
+      },
+      omit: {
+        password: true,
       },
     });
   }
