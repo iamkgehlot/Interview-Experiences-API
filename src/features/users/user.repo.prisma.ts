@@ -12,7 +12,7 @@ export default class PrismaUserRepository implements UserRepository {
   async findAll(): Promise<UserDTOType[]> {
     return await prisma.user.findMany({
     omit:{
-      password:false
+      password:true
     }
     });
   }
@@ -23,7 +23,7 @@ export default class PrismaUserRepository implements UserRepository {
         id,
       },
      omit:{
-      password:false
+      password:true
      }
     });
   }
@@ -34,6 +34,9 @@ export default class PrismaUserRepository implements UserRepository {
         id,
       },
       data,
+      omit:{
+        password:true
+      }
     });
   }
 

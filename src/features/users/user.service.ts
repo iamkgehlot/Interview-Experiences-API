@@ -33,7 +33,7 @@ export default class UserService {
 
   //update user
   updateUser = async (id: number, user: userType): Promise<UserDTOType> => {
-    //sanitize incoming data;
+    //sanitize incoming data;//making service layer independent of controller
     const safeUser=  updatedUserBodySchema.parse(user);
 
     const data = await this.userRepo.update(id, safeUser);
