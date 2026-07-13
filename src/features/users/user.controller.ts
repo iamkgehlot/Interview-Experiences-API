@@ -3,8 +3,11 @@ import UserService from "./user.service.js";
 import { HTTP_STATUS, USER_MESSAGE } from "../../constants/constants.js";
 import AppError from "../../utils/error.handler.js";
 import { envConfig } from "../../config/env.config.js";
-import { SystemRole } from "@prisma/client";
-
+import { getLogger } from "../../context/logger.js";
+const logger = getLogger().child({
+  module: "user",
+  service: "service",
+});
 export default class UserController {
   constructor(private userService: UserService) {}
 
@@ -24,10 +27,12 @@ export default class UserController {
     const id = Number(req.params.id);
     const data = await this.userService.getUserById(id);
     if (!data) {
+      logger.warn({ userid: id }, "user not found");
       return next(
         new AppError(HTTP_STATUS.NOT_FOUND, USER_MESSAGE.USER_FETCH_FAIL(id)),
       );
     }
+    logger.info({ userid: id }, "user logged in");
     return res.status(HTTP_STATUS.OK).json({
       success: true,
       data: data,
@@ -49,6 +54,7 @@ export default class UserController {
     const id = Number(req.params.id);
     const data = req.body;
     const updatedUser = await this.userService.updateUser(id, data);
+    logger.info({ userid: id }, "user updated successfully");
     return res.status(HTTP_STATUS.OK).json({
       success: true,
       message: USER_MESSAGE.UPDATE_USER_SUCCESS(id),
@@ -60,6 +66,7 @@ export default class UserController {
   deletedUser = async (req: Request, res: Response) => {
     const id = Number(req.params.id);
     await this.userService.deleteUser(Number(id));
+    logger.info({ userid: id }, "user deleted successfully");
     if (id === req.userId) {
       res.cookie("token", "", {
         httpOnly: true,

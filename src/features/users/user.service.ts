@@ -4,7 +4,11 @@ import { HTTP_STATUS, USER_MESSAGE } from "../../constants/constants.js";
 import { userDTO, type UserDTOType } from "../../types/user.DTO.js";
 import z from "zod";
 import { updatedUserBodySchema, type userType } from "./user.validations.js";
-
+import { getLogger } from "../../context/logger.js";
+const logger=()=>getLogger().child({
+  module:"user",
+  service:"service"
+})
 export default class UserService {
   constructor(public userRepo: UserRepository) {}
 
@@ -12,11 +16,13 @@ export default class UserService {
   getUserById = async (id: number): Promise<UserDTOType | null> => {
     const data = await this.userRepo.findById(id);
     if (!data) {
+      logger().warn({userId:id},"no user found for given id")
       throw new AppError(
         HTTP_STATUS.NOT_FOUND,
         USER_MESSAGE.USER_FETCH_FAIL(id),
       );
     };
+    logger().info({userId:id},"user fetched successfully")
     const safeData=userDTO.parse(data);
     return safeData;
   };
@@ -25,9 +31,12 @@ export default class UserService {
   getAllUsers = async (): Promise<UserDTOType[] | []> => {
     const allUsers = await this.userRepo.findAll();
     if(allUsers.length===0){
+      logger().info("0 user fetched")
       return [];
     }
     const parseAllUsers=z.array(userDTO).parse(allUsers);
+    logger().info("all user fetched successfully")
+
     return parseAllUsers;
   };
 
@@ -39,12 +48,13 @@ export default class UserService {
     const data = await this.userRepo.update(id, safeUser);
     const safeData=userDTO.parse(data);
 
-
+    logger().info({userId:id},"user updated successfully")
     return safeData;
   };
 
   //delete User
   deleteUser = async (id: number): Promise<void> => {
+    logger().info({userId:id},"user deleted successfully");
     await this.userRepo.delete(id);
   };
 }

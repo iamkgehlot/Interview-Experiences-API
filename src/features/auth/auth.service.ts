@@ -1,5 +1,9 @@
 import type { AuthRepository } from "./auth.repo.js";
-import { userBodySchema, type loginType, type userType } from "./auth.validations.js";
+import {
+  userBodySchema,
+  type loginType,
+  type userType,
+} from "./auth.validations.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -12,12 +16,6 @@ import { SystemRole } from "@prisma/client";
 import { userDTO, type UserDTOType } from "../../types/user.DTO.js";
 import { getLogger } from "../../context/logger.js";
 
-const logger=getLogger().child({
-  service:"service",
-  module:"auth"
-
-})
-
 //
 interface login {
   userId: number;
@@ -25,15 +23,19 @@ interface login {
   refreshToken: string;
 }
 
+const logger=() => getLogger().child({
+    service: "service",
+    module: "auth",
+  });
+
 export default class AuthService {
+  
   constructor(public authRepo: AuthRepository) {}
 
   register = async (data: userType): Promise<UserDTOType> => {
-    
     //sanitizing incoming data here so service layer is not dependent on controller or zodmiddleware
-    const safeData=userBodySchema.parse(data);
-    
-    
+    const safeData = userBodySchema.parse(data);
+
     const { password: pIncoming, ...cleanData } = safeData;
     const role = SystemRole.USER;
 
@@ -41,13 +43,13 @@ export default class AuthService {
     const password = await bcrypt.hash(pIncoming, saltRounds);
 
     const fullData = { role, password, ...cleanData };
-    logger.debug({data:fullData},"sanitized data and generated password")
 
     const user = await this.authRepo.create(fullData);
 
-    //service layer is independent of incoming data from repo. 
+    //service layer is independent of incoming data from repo.
     //mistaken password leak from repo will be handled below
     const safeUser = userDTO.parse(user);
+    logger().info({ userId: safeUser.id }, "user registered successfully");
     return safeUser;
   };
 
@@ -55,6 +57,7 @@ export default class AuthService {
     //check login id password in db
     const user = await this.authRepo.login(data);
     if (!user) {
+      logger().warn({ user: data.email }, "invalid user credentials");
       throw new AppError(
         HTTP_STATUS.UNAUTHORISED,
         ERROR_MESSAGE.INVALID_CREDENTIALS,
@@ -62,6 +65,7 @@ export default class AuthService {
     }
     const result = await bcrypt.compare(data.password, user.password);
     if (!result) {
+      logger().warn({ userEmail: data.email }, "invalid user credentials");
       throw new AppError(
         HTTP_STATUS.UNAUTHORISED,
         ERROR_MESSAGE.INVALID_CREDENTIALS,
@@ -98,6 +102,7 @@ export default class AuthService {
       refreshToken,
       expTime,
     );
+    logger().info({ userId: user.id }, "logged in successfully");
 
     return {
       userId: user.id,
@@ -124,6 +129,7 @@ export default class AuthService {
     //if not delete all active refresh token of user. forcing him to login again
     if (!oldToken?.token) {
       await this.authRepo.deleteRefreshToken(userId);
+      logger().warn({ userId: userId }, "refresh token mismatch detected");
       throw new AppError(HTTP_STATUS.FORBIDDEN, "security breach");
     }
 
@@ -157,11 +163,13 @@ export default class AuthService {
       newToken,
       new Date(newExpiryDate),
     );
+    logger().info({ userId: userId }, "user logged in successfully");
     return { refreshToken: newToken, accessToken: newAccessToken };
   };
 
   logOut = async (token: string): Promise<number> => {
     const logoutUser = await this.authRepo.logOut(token);
+    logger().info({ userId: logoutUser.id }, "user logged out from system");
     return logoutUser.id;
   };
 }

@@ -8,26 +8,31 @@ import AuthService from "./auth.service.js";
 import { envConfig } from "../../config/env.config.js";
 import { getLogger } from "../../context/logger.js";
 
-const logger=getLogger();
+ const logger=() => getLogger().child({
+    service: "controller",
+    module: "auth",
+  });
 
 
 export default class AuthController {
+ 
   constructor(private authService: AuthService) {}
 
   //register user
   registeredUser: RequestHandler = async (req, res) => {
-    logger.info({reqbody:req.body},"data reached request body")
-    const data=await this.authService.register(req.body)
-    logger.info({data:data},"outgoing data")
-    
+    logger().debug({ reqbody: req.body }, "data reached request body");
+    const data = await this.authService.register(req.body);
+    logger.debug({ data: data }, "outgoing data");
+
     return res.status(HTTP_STATUS.CREATED).json({
       success: true,
       message: USER_MESSAGE.SIGNUP_SUCCESS,
-      data: data
+      data: data,
     });
   };
 
   loggedInUser: RequestHandler = async (req, res) => {
+    logger().debug({ data: req.body }, "login data submitted by user");
     const { userId, accessToken, refreshToken } = await this.authService.login(
       req.body,
     );

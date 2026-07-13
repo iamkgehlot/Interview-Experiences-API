@@ -7,15 +7,15 @@ import { getLogger } from "../../context/logger.js";
 
 
 const logger=getLogger().child({
-  service:"service",
+  service:"repo",
   module:"auth"
 
 })
 
 export default class PrismaAuthRepository implements AuthRepository {
   async create(data: userType): Promise<UserDTOType> {
-    logger.info({data:data},"data in db layer")
-    return await prisma.user.create({
+    
+    const postedData= await prisma.user.create({
       data: {
         ...data,
       },
@@ -23,6 +23,8 @@ export default class PrismaAuthRepository implements AuthRepository {
         password: true,
       },
     });
+    logger.debug({data:postedData},"data out of db layer")
+    return postedData;
   }
   async login(
     data: loginType,

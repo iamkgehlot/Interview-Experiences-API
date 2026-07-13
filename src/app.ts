@@ -8,9 +8,14 @@ import path from "path";
 import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
 import { httpLoggerMiddleware } from "./middlewares/http.logger.js";
+import { getLogger } from "./context/logger.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const logger=()=>getLogger().child({
+  service:"app-js",
+  module:"root"
+})
 
 export default class App {
   private app: Application;
@@ -46,12 +51,12 @@ export default class App {
   public async listen() {
     try {
       await prisma.$connect();
-      console.log("Success: Connected to Database");
+      logger().info("connected to server")
       this.app.listen(this.port, () => {
-        console.log(`Server is spining at port ${this.port}`);
+       logger().info(`Server is spining at port ${this.port}`);
       });
     } catch {
-      console.log("Critical: there is a issue with Database connection");
+      logger().fatal("Critical: there is a issue with Database connection");
       process.exit(1);
     }
   }
