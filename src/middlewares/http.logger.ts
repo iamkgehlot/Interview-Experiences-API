@@ -16,7 +16,7 @@ const pinoMiddleaware = pinoHttp({
       remoteAddress: req.remoteAddress,
     }),
     res: (res) => ({
-      statuCode: res.statusCode,
+      statusCode: res.statusCode,
     }),
   },
   //generate reqId

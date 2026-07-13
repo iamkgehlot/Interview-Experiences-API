@@ -18,7 +18,7 @@ export default class TagService {
   findById = async (tagId: number): Promise<tagsType> => {
     const data = await this.tagRepo.findById(tagId);
     if (!data) {
-      logger().warn({ tagId: tagId }, "tag fetch unsuccessfull");
+      
       throw new AppError(
         HTTP_STATUS.NOT_FOUND,
         TAG_MESSAGE.TAG_FETCH_FAIL(tagId),

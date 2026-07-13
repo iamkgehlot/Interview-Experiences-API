@@ -116,7 +116,6 @@ const [match, totalMatch]=await Promise.all([
   ]);
   const totalPages=Math.ceil(totalMatch/(limit||0));
   const result={match,totalMatch,page,limit,totalPages};
-  console.log(result);
   return result;
   }
 

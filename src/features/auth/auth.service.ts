@@ -23,13 +23,13 @@ interface login {
   refreshToken: string;
 }
 
-const logger=() => getLogger().child({
+const logger = () =>
+  getLogger().child({
     service: "service",
     module: "auth",
   });
 
 export default class AuthService {
-  
   constructor(public authRepo: AuthRepository) {}
 
   register = async (data: userType): Promise<UserDTOType> => {
@@ -57,7 +57,6 @@ export default class AuthService {
     //check login id password in db
     const user = await this.authRepo.login(data);
     if (!user) {
-      logger().warn({ user: data.email }, "invalid user credentials");
       throw new AppError(
         HTTP_STATUS.UNAUTHORISED,
         ERROR_MESSAGE.INVALID_CREDENTIALS,
@@ -65,7 +64,6 @@ export default class AuthService {
     }
     const result = await bcrypt.compare(data.password, user.password);
     if (!result) {
-      logger().warn({ userEmail: data.email }, "invalid user credentials");
       throw new AppError(
         HTTP_STATUS.UNAUTHORISED,
         ERROR_MESSAGE.INVALID_CREDENTIALS,
@@ -129,7 +127,7 @@ export default class AuthService {
     //if not delete all active refresh token of user. forcing him to login again
     if (!oldToken?.token) {
       await this.authRepo.deleteRefreshToken(userId);
-      logger().warn({ userId: userId }, "refresh token mismatch detected");
+
       throw new AppError(HTTP_STATUS.FORBIDDEN, "security breach");
     }
 

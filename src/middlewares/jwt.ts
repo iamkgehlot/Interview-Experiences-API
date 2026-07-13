@@ -4,11 +4,8 @@ import { AUTH_MESSAGE, HTTP_STATUS } from "../constants/constants.js";
 import jwt from "jsonwebtoken";
 import { envConfig } from "../config/env.config.js";
 import type { SystemRole } from "@prisma/client";
-import { getLogger } from "../context/logger.js";
-const logger = ()=>getLogger().child({
-    module: "middleware",
-    service: "jwt.ts",
-  });
+
+
 export const jwtProtect: RequestHandler = (req, res, next) => {
   
 
@@ -18,7 +15,7 @@ export const jwtProtect: RequestHandler = (req, res, next) => {
   }
 
   if (!token) {
-    logger().warn("access token not found with the request");
+   
     return next(
       new AppError(HTTP_STATUS.UNAUTHORISED, AUTH_MESSAGE.TOKEN_NOT_FOUND),
     );
@@ -32,11 +29,10 @@ export const jwtProtect: RequestHandler = (req, res, next) => {
 
     req.userId = Number(decoded.sub);
     req.role = decoded.role;
-    logger().info({ userid: req.userId }, "access token verified successfully");
-
+    
     next();
   } catch {
-    logger().warn("access token is invalid");
+  
     return next(
       new AppError(HTTP_STATUS.UNAUTHORISED, AUTH_MESSAGE.INVALID_TOKEN),
     );

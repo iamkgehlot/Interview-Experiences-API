@@ -53,7 +53,7 @@ export const errorHandler = (
     }
   }
   if (err instanceof AppError) {
-    logger().warn({ error: err }, "AppError error occurred");
+    logger().warn({ error: err.message }, "AppError error occurred");
     const message = err.message || ERROR_MESSAGE.INTERNAL_SERVER_ERROR;
     const statusCode = err.statusCode || HTTP_STATUS.INTERNAL_SERVER_ERROR;
 
@@ -61,7 +61,7 @@ export const errorHandler = (
       .status(statusCode)
       .json({ success: false, message: message, path: err.errorPathReason });
   }
-  logger().error({ error: err }, "unknown error occurred");
+  logger().error({ error: err.message }, "unknown error occurred");
   const message = ERROR_MESSAGE.INTERNAL_SERVER_ERROR;
   const statusCode = HTTP_STATUS.INTERNAL_SERVER_ERROR;
 

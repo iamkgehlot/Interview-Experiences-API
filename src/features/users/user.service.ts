@@ -16,7 +16,7 @@ export default class UserService {
   getUserById = async (id: number): Promise<UserDTOType | null> => {
     const data = await this.userRepo.findById(id);
     if (!data) {
-      logger().warn({userId:id},"no user found for given id")
+      
       throw new AppError(
         HTTP_STATUS.NOT_FOUND,
         USER_MESSAGE.USER_FETCH_FAIL(id),

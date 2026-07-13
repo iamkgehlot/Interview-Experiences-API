@@ -20,10 +20,7 @@ export default class AuthController {
 
   //register user
   registeredUser: RequestHandler = async (req, res) => {
-    logger().debug({ reqbody: req.body }, "data reached request body");
     const data = await this.authService.register(req.body);
-    logger.debug({ data: data }, "outgoing data");
-
     return res.status(HTTP_STATUS.CREATED).json({
       success: true,
       message: USER_MESSAGE.SIGNUP_SUCCESS,

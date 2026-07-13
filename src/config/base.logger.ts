@@ -26,7 +26,8 @@ const baseLogger = pino({
       "password",
       "req.body.data.password",
       "reqbody.password",
-      "data.password"
+      "data.password",
+      "body.password"
     ],
     censor: "[Reducted-Security Compliance]",
 

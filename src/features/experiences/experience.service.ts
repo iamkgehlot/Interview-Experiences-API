@@ -46,10 +46,7 @@ export default class ExperienceService {
   getExperienceById = async (id: number): Promise<Experience | null> => {
     const data = await this.experienceRepo.findById(id);
     if (!data) {
-      logger().warn(
-        { experienceId: id },
-        "no experience available for given experience id",
-      );
+      
       throw new AppError(
         HTTP_STATUS.NOT_FOUND,
         EXPERIENCE_MESSAGES.NO_EXPERIENCE_FOUND_FOR_ID(id),

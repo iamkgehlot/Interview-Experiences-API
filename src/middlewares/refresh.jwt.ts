@@ -3,16 +3,13 @@ import AppError from "../utils/error.handler.js";
 import { AUTH_MESSAGE, HTTP_STATUS } from "../constants/constants.js";
 import { envConfig } from "../config/env.config.js";
 import jwt from "jsonwebtoken";
-import { getLogger } from "../context/logger.js";
-  const logger=()=>getLogger().child({
-  module:"middleware",
-  service:"refresh.jwt.ts"
-})
+
+
 
 export const refreshTokenCheck: RequestHandler = (req, res, next) => {
 
   if (!req.cookies?.token) {
-    logger().warn("refresh token not found with request")
+
     return next(
       new AppError(HTTP_STATUS.UNAUTHORISED, AUTH_MESSAGE.TOKEN_NOT_FOUND),
     );
@@ -21,9 +18,9 @@ export const refreshTokenCheck: RequestHandler = (req, res, next) => {
     const token = req.cookies.token;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const verified = jwt.verify(token, envConfig.REFRESH_JWT_SECRET);
-    logger().info("refresh token verified successfully")
+
   } catch {
-    logger().warn("refresh token is invalid")
+
     return next(
       new AppError(HTTP_STATUS.UNAUTHORISED, AUTH_MESSAGE.INVALID_TOKEN),
     );
