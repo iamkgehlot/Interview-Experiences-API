@@ -17,6 +17,7 @@ export default class TagController {
 
   updated: RequestHandler = async (req, res) => {
     const tagId = Number(req.params.tagId);
+  
     const tagName = req.body;
     return res.status(HTTP_STATUS.OK).json({
       success: true,
