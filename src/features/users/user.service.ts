@@ -3,7 +3,7 @@ import AppError from "../../utils/error.handler.js";
 import { HTTP_STATUS, USER_MESSAGE } from "../../constants/constants.js";
 import { userDTO, type UserDTOType } from "../../types/user.DTO.js";
 import z from "zod";
-import { updatedUserBodySchema, type userType } from "./user.validations.js";
+import { updatedUserBodySchema, type updatedUserType } from "./user.validations.js";
 import { getLogger } from "../../context/logger.js";
 const logger=()=>getLogger().child({
   module:"user",
@@ -41,7 +41,7 @@ export default class UserService {
   };
 
   //update user
-  updateUser = async (id: number, user: userType): Promise<UserDTOType> => {
+  updateUser = async (id: number, user: updatedUserType): Promise<UserDTOType> => {
     //sanitize incoming data;//making service layer independent of controller
     const safeUser=  updatedUserBodySchema.parse(user);
 
