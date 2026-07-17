@@ -1,5 +1,5 @@
 import type { Experience } from "@prisma/client";
-import type { experienceType } from "./experience.validations.js";
+import type { experienceType, updateExperienceType } from "./experience.validations.js";
 import type { ExperienceQueryValidation } from "./experience.query.validation.js";
 import type { experienceTypes } from "../../types/experience.types.js";
 
@@ -23,10 +23,10 @@ export default interface ExperienceRepo {
   update(
     id: number,
     userId: number,
-    experience: experienceType,
+    experience: updateExperienceType,
   ): Promise<Experience>;
 
-  delete(id: number): Promise<Experience>;
+  delete(id: number): Promise<void>;
 
   fetchUserIdByExperienceId(
     experienceId: number,

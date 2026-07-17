@@ -56,12 +56,15 @@ const updateExperienceValidation = z.object({
 });
 
 type experienceType = z.infer<typeof baseExperienceSchema>;
+type updateExperienceType=z.infer<typeof updatedBaseExperienceSchema>
 
 export {
   type experienceType,
+  type updateExperienceType,
   experienceBodyValidation,
   experienceIdValidation,
   updateExperienceValidation,
+  updatedBaseExperienceSchema,
   userIdExperienceBodyValidation,
   userIdValidation,
 };

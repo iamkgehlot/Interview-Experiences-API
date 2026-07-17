@@ -1,7 +1,7 @@
 import { Prisma, type Experience } from "@prisma/client";
 import type ExperienceRepo from "./experience.repo.js";
 import { prisma } from "../../config/prisma.js";
-import { type experienceType } from "./experience.validations.js";
+import { type experienceType, type updateExperienceType } from "./experience.validations.js";
 import type { ExperienceQueryValidation } from "./experience.query.validation.js";
 import type { experienceTypes } from "../../types/experience.types.js";
 
@@ -28,13 +28,13 @@ export default class PrismaExperienceRepository implements ExperienceRepo {
   async update(
     id: number,
     userId: number,
-    data: experienceType,
+    data: updateExperienceType,
   ): Promise<Experience> {
     const { tagName, ...experienceFields } = data;
     return await prisma.experience.update({
       where: { id },
       data: {
-        ...experienceFields,
+        experienceFields,
         tags: tagName
           ? {
               set: [],
@@ -145,14 +145,14 @@ const [match, totalMatch]=await Promise.all([
     });
   }
 
-  async delete(id: number): Promise<Experience> {
-    return await prisma.experience.delete({ where: { id } });
+  async delete(id: number): Promise<void> {
+     await prisma.experience.delete({ where: { id } });
   }
 
   async fetchUserIdByExperienceId(
     experienceId: number,
-  ): Promise<{ userId: number } | null> {
-    return await prisma.experience.findFirst({
+  ): Promise<{userId:number}|null> {
+     return await prisma.experience.findFirst({
       where: { id: experienceId },
       select: {
         userId: true,
