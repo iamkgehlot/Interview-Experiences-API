@@ -78,7 +78,9 @@ export default class PrismaAuthRepository implements AuthRepository {
       },
     });
   }
-  async logOut(token: string): Promise<RefreshTokens> {
-    return prisma.refreshTokens.delete({ where: { token } });
+  async logOut(token: string): Promise<{userId:number}> {
+    return prisma.refreshTokens.delete({ where: { token },select:{
+      userId:true
+    } });
   }
 }

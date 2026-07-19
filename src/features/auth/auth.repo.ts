@@ -20,5 +20,5 @@ export interface AuthRepository {
     token: string,
     expiresAt: Date,
   ): Promise<RefreshTokens>;
-  logOut(token: string): Promise<RefreshTokens>;
+  logOut(token: string):Promise<{userId:number}>;
 }

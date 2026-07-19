@@ -167,7 +167,7 @@ export default class AuthService {
 
   logOut = async (token: string): Promise<number> => {
     const logoutUser = await this.authRepo.logOut(token);
-    logger().info({ userId: logoutUser.id }, "user logged out from system");
-    return logoutUser.id;
+    logger().info({ userId: logoutUser.userId }, "user logged out from system");
+    return logoutUser.userId;
   };
 }
