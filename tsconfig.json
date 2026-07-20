@@ -10,7 +10,7 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "target": "esnext",
-    "types": ["jest","node"],
+    "types": ["node", "jest", "@quramy/jest-prisma"],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],

@@ -21,6 +21,8 @@ import AuthService from "./features/auth/auth.service.js";
 import AuthController from "./features/auth/auth.controller.js";
 import AuthRouter from "./features/auth/auth.router.js";
 
+
+export default function createApp(port?:number){
 //auth
 const authRepo = new PrismaAuthRepository();
 const authService = new AuthService(authRepo);
@@ -54,8 +56,14 @@ const tagService = new TagService(tagRepo);
 const tagController = new TagController(tagService);
 const tagRouter = new TagRouter(tagController, tagRepo);
 //app
-const app = new App(
+return new App(
   [authRouter, userRouter, experienceRouter, commentRouter, tagRouter],
-  envConfig.PORT,
-);
-app.listen();
+  port??envConfig.PORT,
+);}
+
+if(process.env.NODE_ENV!=="test")
+{
+
+  const app=createApp(envConfig.PORT)
+  app.listen();
+}
