@@ -33,7 +33,6 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@quramy/jest-prisma": "^1.8.2",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
@@ -42,6 +41,7 @@
     "@types/node": "^26.1.1",
     "@types/pino-http": "^5.8.4",
     "@types/supertest": "^7.2.1",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^10.5.0",
     "globals": "^17.7.0",
     "jest": "^30.4.2",

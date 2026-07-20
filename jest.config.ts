@@ -6,7 +6,7 @@ dotenv.config({ path: "./.env.test" });
 
 const config: JestConfigWithTsJest = {
   preset: "ts-jest",
-  testEnvironment: "@quramy/jest-prisma/environment",
+  testEnvironment: "node",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",

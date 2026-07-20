@@ -8,7 +8,7 @@ export function accessTokenGenerator(userid: number, role: string) {
   const token = jwt.sign({ sub: userid, role: role }, accessSecret, {
     expiresIn: exp,
   });
-  return `token=${token}`;
+  return token;
 }
 
 export function refreshTokenGenerator(userId: number, role: string) {
@@ -17,5 +17,6 @@ export function refreshTokenGenerator(userId: number, role: string) {
   const token = jwt.sign({ sub: userId, role: role }, refreshSecret, {
     expiresIn: exp as StringValue,
   });
-  return `token=${token}`;
+
+  return token;
 }
