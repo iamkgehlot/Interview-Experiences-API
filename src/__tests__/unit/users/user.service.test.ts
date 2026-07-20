@@ -1,8 +1,8 @@
-import UserService from "./user.service.js";
-import type { UserRepository } from "./user.repo.js";
+import UserService from "../../../features/users/user.service.js";
+import type { UserRepository } from "../../../features/users/user.repo.js";
 import { SystemRole } from "@prisma/client";
 
-jest.mock("../../context/logger.js", () => ({
+jest.mock("../../../context/logger.js", () => ({
   getLogger: jest.fn().mockReturnValue({
     child: jest.fn().mockReturnValue({
       info: jest.fn(),

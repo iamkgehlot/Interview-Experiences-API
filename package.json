@@ -7,10 +7,15 @@
     "dev": "tsx watch ./src/index.ts",
     "build": "prisma generate && tsc",
     "start": "node dist/index.js",
+    
     "test": "jest",
-    "test:integration": "jest ./src/__tests__/integration --runInBand",
-    "test:watch": "jest ./src/__tests__/integration --watch --runInBand"
-  },
+    "test:unit": "jest src/__tests__/unit",
+    "test:unit:watch": "jest src/__tests__/unit --watch",
+
+    "test:integration": "jest src/__tests__/integration --runInBand",
+    "test:integration:watch": "jest src/__tests__/integration --watch --runInBand",
+    "test:ci": "npm run test:unit && npm run test:integration"
+    },
   "keywords": [],
   "author": "",
   "license": "ISC",

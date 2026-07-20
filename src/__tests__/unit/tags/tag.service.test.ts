@@ -1,8 +1,8 @@
-import { HTTP_STATUS, TAG_MESSAGE } from "../../constants/constants.js";
-import type TagsRepo from "./tag.repo.js";
-import TagService from "./tag.service.js";
+import { TAG_MESSAGE } from "../../../constants/constants.js";
+import type TagsRepo from "../../../features/tags/tag.repo.js";
+import TagService from "../../../features/tags/tag.service.js";
 
-jest.mock("../../context/logger.js", () => ({
+jest.mock("../../../context/logger.js", () => ({
   getLogger: jest.fn().mockReturnValue({
     child: jest.fn().mockReturnValue({
       info: jest.fn(),

@@ -1,18 +1,19 @@
-import type { AuthRepository } from "./auth.repo.js";
-import AuthService from "./auth.service.js";
+import type { AuthRepository } from "../../../features/auth/auth.repo.js";
+import AuthService from "../../../features/auth/auth.service.js"
 import bcrypt from "bcryptjs";
 import { SystemRole } from "@prisma/client";
 import jwt from "jsonwebtoken";
-import { ERROR_MESSAGE } from "../../constants/constants.js";
+import { ERROR_MESSAGE } from "../../../constants/constants.js";
 
-jest.mock("../../context/logger.js", () => ({
-  getLogger: jest.fn(() => ({
-    child: jest.fn(() => ({
+
+jest.mock("../../../context/logger.js", () => ({
+  getLogger: jest.fn().mockReturnValue({
+    child: jest.fn().mockReturnValue({
       info: jest.fn(),
       warn: jest.fn(),
       error: jest.fn(),
-    })),
-  })),
+    }),
+  }),
 }));
 
 jest.mock("bcryptjs", () => ({
@@ -23,7 +24,7 @@ jest.mock("jsonwebtoken", () => ({
   sign: jest.fn(),
   verify: jest.fn(),
 }));
-jest.mock("../../config/env.config.js", () => ({
+jest.mock("../../../config/env.config.js", () => ({
   envConfig: {
     JWT_SECRET: "jwt_secret",
     JWT_EXPIRES_IN: 600,

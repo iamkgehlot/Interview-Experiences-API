@@ -1,8 +1,8 @@
 import { interviewOutcome } from "@prisma/client";
-import type ExperienceRepo from "./experience.repo.js";
-import ExperienceService from "./experience.service.js";
+import type ExperienceRepo from "../../../features/experiences/experience.repo.js";
+import ExperienceService from "../../../features/experiences/experience.service.js";
 
-jest.mock("../../context/logger.js", () => ({
+jest.mock("../../../context/logger.js", () => ({
   getLogger: jest.fn().mockReturnValue({
     child: jest.fn().mockReturnValue({
       info: jest.fn(),
