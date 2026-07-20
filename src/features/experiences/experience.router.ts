@@ -10,7 +10,7 @@ import {
 } from "./experience.validations.js";
 import { jwtProtect } from "../../middlewares/jwt.js";
 import type ExperienceRepo from "./experience.repo.js";
-import { roleAndAccessCheck } from "../../middlewares/auth.gaurd.js";
+import { roleAndAccessCheck } from "../../middlewares/auth.guard.js";
 import { SystemRole } from "@prisma/client";
 
 export default class ExperienceRouter implements Routes {
