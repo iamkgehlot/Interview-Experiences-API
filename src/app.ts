@@ -9,6 +9,8 @@ import cors from "cors";
 // import { dirname } from "node:path";
 import { httpLoggerMiddleware } from "./middlewares/http.logger.js";
 import { getLogger } from "./context/logger.js";
+import swaggerUi from "swagger-ui-express";
+import { openApiDocument } from "./docs/openapi.js";
 
 // const _filename = fileURLToPath(import.meta.url);
 // const _dirname = dirname(_filename);
@@ -34,6 +36,7 @@ export default class App {
     this.app.use(Express.json());
     this.app.use(httpLoggerMiddleware);
     this.app.use(cookieParser());
+    this.app.use("/api-docs",swaggerUi.serve,swaggerUi.setup(openApiDocument))
   }
   private initializeRoutes(routerClasses: Routes[]) {
     routerClasses.forEach((routerClass) => {

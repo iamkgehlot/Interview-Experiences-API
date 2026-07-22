@@ -7,6 +7,7 @@ describe("user routes", () => {
   describe("get user with user id", () => {
     beforeEach(async () => {
       await prisma.user.deleteMany();
+      await prisma.refreshTokens.deleteMany();
     });
     test("HappyPath:get user with user id", async () => {
       const accessToken = accessTokenGenerator(1, SystemRole.USER);

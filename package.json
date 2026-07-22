@@ -7,20 +7,19 @@
     "dev": "tsx watch ./src/index.ts",
     "build": "prisma generate && tsc",
     "start": "node dist/index.js",
-    
     "test": "jest",
     "test:unit": "jest src/__tests__/unit",
     "test:unit:watch": "jest src/__tests__/unit --watch",
-
     "test:integration": "jest src/__tests__/integration --runInBand",
     "test:integration:watch": "jest src/__tests__/integration --watch --runInBand",
     "test:ci": "npm run test:unit && npm run test:integration"
-    },
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^9.1.0",
     "@prisma/client": "^6.19.3",
     "@types/jsonwebtoken": "^9.0.10",
     "bcryptjs": "^3.0.3",
@@ -34,6 +33,7 @@
     "pino": "^10.3.1",
     "pino-http": "^11.0.0",
     "pino-pretty": "^13.1.3",
+    "swagger-ui-express": "^5.0.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -46,6 +46,7 @@
     "@types/node": "^26.1.1",
     "@types/pino-http": "^5.8.4",
     "@types/supertest": "^7.2.1",
+    "@types/swagger-ui-express": "^4.1.8",
     "dotenv-cli": "^11.0.0",
     "eslint": "^10.5.0",
     "globals": "^17.7.0",
